@@ -1,5 +1,6 @@
 package me.mobileease.findbooks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -23,6 +24,10 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		if(ParseUser.getCurrentUser() != null){
+			showHome();
+		}
 		
 		findViewsAndSetListeners();
 				
@@ -62,6 +67,8 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 					
 					Toast.makeText(getApplicationContext(), "Login con exito: " + user.getUsername(), Toast.LENGTH_LONG).show();
 					
+					showHome();
+					
 				} else {
 					
 				}
@@ -69,5 +76,14 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 
 		});
 		
+	}
+	
+	/// Mostrar el Home
+	protected void showHome() {
+		Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//	    EditText editText = (EditText) findViewById(R.id.edit_message);
+//	    String message = editText.getText().toString();
+//	    intent.putExtra(EXTRA_MESSAGE, message);
+	    startActivity(intent);
 	}
 }
