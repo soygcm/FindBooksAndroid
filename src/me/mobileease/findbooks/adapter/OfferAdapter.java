@@ -2,12 +2,15 @@ package me.mobileease.findbooks.adapter;
 
 import java.util.List;
 
+import me.mobileease.findbooks.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -20,13 +23,23 @@ import android.widget.TextView;
 import com.koushikdutta.ion.Ion;
 import com.parse.ParseObject;
 
+/// Es posible que la mejor opci—n sea ArrayAdapter
+
 public class OfferAdapter extends BaseAdapter {
     private Context mContext;
     private List<ParseObject> offerList;
+	private LayoutInflater inflater;
 
     public OfferAdapter(Context c, List<ParseObject> list) {
-        mContext = c;
+    		mContext = c;
         offerList = list;
+        inflater = LayoutInflater.from(c);
+    }
+    
+    static class ViewHolder {
+        public TextView number;
+        public TextView title;
+        public ImageView image;
     }
 
     public int getCount() {
@@ -43,53 +56,36 @@ public class OfferAdapter extends BaseAdapter {
 
     /// Crear una nueva vista con imagen y titulo
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
-        LinearLayout layout;
-        TextView text;
-        text = new TextView(mContext);
-		imageView = new ImageView(mContext);
-
-        if (convertView == null) {  // if it's not recycled, initialize some attributes
-        		
-        		layout = new LinearLayout(mContext);
-        		layout.setLayoutParams(new GridView.LayoutParams(85, 200));
-        		layout.setOrientation(LinearLayout.VERTICAL);
-        	
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            text.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-            imageView.setBackgroundColor(Color.RED);
-            imageView.setPadding(8, 8, 8, 8);
-            
-            text.setGravity(Gravity.CENTER);
-//            text.setId(1);
-            text.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 40) );
-                        
-        } else {
-            layout = (LinearLayout) convertView;
+    		View view = convertView;
+    		// reuse views
+        if (convertView == null) {
+          view = inflater.inflate(R.layout.adapter_offer, null);
+          // configure view holder
+          ViewHolder viewHolder = new ViewHolder();
+          viewHolder.title = (TextView) view.findViewById(R.id.title);
+          viewHolder.number = (TextView) view.findViewById(R.id.numberNotifications);
+          viewHolder.image = (ImageView) view.findViewById(R.id.imageBook);
+          view.setTag(viewHolder);
         }
 
+        // fill data
         ParseObject offer = offerList.get(position);
         ParseObject book = offer.getParseObject("book");
+        JSONObject imageLinks = book.getJSONObject("imageLinks");
+        ViewHolder holder = (ViewHolder) view.getTag();
         
-        	text.setText(position + ". " + book.getString("title") );
-        	
-        	JSONObject imageLinks = book.getJSONObject("imageLinks");
-        	
+        holder.title.setText( book.getString("title") );
+        holder.number.setText( offer.getNumber("price").toString() );
+        
         if (imageLinks != null) {
 	        	try {
-				Ion.with(imageView).load( imageLinks.getString("thumbnail") );
+				Ion.with(holder.image).load( imageLinks.getString("thumbnail") );
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
-        	
-        	
-        	layout.removeAllViews();
-        	layout.addView(imageView);
-        layout.addView(text);
-       
-        
-        return layout;
+
+        return view;
     }
 
     

@@ -1,5 +1,6 @@
 package me.mobileease.findbooks;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -19,6 +20,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 	private EditText passwordInput;
 	private EditText usernameInput;
 	private Button loginButton;
+	private ProgressDialog progress;
 
 	/** Called when the activity is first created. */
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,31 +50,39 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 		int id = v.getId();
 		if (id == R.id.parse_login_button) {
 			
-			Log.d("FB", "Tratando de hacer login");
-			
-			Toast.makeText(getApplicationContext(), "Tratando de hacer login", Toast.LENGTH_SHORT).show();
-			
+						
 			login();
 		}
 		
 	}
 	private void login() {
+		
+		Log.d("FB", "Tratando de hacer login");
 
+
+		progress = new ProgressDialog(this);
+		progress.setTitle("Iniciando");
+		progress.setMessage("En unos segundos estaras dentro de FindBooks...");
+		progress.show();
 		
 		ParseUser.logInInBackground(usernameInput.getText().toString(), passwordInput.getText().toString(), new LogInCallback() {
 			
 			@Override
 			public void done(ParseUser user, ParseException e) {
+				progress.dismiss();
+				
 				if (user != null) {
-					
-					Toast.makeText(getApplicationContext(), "Login con exito: " + user.getUsername(), Toast.LENGTH_LONG).show();
+									
+					Log.d("FB", "Login con exito..");
 					
 					showHome();
 					
 				} else {
-					
+					Log.d("FB", "Error: " + e.getMessage());
 				}
 			}
+			
+			
 
 		});
 		

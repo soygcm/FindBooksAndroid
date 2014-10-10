@@ -13,6 +13,7 @@ public class FindBooks extends Application {
     super.onCreate();
 
     // Add your initialization code here
+    Parse.enableLocalDatastore(this);
     Parse.initialize(this, "C4zgFUST9RGWSJ5scVpyB5G4co2gcMUpNPg0QpaI", "ZLxGCOCWUpKAJP9mnX1Dl54UXKD7EvSqNDmP42Er");
 
 
