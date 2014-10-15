@@ -1,0 +1,156 @@
+package me.mobileease.findbooks;
+
+import java.io.Console;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import me.mobileease.findbooks.adapter.BookAdapter;
+import me.mobileease.findbooks.adapter.OfferAdapter;
+
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+
+public class SearchActivity extends ActionBarActivity {
+
+	private EditText searchQuery;
+	private ListView list;
+	protected BookAdapter adapter;
+	private ProgressDialog progress;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_search);
+		
+		list = (ListView) findViewById(R.id.resultList);
+		
+		ActionBar mActionBar = getSupportActionBar();
+		mActionBar.setDisplayShowHomeEnabled(false);
+		mActionBar.setDisplayShowTitleEnabled(false);
+		LayoutInflater mInflater = LayoutInflater.from(this);
+
+		View mCustomView = mInflater.inflate(R.layout.actionbar_search, null);
+
+		searchQuery = (EditText) mCustomView.findViewById(R.id.searchQuery);
+//		mTitleTextView.setText("My Own Title");
+
+		ImageButton imageButton = (ImageButton) mCustomView.findViewById(R.id.btnSearch);
+		imageButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+											
+				Toast.makeText(getApplicationContext(), "Refresh Clicked!",
+						Toast.LENGTH_SHORT).show();
+				
+				getBooks();
+				
+			}
+		});
+
+		mActionBar.setCustomView(mCustomView);
+		mActionBar.setDisplayShowCustomEnabled(true);
+		
+	}
+	
+	
+
+	protected void getBooks() {
+		
+		progress = new ProgressDialog(this);
+		progress.setTitle("Buscando");
+		progress.setMessage("En unos segundos, te mostraré los resultados de tu busqueda...");
+		progress.show();
+		
+		if (adapter != null) {
+			adapter.clear();
+		}
+		
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("query", searchQuery.getText().toString() );
+		
+		ParseCloud.callFunctionInBackground("search", params, new FunctionCallback<HashMap<String, Object>>() {
+			
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void done(HashMap<String, Object> hashmap, ParseException err) {
+								
+				
+//				Log.d("FB", hashmap.getClass().getName() + ": " + iterador.next().getClass().getName() );
+//				Log.d("FB", hashmap.toString() );
+				
+				if(err == null){
+				
+					Object models = hashmap.get("models");
+					
+					ArrayList<?> booksObj;
+					List<ParseObject> books = new ArrayList<ParseObject>();;
+
+					if (models instanceof ArrayList<?>) {
+						if( ((ArrayList<?>)models).get(0) instanceof ParseObject){
+							books = (List<ParseObject>) models;
+						}
+					}
+					
+					if (books.size()>0) {
+						Log.d("FB", "setear Adaptador" );
+						adapter = new BookAdapter(SearchActivity.this, books);
+						list.setAdapter(adapter);
+					}
+					
+	        	    		
+				}else{
+					
+					
+					
+				}
+				progress.dismiss();
+				
+			}
+			});
+		
+	}
+
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.search, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+}

@@ -35,14 +35,17 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 				
 		ParseAnalytics.trackAppOpened(getIntent());
 	}
+	
 	/// Obtener las vistas desde el layout y guardarlas en campos de la clase
 	private void findViewsAndSetListeners() {
 		usernameInput = (EditText) findViewById(R.id.login_username_input);
 		passwordInput = (EditText) findViewById(R.id.login_password_input);
 		loginButton = (Button) findViewById(R.id.parse_login_button);
-	
-		loginButton.setOnClickListener(this);
-
+		
+		if (loginButton != null) {			
+			loginButton.setOnClickListener(this);
+		}
+		
 	}
 	
 	@Override
