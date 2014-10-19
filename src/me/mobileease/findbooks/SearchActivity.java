@@ -12,6 +12,7 @@ import me.mobileease.findbooks.adapter.BookAdapter;
 import me.mobileease.findbooks.adapter.OfferAdapter;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -21,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -31,12 +34,14 @@ import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 
-public class SearchActivity extends ActionBarActivity {
+public class SearchActivity extends ActionBarActivity implements OnItemClickListener {
 
 	private EditText searchQuery;
 	private ListView list;
 	protected BookAdapter adapter;
 	private ProgressDialog progress;
+	private boolean searchFind;
+	private boolean searchAdd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,12 @@ public class SearchActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_search);
 		
 		list = (ListView) findViewById(R.id.resultList);
+		
+		list.setOnItemClickListener(this);
+		
+		Intent intent = getIntent();
+		searchFind = intent.getBooleanExtra(HomeActivity.SEARCH_FIND, false);
+		searchAdd = intent.getBooleanExtra(HomeActivity.SEARCH_ADD, false);
 		
 		ActionBar mActionBar = getSupportActionBar();
 		mActionBar.setDisplayShowHomeEnabled(false);
@@ -153,4 +164,44 @@ public class SearchActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+		if(searchAdd){
+			showAddOffer(position);
+		}else if(searchFind){
+			showBook(position);
+		}
+		
+	}
+
+
+
+	private void showBook(int position) {
+		
+		ParseObject book = adapter.getItem(position);
+		
+		Intent intent = new Intent(SearchActivity.this, BookActivity.class);
+	    String id = book.getObjectId();
+	    intent.putExtra(BookActivity.BOOK_ID, id);
+	    startActivity(intent);
+		
+	}
+
+
+
+	private void showAddOffer(int position) {
+
+		Intent intent = new Intent(SearchActivity.this, AddOfferActivity.class);
+//	    EditText editText = (EditText) findViewById(R.id.edit_message);
+//	    String message = editText.getText().toString();
+//	    intent.putExtra(SEARCH_FIND, (position == 0) );
+//	    intent.putExtra(SEARCH_ADD, (position == 1) );
+	    startActivity(intent);
+		
+	}
+
+	
 }

@@ -23,6 +23,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class HomeActivity extends ActionBarActivity {
+	public static final String SEARCH_ADD = "search_add";
+	public static final String SEARCH_FIND = "search_find";
 	private ParseUser user;
 	private GridView gridview;
 	private ProgressDialog progress;
@@ -66,7 +68,8 @@ public class HomeActivity extends ActionBarActivity {
 		Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
 //	    EditText editText = (EditText) findViewById(R.id.edit_message);
 //	    String message = editText.getText().toString();
-//	    intent.putExtra(EXTRA_MESSAGE, message);
+	    intent.putExtra(SEARCH_FIND, (position == 0) );
+	    intent.putExtra(SEARCH_ADD, (position == 1) );
 	    startActivity(intent);
 		
 	}
