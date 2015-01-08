@@ -11,13 +11,19 @@
         android:text="Vender"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <Spinner
+        android:id="@+id/currency"
+        
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:ems="10"
+        android:inputType="numberDecimal"
+         />
 
-        <requestFocus />
-    </EditText>
 
 </LinearLayout>

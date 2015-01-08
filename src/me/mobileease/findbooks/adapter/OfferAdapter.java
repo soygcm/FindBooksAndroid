@@ -2,6 +2,7 @@ package me.mobileease.findbooks.adapter;
 
 import java.util.List;
 
+
 import me.mobileease.findbooks.R;
 
 import org.json.JSONException;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 import com.koushikdutta.ion.Ion;
 import com.parse.ParseObject;
 
-/// Es posible que la mejor opci—n sea ArrayAdapter
+/// Es posible que la mejor opciï¿½n sea ArrayAdapter
 
 public class OfferAdapter extends ArrayAdapter<ParseObject> {
     private Context mContext;

@@ -1,7 +1,5 @@
 package me.mobileease.findbooks;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import me.mobileease.findbooks.adapter.OfferAdapter;
@@ -94,12 +92,16 @@ public class HomeActivity extends ActionBarActivity {
 		    public void done(final List<ParseObject> offers, ParseException e) {
 		        if (e == null) {
 		        	
-		        		Log.d("FB", "Ofertas Locales obtenidas");
+		        		Log.d("FB", "Ofertas Locales obtenidas: "+offers.size());
 		        		
 		        		adapter = new OfferAdapter(HomeActivity.this, offers);
 		        	    gridview.setAdapter(adapter);
 		        	    
-		    		    	progress.dismiss();
+		        	    if (offers.size() != 0) {
+								
+		        	    		progress.dismiss();
+		    		    	
+		        	    }
 		    	    		
 		        } else {
 		            Log.d("FB", "Error: " + e.getMessage());
@@ -114,6 +116,9 @@ public class HomeActivity extends ActionBarActivity {
 					@Override
 					public void done(List<ParseObject> offersOnline,
 							ParseException err) {
+						
+						progress.dismiss();
+						
 						if (err == null) {
 							Log.d("FB", "Ofertas Online obtenidas");
 						

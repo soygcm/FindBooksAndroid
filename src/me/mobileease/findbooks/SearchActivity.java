@@ -1,16 +1,10 @@
 package me.mobileease.findbooks;
 
-import java.io.Console;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import me.mobileease.findbooks.adapter.BookAdapter;
-import me.mobileease.findbooks.adapter.OfferAdapter;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -91,7 +85,7 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 		
 		progress = new ProgressDialog(this);
 		progress.setTitle("Buscando");
-		progress.setMessage("En unos segundos, te mostrarŽ los resultados de tu busqueda...");
+		progress.setMessage("En unos segundos, te mostrarï¿½ los resultados de tu busqueda...");
 		progress.show();
 		
 		if (adapter != null) {
@@ -145,27 +139,6 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 	}
 
 
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.search, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
@@ -199,6 +172,11 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 //	    String message = editText.getText().toString();
 //	    intent.putExtra(SEARCH_FIND, (position == 0) );
 //	    intent.putExtra(SEARCH_ADD, (position == 1) );
+		
+		ParseObject book = adapter.getItem(position);
+	    String id = book.getObjectId();
+	    intent.putExtra(BookActivity.BOOK_ID, id);
+		
 	    startActivity(intent);
 		
 	}

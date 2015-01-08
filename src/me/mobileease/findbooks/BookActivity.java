@@ -61,7 +61,8 @@ public class BookActivity extends ActionBarActivity {
 		query.findInBackground(new FindCallback<ParseObject>() {
 		    public void done(final List<ParseObject> offers, ParseException e) {
 		    		progress.dismiss();
-    
+		    		
+		    		
 		    		if (e == null) {
 		        			        		
 		    			Log.d("FB", "Ofertas: "+ offers.size());
