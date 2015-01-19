@@ -3,6 +3,7 @@ package me.mobileease.findbooks.adapter;
 import java.util.List;
 
 import me.mobileease.findbooks.R;
+import me.mobileease.findbooks.model.MyBook;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -24,11 +25,13 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 
 	private LayoutInflater inflater;
 	private List<ParseObject> offers;
+	private ParseObject bookWant;
 	
-	public BookOfferAdapter(Context context, List<ParseObject> objects) {
+	public BookOfferAdapter(Context context, List<ParseObject> objects, ParseObject bookWant) {
 		super(context, -1, objects);
 		inflater = LayoutInflater.from(context);
 		offers = objects;
+		this.bookWant = bookWant;
 	}
 
 	@Override
@@ -41,7 +44,7 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 			  view = inflater.inflate(R.layout.adapter_book_offer, null);
 			  
 			  // configurar el view holder
-			  ViewHolder viewHolder = new ViewHolder(offer);
+			  ViewHolder viewHolder = new ViewHolder(offer, bookWant);
 			  viewHolder.title = (TextView) view.findViewById(R.id.title);
 			  viewHolder.btnWant = (Button) view.findViewById(R.id.btnWant);
 			  
@@ -66,9 +69,11 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
         public ImageView image;
         public Button btnWant;
 		private ParseObject offer;
+		private ParseObject bookWant;
         
-		public ViewHolder(ParseObject offer) {
+		public ViewHolder(ParseObject offer, ParseObject bookWant) {
 			this.offer = offer;
+			this.bookWant = bookWant;
 		}
 
 		@Override
@@ -77,27 +82,56 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 						
 			if(id == R.id.btnWant){
 				
-				newTransaction(offer);
+				newWant();
 				
 			}
 		}
 
-		private void newTransaction(ParseObject offer) {
+		private void newWant() {
 			
+			ParseObject book = offer.getParseObject("book");
 			
+			if(bookWant == null){
+				final ParseObject want = new ParseObject(MyBook.CLASS);
+				want.put("book", book);
+				want.put("type", "WANT");
+				want.put("user", ParseUser.getCurrentUser() );
+				want.saveInBackground(new SaveCallback() {
+					
+					@Override
+					public void done(ParseException e) {
+						if(e== null){
+							
+							bookWant = want;
+							
+							newTransaction(offer, want);
+							
+							
+						}
+					}
+				});
+			
+			}else{
+				newTransaction(offer, bookWant);
+
+			}
+			
+		}
+
+		protected void newTransaction(ParseObject bookOffer, ParseObject bookWant) {
 			ParseObject transaction = new ParseObject("Transaction");
-			transaction.put("offer", offer);
-			transaction.put("userRequest", ParseUser.getCurrentUser());
+			transaction.put("bookOffer", bookOffer);
+			transaction.put("bookWant", bookWant);
+			transaction.put("user", ParseUser.getCurrentUser() );
 			transaction.saveInBackground(new SaveCallback() {
 				
 				@Override
 				public void done(ParseException e) {
-					if(e== null){
-						btnWant.setBackgroundColor(Color.GREEN);
+					if(e==null){
+						btnWant.setBackgroundColor(Color.GREEN);									
 					}
 				}
 			});
-			
 		}
         
     }

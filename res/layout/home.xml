@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gridview"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:columnWidth="90dp"
@@ -11,3 +12,36 @@
     android:gravity="center"
     android:background="@color/ui_fondo_claro"
 />
+
+    
+    <android.support.v7.widget.Toolbar
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             >
+        
+        <ImageButton
+        android:id="@+id/btnTransactions"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#ff3fff"
+        android:src="@drawable/abc_ic_menu_share_mtrl_alpha" />
+        
+        </android.support.v7.widget.Toolbar>
+
+    
+
+    <GridView 
+	    android:id="@+id/gridview"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:columnWidth="90dp"
+	    android:numColumns="auto_fit"
+	    android:verticalSpacing="10dp"
+	    android:horizontalSpacing="10dp"
+	    android:stretchMode="columnWidth"
+	    android:gravity="center"
+	/>
+
+</LinearLayout>

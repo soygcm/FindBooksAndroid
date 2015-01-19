@@ -1,7 +1,7 @@
 package me.mobileease.findbooks;
 
 import me.mobileease.findbooks.fragment.FormOfferFragment;
-import me.mobileease.findbooks.model.Offer;
+import me.mobileease.findbooks.model.MyBook;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -38,7 +38,7 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_offer);
 		
-		offer = new ParseObject(Offer.CLASS);
+		offer = new ParseObject(MyBook.CLASS);
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mImageView = (ImageView) findViewById(R.id.photo);
@@ -77,6 +77,7 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 		ParseObject book = ParseObject.createWithoutData("Book", bookId);
 
 		offer.put("book", book );
+		offer.put("type", "OFFER");
 		offer.put("user", ParseUser.getCurrentUser());
 		offer.saveInBackground(new SaveCallback() {
 			
