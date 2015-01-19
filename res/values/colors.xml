@@ -15,5 +15,21 @@
     <color name="com_parse_ui_twitter_login_button">#2DAAE2</color>
     <color name="com_parse_ui_twitter_login_button_push">#2588B5</color>
     <color name="com_parse_ui_twitter_login_button_focus">#2788BE</color>
+    
+    
+    <!--Colores de App -->
+    <color name="ui_fondo_claro">#F7F2DF</color>
+    <color name="ui_fondo_medio">#E8D8AB</color>
+    <color name="ui_fondo_oscuro">#542200</color>
+    <color name="ui_menta_busqueda">#00CCAA</color>
+    <color name="ui_magenta_oferta">#DB67C8</color>
+    
+    <color name="text_cafe_oscuro">#542200</color>
+    <color name="text_cafe_claro">#A17035</color>
+    <color name="text_gris">#A6A18F</color>
+    
+    <!--Colores generales -->
+    <color name="blanco">#FFFFFF</color>
+    <color name="negro">#FFFFFF</color>
 
 </resources>

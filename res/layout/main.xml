@@ -8,6 +8,12 @@
     android:visibility="visible"
     >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+    
+
     <EditText
         android:id="@+id/login_username_input"
         android:layout_width="match_parent"
@@ -52,4 +58,5 @@
         android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
         android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
         android:text="@string/com_parse_ui_forgot_password_button_label" />
+	</LinearLayout>
 </LinearLayout>
