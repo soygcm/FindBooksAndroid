@@ -24,7 +24,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,6 +34,14 @@
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"
+            android:parentActivityName=".HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.mobileease.findbooks.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".TransactionsActivity"
+            android:label="@string/title_activity_transactions"
             android:parentActivityName=".HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -1,8 +1,47 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+     
+    
+    <android.support.v7.widget.Toolbar
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            
+             >
+    
+    <EditText
+        android:id="@+id/searchQuery"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:hint="Title/Author/ISBN"
+        >
+		
+        <requestFocus />
+    </EditText>
+
+    
+
+    <ImageButton
+        android:id="@+id/btnSearch"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginRight="8dp"
+        android:layout_gravity="right"
+        android:background="@null"
+        android:src="@android:drawable/ic_menu_search" />
+
+ </android.support.v7.widget.Toolbar>
+ 
+<ListView 
     android:id="@+id/resultList"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    
     >
-
 </ListView>
+
+</LinearLayout>

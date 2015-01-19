@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,35 +51,54 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 		searchFind = intent.getBooleanExtra(HomeActivity.SEARCH_FIND, false);
 		searchAdd = intent.getBooleanExtra(HomeActivity.SEARCH_ADD, false);
 		
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {  		
+        		setSupportActionBar(toolbar);
+        }
+		
 		ActionBar mActionBar = getSupportActionBar();
-		mActionBar.setDisplayShowHomeEnabled(false);
-		mActionBar.setDisplayShowTitleEnabled(false);
-		LayoutInflater mInflater = LayoutInflater.from(this);
+		
+		mActionBar.setDisplayHomeAsUpEnabled(true);
+		
+//		mActionBar.setDisplayShowHomeEnabled(false);
+//		mActionBar.setDisplayShowTitleEnabled(false);
+//		LayoutInflater mInflater = LayoutInflater.from(this);
 
-		View mCustomView = mInflater.inflate(R.layout.actionbar_search, null);
-
-		searchQuery = (EditText) mCustomView.findViewById(R.id.searchQuery);
+//		View mCustomView = mInflater.inflate(R.layout.actionbar_search, null);
+		
+//		mActionBar.setCustomView(mCustomView);
+//		mActionBar.setDisplayShowCustomEnabled(true);
+		
+		searchQuery = (EditText) findViewById(R.id.searchQuery);
 //		mTitleTextView.setText("My Own Title");
 
-		ImageButton imageButton = (ImageButton) mCustomView.findViewById(R.id.btnSearch);
+		ImageButton imageButton = (ImageButton) findViewById(R.id.btnSearch);
 		imageButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 											
-				Toast.makeText(getApplicationContext(), "Refresh Clicked!",
-						Toast.LENGTH_SHORT).show();
 				
 				getBooks();
 				
 			}
 		});
 
-		mActionBar.setCustomView(mCustomView);
-		mActionBar.setDisplayShowCustomEnabled(true);
+		
 		
 	}
 	
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		case android.R.id.home:
+		    onBackPressed();
+		    return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
 	
 
 	protected void getBooks() {
@@ -101,7 +121,6 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 			@SuppressWarnings("unchecked")
 			@Override
 			public void done(HashMap<String, Object> hashmap, ParseException err) {
-								
 				
 //				Log.d("FB", hashmap.getClass().getName() + ": " + iterador.next().getClass().getName() );
 //				Log.d("FB", hashmap.toString() );
@@ -122,20 +141,17 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 					if (books.size()>0) {
 						Log.d("FB", "setear Adaptador" );
 						adapter = new BookAdapter(SearchActivity.this, books);
+//						adapter.notifyDataSetChanged();
 						list.setAdapter(adapter);
 					}
-					
 	        	    		
 				}else{
-					
-					
 					
 				}
 				progress.dismiss();
 				
 			}
 			});
-		
 	}
 
 

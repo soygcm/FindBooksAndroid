@@ -105,7 +105,7 @@ public class OfferAdapter extends ArrayAdapter<ParseObject> {
 	        String title = book.getString("title");
 	            
 	        holder.title.setText( title );
-	        holder.number.setText( price.toString() );
+	        holder.number.setText( "" + price );
 	 
 	       
 	        if (imageLinks != null) {
