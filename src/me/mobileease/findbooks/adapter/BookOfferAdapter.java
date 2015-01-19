@@ -45,17 +45,17 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 			  
 			  // configurar el view holder
 			  ViewHolder viewHolder = new ViewHolder(offer, bookWant);
-			  viewHolder.title = (TextView) view.findViewById(R.id.title);
+			  viewHolder.title = (TextView) view.findViewById(R.id.txtUsername);
 			  viewHolder.btnWant = (Button) view.findViewById(R.id.btnWant);
 			  
 			  view.setTag(viewHolder);
 	    }
 
 	    // rellenar de datos
-	    ParseObject book = offer.getParseObject("book");
+	    ParseUser user = offer.getParseUser("user");
 	    ViewHolder holder = (ViewHolder) view.getTag();
 	    
-	    String title = book.getString("title");
+	    String title = user.getString("username");
 	    
 	    holder.title.setText( title );
 		holder.btnWant.setOnClickListener(holder);

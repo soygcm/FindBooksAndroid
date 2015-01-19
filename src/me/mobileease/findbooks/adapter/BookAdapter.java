@@ -46,7 +46,7 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 			  
 			  // configurar el view holder
 			  ViewHolder viewHolder = new ViewHolder();
-			  viewHolder.title = (TextView) view.findViewById(R.id.title);
+			  viewHolder.title = (TextView) view.findViewById(R.id.txtTitle);
 			  view.setTag(viewHolder);
 	    }
 
