@@ -3,21 +3,24 @@
     android:id="@+id/drawer_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/ui_fondo_claro" >
     
     <android.support.v7.widget.Toolbar
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/ui_fondo_claro"
              >
         
         <ImageButton
         android:id="@+id/btnTransactions"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="#ff3fff"
-        android:src="@drawable/abc_ic_menu_share_mtrl_alpha" />
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_transaccion"
+        android:background="@null"
+        android:scaleType="fitCenter" />
         
         </android.support.v7.widget.Toolbar>
 

@@ -9,6 +9,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/ui_menta_busqueda"
             
              >
     
@@ -18,6 +19,7 @@
         android:layout_height="fill_parent"
         android:layout_weight="1"
         android:layout_gravity="center_horizontal"
+        android:textColor="@color/blanco"
         android:hint="Title/Author/ISBN"
         >
 		
@@ -33,7 +35,7 @@
         android:layout_marginRight="8dp"
         android:layout_gravity="right"
         android:background="@null"
-        android:src="@android:drawable/ic_menu_search" />
+        android:src="@drawable/ic_buscar_blanco" />
 
  </android.support.v7.widget.Toolbar>
  

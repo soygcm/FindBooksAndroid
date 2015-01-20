@@ -40,6 +40,17 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">24dp</item>
     </style>
+    
+    
+    <style name="Botonbasic">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:background">@color/ui_fondo_medio</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textColor">@color/text_cafe_oscuro</item>
+ 
+    </style>
 
     <style name="ParseLoginUI.HelpButton" parent="@android:style/Widget.Button">
         <item name="android:layout_width">wrap_content</item>
