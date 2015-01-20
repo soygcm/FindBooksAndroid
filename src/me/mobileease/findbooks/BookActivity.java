@@ -3,12 +3,16 @@ package me.mobileease.findbooks;
 import java.util.List;
 
 import me.mobileease.findbooks.adapter.BookOfferAdapter;
+import me.mobileease.findbooks.adapter.TransactionAdapter;
 import me.mobileease.findbooks.model.MyBook;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -37,7 +41,16 @@ public class BookActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book);
 		
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {  		
+        		setSupportActionBar(toolbar);
+        }
+		
 		list = (ListView) findViewById(R.id.offerList);
+		
+		LayoutInflater inflater = getLayoutInflater();
+		View header = inflater.inflate(R.layout.view_book, list, false);
+		list.addHeaderView(header, null, false);
 		
 //		list.setOnItemClickListener(this);
 		
@@ -78,6 +91,9 @@ public class BookActivity extends ActionBarActivity {
 			query.whereEqualTo("bookWant", book);
 			Log.d(FindBooks.TAG, "WANT,  bookId:"+ bookId);
 		}
+		
+		query.include("bookOffer");
+		query.include("bookWant");
 
 		query.findInBackground(new FindCallback<ParseObject>() {
 
@@ -85,7 +101,7 @@ public class BookActivity extends ActionBarActivity {
 			public void done(List<ParseObject> trans, ParseException e) {
 				if(e == null){
 					Log.d(FindBooks.TAG, "total: "+trans.size());
-					ArrayAdapter<ParseObject> adapterTransactions = new ArrayAdapter<ParseObject>(BookActivity.this, android.R.layout.simple_list_item_1, trans);
+					TransactionAdapter adapterTransactions = new TransactionAdapter(BookActivity.this, trans);
 					list.setAdapter(adapterTransactions);
 				}else{
 					Log.d(FindBooks.TAG, "error: "+ e.getMessage() );

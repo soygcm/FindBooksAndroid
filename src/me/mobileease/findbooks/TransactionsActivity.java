@@ -2,6 +2,7 @@ package me.mobileease.findbooks;
 
 import java.util.List;
 
+import me.mobileease.findbooks.adapter.TransactionAdapter;
 import me.mobileease.findbooks.model.MyBook;
 
 import com.parse.FindCallback;
@@ -50,13 +51,15 @@ public class TransactionsActivity extends ActionBarActivity {
 		
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Transaction");
 		query.whereMatchesQuery("bookWant", wantQuery);
+		query.include("bookWant");
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
 			public void done(List<ParseObject> list, ParseException e) {
 				if(e == null){
 					
-					ArrayAdapter<ParseObject> adapterTransactions = new ArrayAdapter<ParseObject>(TransactionsActivity.this, android.R.layout.simple_list_item_1, list);
+					
+					TransactionAdapter adapterTransactions = new TransactionAdapter(TransactionsActivity.this, list);
 					listTransactions.setAdapter(adapterTransactions);
 				}
 			}
