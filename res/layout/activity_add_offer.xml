@@ -40,6 +40,7 @@
         android:layout_height="wrap_content"
         android:text="Tomale una foto a tu libro" 
         android:layout_gravity="center_horizontal"
+        style="@style/Botonbasic"
         />
 
     <ImageView
@@ -57,6 +58,7 @@
         android:layout_height="wrap_content"
         android:text="Guardar" 
         android:layout_gravity="center_horizontal"
+        style="@style/Botonbasic"
         />
 
 </LinearLayout>

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/abc_action_bar_default_height_material"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="@color/ui_menta_busqueda" >
      
     
     <ImageView
@@ -19,6 +20,7 @@
         android:layout_weight="1"
         android:layout_gravity="center_horizontal"
         android:hint="Title/Author/ISBN"
+        android:textColor="@color/blanco"
         >
 		
         <requestFocus />
