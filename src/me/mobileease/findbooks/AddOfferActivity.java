@@ -51,11 +51,11 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
 		
         // Set up action bar.
-        final ActionBar actionBar = getSupportActionBar();
+//        final ActionBar actionBar = getSupportActionBar();
 
         // Specify that the Home button should show an "Up" caret, indicating that touching the
         // button will take the user one step up in the application's hierarchy.
-        actionBar.setDisplayHomeAsUpEnabled(true);
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         formOfferPagerAdapter = new FormOfferPagerAdapter(getSupportFragmentManager(), offer);
         mViewPager.setAdapter(formOfferPagerAdapter);

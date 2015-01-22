@@ -3,13 +3,29 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
      >
+     
+    <FrameLayout
+            android:id="@+id/frameBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+     >
 
     <ImageView
     android:id="@+id/imgBook"
     android:scaleType="centerCrop"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="440dp"
     android:src="@drawable/romeo_y_julieta" />
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+    		android:layout_height="fill_parent"
+		android:background="#dd110800"
+        >
+        
+    </LinearLayout>
+    
+    </FrameLayout>
     
     
 <LinearLayout 
@@ -23,8 +39,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-                    android:background="#dd000000"
-            
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
              >
         
         <Button
@@ -41,6 +57,12 @@
     android:id="@+id/offerList"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@null"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+		android:dividerHeight="0dp"
     >
 
 </ListView>

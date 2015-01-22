@@ -2,8 +2,12 @@ package me.mobileease.findbooks;
 
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import me.mobileease.findbooks.adapter.OfferAdapter;
 import me.mobileease.findbooks.model.MyBook;
+import android.R.string;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,6 +36,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.codec.binary.StringUtils;
 
 public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	public static final String SEARCH_ADD = "search_add";
@@ -57,7 +63,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
         if (toolbar != null) {  		
         		setSupportActionBar(toolbar);
         }
-        
+                
 //	    drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 //	    listTransactions =(ListView) findViewById(R.id.transactionList);
 	    
@@ -105,15 +111,33 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 //	    intent.putExtra(SEARCH_ADD, (position == 1) );
 //	    startActivity(intent);
 	    
-	    ParseObject book = adapter.getItem(position-2);
+	    ParseObject mBook = adapter.getItem(position-2);
 		
 		Intent intent = new Intent(HomeActivity.this, BookActivity.class);
-	    String id = book.getObjectId();
-	    String type = book.getString("type");
+	    String id = mBook.getObjectId();
+	    String type = mBook.getString("type");
+	    ParseObject book  = mBook.getParseObject("book");
+	    String title = book.getString("title");
+	    List<String> authorsList = book.getList("authors");
+	    String authors = TextUtils.join(", ", authorsList);
+	    JSONObject image = book.getJSONObject("imageLinks");
+	    String imageLink = null;
+	    
+	    if(image != null){
+	    try {
+	    		imageLink = image.getString("thumbnail");
+			imageLink = imageLink.replaceAll("zoom=[^&]+","zoom=" + 4);
+	    } catch (JSONException e) {
+			e.printStackTrace();
+		}}
+	    
 	    
 	    intent.putExtra(BookActivity.BOOK_ID, id);
 	    intent.putExtra(BookActivity.FROM_HOME, true);
 	    intent.putExtra(BookActivity.BOOK_TYPE, type);
+	    intent.putExtra(BookActivity.BOOK_TITLE, title);
+	    intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
+	    intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
 	    
 	    startActivity(intent);
 		

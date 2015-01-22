@@ -47,6 +47,7 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 			  // configurar el view holder
 			  ViewHolder viewHolder = new ViewHolder();
 			  viewHolder.title = (TextView) view.findViewById(R.id.txtTitle);
+			  viewHolder.image = (ImageView) view.findViewById(R.id.imgBook);
 			  view.setTag(viewHolder);
 	    }
 
@@ -55,8 +56,19 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 	    ViewHolder holder = (ViewHolder) view.getTag();
 	
 	    String title = book.getString("title");
-	        
+        JSONObject imageLinks = book.getJSONObject("imageLinks");
+
 	    holder.title.setText( title );
+	    
+	    if (imageLinks != null) {
+	        	try {
+				Ion.with(holder.image).load( imageLinks.getString("thumbnail") );
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}else{
+			holder.image.setImageResource(android.R.color.transparent);
+		}
 	    
 	    return view;
 	}
