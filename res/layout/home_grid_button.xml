@@ -10,17 +10,17 @@
             android:layout_margin="5dp"
                     
         android:layout_gravity="center_horizontal"
-        android:background="@color/ui_fondo_medio"
+        android:background="@color/blanco"
         
         >
         
         <ImageView
-            android:layout_width="90dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/imageButton"
             android:scaleType="centerCrop"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@color/ui_magenta_oferta"
+            android:background="@drawable/ic_buscar"
             />
         
         
@@ -38,6 +38,6 @@
 			android:ellipsize="end" 
 			android:maxLines="2"
             android:text="Text Lorem ipsum dolor istment la dore comictu se mole dargtub"
-            />
+            android:textColor="@color/text_gris"           />
 
 </LinearLayout>

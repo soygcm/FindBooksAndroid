@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@color/ui_fondo_claro">
      
     
     <android.support.v7.widget.Toolbar
@@ -21,6 +22,8 @@
         android:layout_gravity="center_horizontal"
         android:textColor="@color/blanco"
         android:hint="Title/Author/ISBN"
+        
+        android:textColorHint="@color/blanco"
         >
 		
         <requestFocus />

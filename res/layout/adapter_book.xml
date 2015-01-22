@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="horizontal"
-    android:background="#ffffff"
+    android:background="@color/blanco"
     android:padding="5dp"
      >
 
@@ -73,8 +73,7 @@
         android:layout_height="wrap_content"
         android:tint="#ff55ff"
         android:layout_gravity="center_vertical"
-        android:background="#ff55ff"
-        android:src="@drawable/abc_ic_go_search_api_mtrl_alpha" />
+        android:background="@drawable/ic_detalles_buscar" />
     
 
 </LinearLayout>

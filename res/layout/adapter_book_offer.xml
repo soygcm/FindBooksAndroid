@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-        android:background="#ccc"
+        android:background="@color/ui_fondo_claro"
     
     android:orientation="horizontal" >
     
@@ -65,9 +65,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#f5f"
+                    android:background="@drawable/ic_detalles_agregar"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/abc_ic_go_search_api_mtrl_alpha" />
+                    />
 
             </LinearLayout>
 
@@ -92,9 +92,9 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    style="?android:attr/buttonStyleSmall"
+                    style="@style/Botonbasic"
                     android:layout_gravity="right"
-                    android:text="Lo Quiero" />
+                    android:text="Lo quiero" />
                 
             </LinearLayout>
             
