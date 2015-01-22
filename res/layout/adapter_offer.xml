@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
@@ -18,11 +18,11 @@
             android:layout_height="match_parent"
             android:id="@+id/imageBook"
             android:scaleType="centerCrop"
-            android:background="@color/ui_fondo_medio"
+            android:background="@color/blanco"
             />
         
         <TextView
-            android:id="@+id/numberNotifications"
+            android:id="@+id/txtNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
@@ -35,19 +35,15 @@
         
     </FrameLayout>
 
-        
-
         <TextView
             android:id="@+id/title"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:gravity="center_horizontal"
-            android:scrollHorizontally="true"
-            android:textColor="@color/text_gris"
-			android:ellipsize="end" 
-			android:maxLines="2"
+            android:maxLines="2"
             android:text="Text Lorem ipsum dolor istment la dore comictu se mole dargtub"
-            />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/text_gris" />
 
 </LinearLayout>

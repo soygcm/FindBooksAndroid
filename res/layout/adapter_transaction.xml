@@ -2,9 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-        android:background="#ccc"
-    
+    android:layout_height="wrap_content"    
     android:orientation="vertical" >
 
     <LinearLayout
@@ -41,9 +39,9 @@
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#f4f"
+            android:background="@drawable/ic_detalles_buscar"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/abc_ic_go_search_api_mtrl_alpha" />
+             />
         
     </LinearLayout>
 

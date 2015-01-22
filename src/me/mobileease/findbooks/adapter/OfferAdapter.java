@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import me.mobileease.findbooks.R;
+import me.mobileease.findbooks.model.MyBook;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,6 +77,7 @@ public class OfferAdapter extends ArrayAdapter<ParseObject> {
 	    		
 	    		// verificar si ya tiene un viewHolder, o si toca crearlo
 	    		boolean haveViewHolder = false;
+	    		
 	    		Object tag = view.getTag();
 	    		if (tag != null){
 	    			if(tag instanceof ViewHolder){
@@ -89,7 +91,7 @@ public class OfferAdapter extends ArrayAdapter<ParseObject> {
 	          // configurar el view holder
 	          ViewHolder viewHolder = new ViewHolder();
 	          viewHolder.title = (TextView) view.findViewById(R.id.title);
-	          viewHolder.number = (TextView) view.findViewById(R.id.numberNotifications);
+	          viewHolder.number = (TextView) view.findViewById(R.id.txtNumber);
 	          viewHolder.image = (ImageView) view.findViewById(R.id.imageBook);
 	          view.setTag(viewHolder);
 	        }
@@ -97,16 +99,28 @@ public class OfferAdapter extends ArrayAdapter<ParseObject> {
 	        // rellenar de datos
 	        ParseObject offer = offerList.get(position-2);
 	        ParseObject book = offer.getParseObject("book");
+	        Number count = offer.getNumber("transactionCount");	
 	        JSONObject imageLinks = null;
-	        ViewHolder holder = (ViewHolder) view.getTag();
-	        Number price = offer.getNumber("price");
-	
 	        imageLinks = book.getJSONObject("imageLinks");
 	        String title = book.getString("title");
+	        String type = offer.getString(MyBook.TYPE);
 	            
+	        ViewHolder holder = (ViewHolder) view.getTag();
+	        
 	        holder.title.setText( title );
-	        holder.number.setText( "" + price );
-	 
+	        
+	        if(count == null){
+	        		holder.number.setVisibility(View.GONE);
+	        }else{
+	        		holder.number.setVisibility(View.VISIBLE);
+	        		holder.number.setText( "" + count );
+	        }
+	        
+	        if(type.equals(MyBook.OFFER)){
+	        		holder.number.setBackgroundColor(mContext.getResources().getColor(R.color.ui_magenta_oferta));
+	        }else if(type.equals(MyBook.WANT)){
+        			holder.number.setBackgroundColor(mContext.getResources().getColor(R.color.ui_menta_busqueda));
+	        }
 	       
 	        if (imageLinks != null) {
 		        	try {
