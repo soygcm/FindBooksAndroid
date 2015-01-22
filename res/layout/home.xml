@@ -16,11 +16,12 @@
         
         <ImageButton
         android:id="@+id/btnTransactions"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/abc_action_bar_default_height_material"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:src="@drawable/ic_transaccion"
         android:background="@null"
-        android:scaleType="fitCenter" />
+
+         />
         
         </android.support.v7.widget.Toolbar>
 
@@ -36,6 +37,7 @@
 	    android:horizontalSpacing="10dp"
 	    android:stretchMode="columnWidth"
 	    android:gravity="center"
+	    android:listSelector="@android:color/transparent"
 	/>
 
 </LinearLayout>

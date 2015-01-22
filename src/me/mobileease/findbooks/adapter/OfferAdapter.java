@@ -61,16 +61,7 @@ public class OfferAdapter extends ArrayAdapter<ParseObject> {
     			
     			view = inflater.inflate(R.layout.home_grid_button, null);
     			
-    			TextView title = (TextView) view.findViewById(R.id.title);
-  	        ImageView image = (ImageView) view.findViewById(R.id.imageBook);
-    			
-  	        if (position == 0) {
-				title.setText("Busca un libro");
-			}
-			else if(position == 1){
-				title.setText("Agrega un libro");
-			}
-  	          	        
+  	        	          	        
     		}else{
 
 	    		view = convertView;

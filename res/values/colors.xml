@@ -30,6 +30,7 @@
     
     <!--Colores generales -->
     <color name="blanco">#FFFFFF</color>
+    <color name="blanco_80">#CCFFFFFF</color>
     <color name="negro">#000000</color>
 
 </resources>

@@ -10,8 +10,11 @@
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         -->
-                <item name="windowActionBar">false</item>         
-        
+                <item name="windowActionBar">false</item>    
+                
+     <item name="colorControlNormal">#c5c5c5</item>
+    <item name="colorControlActivated">@color/blanco_80</item>
+    <item name="colorControlHighlight">@color/blanco_80</item>
     </style>
 
     <!-- Application theme. -->
@@ -51,6 +54,8 @@
         <item name="android:textColor">@color/text_cafe_oscuro</item>
  
     </style>
+    
+
 
     <style name="ParseLoginUI.HelpButton" parent="@android:style/Widget.Button">
         <item name="android:layout_width">wrap_content</item>

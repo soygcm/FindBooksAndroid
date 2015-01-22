@@ -2,6 +2,7 @@
       xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/ui_fondo_claro"
      >
      
     <FrameLayout
@@ -19,7 +20,7 @@
     
     <LinearLayout 
         android:layout_width="fill_parent"
-    		android:layout_height="fill_parent"
+    	android:layout_height="fill_parent"
 		android:background="#dd110800"
         >
         
@@ -48,22 +49,24 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
+            style="@style/Botonbasic"
             android:text="Guardar" />
         
         </android.support.v7.widget.Toolbar>
 
     
-<ListView 
-    android:id="@+id/offerList"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:listSelector="@android:color/transparent"
-            android:cacheColorHint="@android:color/transparent"
-            android:divider="@null"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+	<ListView 
+	    android:id="@+id/offerList"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:listSelector="@android:color/transparent"
+	    android:cacheColorHint="@android:color/transparent"
+	    android:divider="@null"
+	    android:focusable="false"
+	   	android:focusableInTouchMode="false"
 		android:dividerHeight="0dp"
-    >
+		
+	    >
 
 </ListView>
 
