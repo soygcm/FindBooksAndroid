@@ -1,5 +1,6 @@
 package me.mobileease.findbooks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.mobileease.findbooks.adapter.TransactionAdapter;
@@ -46,19 +47,30 @@ public class TransactionsActivity extends ActionBarActivity {
 	private void getTransactions() {
 		
 		
-		ParseQuery<ParseObject> wantQuery = ParseQuery.getQuery(MyBook.CLASS);
-		wantQuery.whereEqualTo("user", ParseUser.getCurrentUser() );
+		ParseQuery<ParseObject> userQuery = ParseQuery.getQuery(MyBook.CLASS);
+		userQuery.whereEqualTo("user", ParseUser.getCurrentUser() );
 		
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("Transaction");
-		query.whereMatchesQuery("bookWant", wantQuery);
+		ParseQuery<ParseObject> queryWant = ParseQuery.getQuery("Transaction");
+		queryWant.whereMatchesQuery("bookWant", userQuery);
+		
+		ParseQuery<ParseObject> queryOffer = ParseQuery.getQuery("Transaction");
+		queryOffer.whereMatchesQuery("bookOffer", userQuery);
+
+		ArrayList<ParseQuery<ParseObject>> queryList = new ArrayList<ParseQuery<ParseObject>>();
+		queryList.add(queryOffer);
+		queryList.add(queryWant);
+		ParseQuery<ParseObject> query = ParseQuery.or(queryList);
+
 		query.include("bookWant");
+		query.include("bookOffer");
+		query.include("bookOffer.book");
+		query.include("bookOffer.user");
+		query.include("bookWant.user");
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
 			public void done(List<ParseObject> list, ParseException e) {
 				if(e == null){
-					
-					
 					TransactionAdapter adapterTransactions = new TransactionAdapter(TransactionsActivity.this, list);
 					listTransactions.setAdapter(adapterTransactions);
 				}

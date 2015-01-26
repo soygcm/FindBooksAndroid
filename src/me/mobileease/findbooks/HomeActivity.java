@@ -79,12 +79,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	            	
-	        		if(position == 0 || position == 1){
-	        			
-	        			showSearch(position);
-	        			
-	        		}else{
-	        			
+	        		if(position != 0){
 	        			
 	        			showBook(position);
 	        			
@@ -111,7 +106,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 //	    intent.putExtra(SEARCH_ADD, (position == 1) );
 //	    startActivity(intent);
 	    
-	    ParseObject mBook = adapter.getItem(position-2);
+	    ParseObject mBook = adapter.getItem(position-1);
 		
 		Intent intent = new Intent(HomeActivity.this, BookActivity.class);
 	    String id = mBook.getObjectId();
@@ -139,17 +134,6 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	    intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
 	    intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
 	    
-	    startActivity(intent);
-		
-	}
-
-	protected void showSearch(int position) {
-
-		Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
-//	    EditText editText = (EditText) findViewById(R.id.edit_message);
-//	    String message = editText.getText().toString();
-	    intent.putExtra(SEARCH_FIND, (position == 0) );
-	    intent.putExtra(SEARCH_ADD, (position == 1) );
 	    startActivity(intent);
 		
 	}

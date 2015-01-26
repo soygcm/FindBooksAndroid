@@ -36,9 +36,9 @@
             android:layout_width="@dimen/abc_action_bar_default_height_material"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:layout_gravity="right"
-            android:layout_marginRight="8dp"
             android:background="@null"
-            android:src="@drawable/ic_buscar_blanco" />
+            
+             />
         
     </android.support.v7.widget.Toolbar>
 

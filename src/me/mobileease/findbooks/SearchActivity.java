@@ -57,22 +57,21 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
         }
 		
 		ActionBar mActionBar = getSupportActionBar();
-		
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		
-//		mActionBar.setDisplayShowHomeEnabled(false);
-//		mActionBar.setDisplayShowTitleEnabled(false);
-//		LayoutInflater mInflater = LayoutInflater.from(this);
+		ImageButton imageButton = (ImageButton) findViewById(R.id.btnSearch);
+			
+		if(searchFind){
+			toolbar.setBackgroundColor(getResources().getColor(R.color.ui_menta_busqueda));
+			imageButton.setImageResource(R.drawable.ic_buscar_blanco);
+		}else if(searchAdd){
+			toolbar.setBackgroundColor(getResources().getColor(R.color.ui_magenta_oferta));
+			imageButton.setImageResource(R.drawable.ic_agregar_blanco);
+		}
 
-//		View mCustomView = mInflater.inflate(R.layout.actionbar_search, null);
-		
-//		mActionBar.setCustomView(mCustomView);
-//		mActionBar.setDisplayShowCustomEnabled(true);
-		
 		searchQuery = (EditText) findViewById(R.id.searchQuery);
 //		mTitleTextView.setText("My Own Title");
 
-		ImageButton imageButton = (ImageButton) findViewById(R.id.btnSearch);
 		imageButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -140,7 +139,7 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 					
 					if (books.size()>0) {
 						Log.d("FB", "setear Adaptador" );
-						adapter = new BookAdapter(SearchActivity.this, books);
+						adapter = new BookAdapter(SearchActivity.this, books, searchFind);
 //						adapter.notifyDataSetChanged();
 						list.setAdapter(adapter);
 					}

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,15 +26,18 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
         public TextView number;
         public TextView title;
         public ImageView image;
+        public ImageView imgArrow;
     }
 
 	private LayoutInflater inflater;
 	private List<ParseObject> books;
+	private boolean searchFind;
 	
-	public BookAdapter(Context context, List<ParseObject> objects) {
+	public BookAdapter(Context context, List<ParseObject> objects, boolean searchFind) {
 		super(context, -1, objects);
 		inflater = LayoutInflater.from(context);
 		books = objects;
+		this.searchFind = searchFind;
 	}
 
 	@Override
@@ -48,6 +52,7 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 			  ViewHolder viewHolder = new ViewHolder();
 			  viewHolder.title = (TextView) view.findViewById(R.id.txtTitle);
 			  viewHolder.image = (ImageView) view.findViewById(R.id.imgBook);
+			  viewHolder.imgArrow = (ImageView) view.findViewById(R.id.imgArrow);
 			  view.setTag(viewHolder);
 	    }
 
@@ -59,6 +64,12 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
         JSONObject imageLinks = book.getJSONObject("imageLinks");
 
 	    holder.title.setText( title );
+	    
+	    if(searchFind){
+	    		holder.imgArrow.setImageResource(R.drawable.ic_detalles_buscar);
+	    }else{
+	    		holder.imgArrow.setImageResource(R.drawable.ic_detalles_agregar);
+	    }
 	    
 	    if (imageLinks != null) {
 	        	try {

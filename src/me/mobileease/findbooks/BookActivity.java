@@ -139,7 +139,6 @@ public class BookActivity extends ActionBarActivity {
 		query.include("bookWant");
 		query.include("bookOffer.user");
 		query.include("bookWant.user");
-
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
