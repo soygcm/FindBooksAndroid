@@ -5,27 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ui_fondo_claro" >
-    
+
+   
     <android.support.v7.widget.Toolbar
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:background="@color/ui_fondo_claro"
-             >
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:background="@color/ui_fondo_claro"
+        android:contentInsetStart = "0dp" 
+        android:contentInsetLeft = "0dp" 
+        app:contentInsetLeft = "0dp" 
+        app:contentInsetStart = "0dp" 
+        >
+
         
         <ImageButton
-        android:id="@+id/btnTransactions"
-        android:layout_width="@dimen/abc_action_bar_default_height_material"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
-        android:src="@drawable/ic_transaccion"
-        android:background="@null"
-
-         />
+            android:id="@+id/btnTransactions"
+            android:layout_width="@dimen/abc_action_bar_default_height_material"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:background="@null"
+            android:src="@drawable/ic_transaccion"
+            
+            />
+         <ImageButton
+            android:id="@+id/btnbuscar"
+            android:layout_width="@dimen/abc_action_bar_default_height_material"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:background="@null"
+            android:src="@drawable/ic_buscar"
+            />
+          <ImageButton
+            android:id="@+id/btnagregar"
+            android:layout_width="@dimen/abc_action_bar_default_height_material"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:background="@null"
+            android:src="@drawable/ic_agregar"
+            />
+          
+          
+          <TextView 
+            android:id="@+id/perfil"
+            android:textColor="@color/text_cafe_claro"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:gravity="right|center_vertical"
+            android:paddingRight="15dp"
+            android:text="USUARIO"
+            
+             />
+          
         
-        </android.support.v7.widget.Toolbar>
-
-    
+    </android.support.v7.widget.Toolbar>
 
     <GridView 
 	    android:id="@+id/gridview"
@@ -37,6 +68,10 @@
 	    android:horizontalSpacing="10dp"
 	    android:stretchMode="columnWidth"
 	    android:gravity="center"
+	    android:padding="10dp"
+	    android:overScrollMode="never"
+	    android:fadingEdge="none"
+	    
 	    android:listSelector="@android:color/transparent"
 	/>
 
