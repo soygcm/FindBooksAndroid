@@ -99,12 +99,6 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 
 	protected void showBook(int position) {
 
-//		Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
-////	    EditText editText = (EditText) findViewById(R.id.edit_message);
-////	    String message = editText.getText().toString();
-//	    intent.putExtra(SEARCH_FIND, (position == 0) );
-//	    intent.putExtra(SEARCH_ADD, (position == 1) );
-//	    startActivity(intent);
 	    
 	    ParseObject mBook = adapter.getItem(position-1);
 		

@@ -1,67 +1,164 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="me.mobileease.findbooks.AddOfferActivity"
-    android:background="@color/ui_fondo_claro" >
-    
-    <LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    
+<FrameLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/ui_fondo_claro"
+     >
+     
+    <FrameLayout
+            android:id="@+id/frameBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
      >
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <ImageView
+    android:id="@+id/imgBook"
+    android:scaleType="centerCrop"
+    android:layout_width="fill_parent"
+    android:layout_height="440dp"
+    android:src="@drawable/romeo_y_julieta" />
     
-    <android.support.v4.view.ViewPager
-    android:id="@+id/pager"
+    <LinearLayout 
+        android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+		android:background="#aa110800"
+        >
+        
+    </LinearLayout>
+    
+    </FrameLayout>
+    
+    
+<LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+    
+    <android.support.v7.widget.Toolbar
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+             >
+        
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:textColor="#fff"
+            android:paddingRight="10dp"
+            android:textStyle="bold"
+            android:text="GUARDAR" 
+            
+            />
+        
+        </android.support.v7.widget.Toolbar>
+	
+	<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="match_parent"
+    android:fadingEdge="none" 
+    android:fadingEdgeLength="0dp"
+    android:overScrollMode="never"
+     >
 
-    <android.support.v4.view.PagerTitleStrip
-        android:id="@+id/pager_title_strip"
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+		    
+		    
+		    <include layout="@layout/view_book"
+		        android:id="@+id/header"
+		        />
+
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:background="@color/ui_fondo_claro"
+		        android:padding="10dp"
+		        android:orientation="vertical" >
+
+		        <Spinner
+		            android:id="@+id/offerType"
+		            android:layout_width="match_parent"
+		            android:entries="@array/offer_array"
+		            android:layout_height="wrap_content" />
+
+<EditText
+        android:id="@+id/price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="#e3b565"
-        android:textColor="#fff"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp" />
-
-	</android.support.v4.view.ViewPager>
-
-    <Button
-        android:id="@+id/take_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tomale una foto a tu libro" 
-        android:layout_gravity="center_horizontal"
-        style="@style/Botonbasic"
-        />
-
-    <ImageView
-        android:id="@+id/photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"
-                android:layout_gravity="center_horizontal"
-        
+        android:ems="10"
+        android:visibility="gone"
+        android:hint="Precio"
+        android:inputType="numberDecimal"
          />
-    
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Guardar" 
-        android:layout_gravity="center_horizontal"
-        style="@style/Botonbasic"
-        />
+
+<Spinner
+    android:id="@+id/currency"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="3dp"
+    android:background="@color/ui_fondo_medio"
+    android:orientation="vertical" >
+</LinearLayout>
+
+<Spinner
+    android:id="@+id/bookbinding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     />
+
+<Spinner
+    android:id="@+id/condition"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+<EditText
+    android:id="@+id/comment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Comentario adicional"
+    android:ems="10" />
+
+
+
+		        <Button
+		            android:id="@+id/take_photo"
+		            style="@style/Botonbasic"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal"
+		            android:text="Tomale una foto a tu libro" />
+
+		        <ImageView
+		            android:id="@+id/photo"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal"
+		            android:src="@drawable/ic_launcher" />
+
+		        <Button
+		            android:id="@+id/btnSave"
+		            style="@style/Botonbasic"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal"
+		            android:text="Guardar" />
+		    </LinearLayout>
+		</LinearLayout>
+
+ </ScrollView>
 
 </LinearLayout>
- </ScrollView>
+</FrameLayout>

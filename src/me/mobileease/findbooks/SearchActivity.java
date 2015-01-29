@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import me.mobileease.findbooks.adapter.BookAdapter;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -76,8 +80,7 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 
 			@Override
 			public void onClick(View view) {
-											
-				
+
 				getBooks();
 				
 			}
@@ -168,29 +171,58 @@ public class SearchActivity extends ActionBarActivity implements OnItemClickList
 
 
 	private void showBook(int position) {
+		Intent intent = new Intent(SearchActivity.this, BookActivity.class);
 		
 		ParseObject book = adapter.getItem(position);
 		
-		Intent intent = new Intent(SearchActivity.this, BookActivity.class);
 	    String id = book.getObjectId();
+	    String title = book.getString("title");
+	    List<String> authorsList = book.getList("authors");
+	    String authors = TextUtils.join(", ", authorsList);
+	    JSONObject image = book.getJSONObject("imageLinks");
+	    String imageLink = null;
+	    
+	    if(image != null){
+	    try {
+	    		imageLink = image.getString("thumbnail");
+			imageLink = imageLink.replaceAll("zoom=[^&]+","zoom=" + 4);
+	    } catch (JSONException e) {
+			e.printStackTrace();
+		}}	    
+	    
 	    intent.putExtra(BookActivity.BOOK_ID, id);
+	    intent.putExtra(BookActivity.BOOK_TITLE, title);
+	    intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
+	    intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
+	    
 	    startActivity(intent);
 		
 	}
 
-
-
 	private void showAddOffer(int position) {
-
 		Intent intent = new Intent(SearchActivity.this, AddOfferActivity.class);
-//	    EditText editText = (EditText) findViewById(R.id.edit_message);
-//	    String message = editText.getText().toString();
-//	    intent.putExtra(SEARCH_FIND, (position == 0) );
-//	    intent.putExtra(SEARCH_ADD, (position == 1) );
-		
+
 		ParseObject book = adapter.getItem(position);
-	    String id = book.getObjectId();
+	    
+		String id = book.getObjectId();
+	    String title = book.getString("title");
+	    List<String> authorsList = book.getList("authors");
+	    String authors = TextUtils.join(", ", authorsList);
+	    JSONObject image = book.getJSONObject("imageLinks");
+	    String imageLink = null;
+	    
+	    if(image != null){
+	    try {
+	    		imageLink = image.getString("thumbnail");
+			imageLink = imageLink.replaceAll("zoom=[^&]+","zoom=" + 4);
+	    } catch (JSONException e) {
+			e.printStackTrace();
+		}}	    
+	    
 	    intent.putExtra(BookActivity.BOOK_ID, id);
+	    intent.putExtra(BookActivity.BOOK_TITLE, title);
+	    intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
+	    intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
 		
 	    startActivity(intent);
 		

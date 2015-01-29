@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
@@ -102,6 +103,9 @@ public class BookActivity extends ActionBarActivity {
 		adapterTransactions = new TransactionAdapter(BookActivity.this, new ArrayList<ParseObject>());
 		list.setAdapter(adapterTransactions);
 		
+		setTitle("");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 	    updateBackgroundSize();
 		
 		if(!bookId.isEmpty() && !fromHome){
@@ -115,6 +119,15 @@ public class BookActivity extends ActionBarActivity {
 		}
 	
 		
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+		    onBackPressed();
+		    return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	/**

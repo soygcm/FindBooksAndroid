@@ -1,5 +1,6 @@
 package me.mobileease.findbooks.adapter;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import me.mobileease.findbooks.R;
@@ -12,6 +13,8 @@ import com.koushikdutta.ion.Ion;
 import com.parse.ParseObject;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 	static class ViewHolder {
         public TextView number;
         public TextView title;
+        public TextView authors;
         public ImageView image;
         public ImageView imgArrow;
     }
@@ -46,13 +50,15 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 		
 		// reusar view
 	    if (convertView == null ) {
-			  view = inflater.inflate(R.layout.adapter_book, null);
+			  view = inflater.inflate(R.layout.adapter_book, parent, false);
 			  
 			  // configurar el view holder
 			  ViewHolder viewHolder = new ViewHolder();
 			  viewHolder.title = (TextView) view.findViewById(R.id.txtTitle);
 			  viewHolder.image = (ImageView) view.findViewById(R.id.imgBook);
 			  viewHolder.imgArrow = (ImageView) view.findViewById(R.id.imgArrow);
+			  viewHolder.authors = (TextView) view.findViewById(R.id.txtAuthors);
+			  
 			  view.setTag(viewHolder);
 	    }
 
@@ -61,9 +67,26 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 	    ViewHolder holder = (ViewHolder) view.getTag();
 	
 	    String title = book.getString("title");
+	    String subtitle = book.getString("subtitle");
+	    
+		
         JSONObject imageLinks = book.getJSONObject("imageLinks");
+        List<String> authorsList = book.getList("authors");
+        
+        
 
-	    holder.title.setText( title );
+        if (subtitle == null) {
+        		holder.title.setText( title );
+		}else{			
+			holder.title.setText( Html.fromHtml(title+": <small>"+subtitle+"</small>") );
+		}
+
+        if(authorsList != null){
+        		String authors = TextUtils.join(", ", authorsList);        		
+        		holder.authors.setText(authors);	    
+        }else{
+        		holder.authors.setVisibility(View.GONE);
+        }
 	    
 	    if(searchFind){
 	    		holder.imgArrow.setImageResource(R.drawable.ic_detalles_buscar);
