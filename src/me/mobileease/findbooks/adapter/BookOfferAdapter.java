@@ -2,11 +2,13 @@ package me.mobileease.findbooks.adapter;
 
 import java.util.List;
 
+import me.mobileease.findbooks.FindBooks;
 import me.mobileease.findbooks.R;
 import me.mobileease.findbooks.model.MyBook;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +35,8 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		offers = objects;
 		this.bookWant = bookWant;
 	}
+	
+	
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -129,6 +133,8 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 				public void done(ParseException e) {
 					if(e==null){
 						btnWant.setBackgroundColor(Color.GREEN);									
+					}else{
+						e.printStackTrace();
 					}
 				}
 			});

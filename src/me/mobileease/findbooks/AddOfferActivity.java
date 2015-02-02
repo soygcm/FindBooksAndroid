@@ -254,15 +254,23 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 	
 	private void saveOffer() {
 		
-		BigDecimal priceDecimal = new BigDecimal(price.getText().toString());
 
 		ParseObject book = ParseObject.createWithoutData("Book", bookId);
 
 		offer.put("book", book );
 		offer.put("type", "OFFER");
 		offer.put("user", ParseUser.getCurrentUser());
-		if(priceDecimal != null){			
-			offer.put("price", priceDecimal);
+		if(price.getText() != null){
+			
+			try{
+				BigDecimal priceDecimal = new BigDecimal(price.getText().toString());
+				if(priceDecimal != null){			
+					offer.put("price", priceDecimal);
+				}
+			}catch(NumberFormatException ex){ // handle your exception
+				 ex.printStackTrace();
+			}
+			
 		}
 		offer.put("comment", comment.getText().toString() );
 		offer.saveInBackground(new SaveCallback() {

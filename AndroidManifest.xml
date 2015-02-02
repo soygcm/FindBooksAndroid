@@ -63,6 +63,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.mobileease.findbooks.SearchActivity" />
         </activity>
+        <activity
+            android:name=".PerfilActivity"
+            android:label="Perfil"
+            android:parentActivityName=".HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.mobileease.findbooks.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

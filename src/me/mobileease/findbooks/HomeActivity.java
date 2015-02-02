@@ -2,15 +2,16 @@ package me.mobileease.findbooks;
 
 import java.util.List;
 
+import me.mobileease.findbooks.adapter.OfferAdapter;
+import me.mobileease.findbooks.model.MyBook;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import me.mobileease.findbooks.adapter.OfferAdapter;
-import me.mobileease.findbooks.model.MyBook;
-import android.R.string;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -18,25 +19,24 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.codec.binary.StringUtils;
+
 
 public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	public static final String SEARCH_ADD = "search_add";
@@ -235,6 +235,68 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		Intent intent = new Intent(HomeActivity.this, TransactionsActivity.class);
 	    startActivity(intent);
 	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.home_actions, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		
+		if(id == R.id.edit_profile){
+			editProfile();
+		}else if(id == R.id.logout){
+			logout();
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void logout() {
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		        switch (which){
+		        case DialogInterface.BUTTON_POSITIVE:
+		        	
+//		        	    Log the user out
+//					ParseFacebookUtils.getSession().closeAndClearTokenInformation();
+					ParseUser.logOut();
+					
+//					((RespiremosSalud) getApplication()).clearApplicationData();
+					// Go to the login view
+					finish();
+//					startLoginActivity();
+			    		
+		        			        	
+		            break;
+		        case DialogInterface.BUTTON_NEGATIVE:
+		        		
+		        		break;
+		        	}
+		    }
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Deseas cerrar sesión").setPositiveButton("Si", dialogClickListener)
+		    .setNegativeButton("No", dialogClickListener).show();
+		
+	}
+
+	private void editProfile() {
+		
+		Intent intent = new Intent(HomeActivity.this, PerfilActivity.class);
+	    startActivity(intent);
+		
+	}
+	
+	
 	
 //	@Override
 //    protected void onPostCreate(Bundle savedInstanceState) {

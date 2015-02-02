@@ -8,7 +8,7 @@ import com.parse.ParseUser;
 
 public class FindBooks extends Application {
 
-  protected static final String TAG = "FB";
+  public static final String TAG = "FB";
 
 @Override
   public void onCreate() {

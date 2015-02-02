@@ -74,5 +74,10 @@
         <item>Vender</item>
     </string-array>
     
+    <string-array name="my_book_array">
+        <item>Transacciones</item>
+        <item>Ofertas</item>
+    </string-array>
+    
 
 </resources>
