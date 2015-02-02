@@ -26,6 +26,9 @@
 	    android:focusable="false"
 	   	android:focusableInTouchMode="false"
 		android:dividerHeight="0dp"
+		android:overScrollMode="never"
+		android:fadingEdge="none"
+		
     >
 </ListView>
 

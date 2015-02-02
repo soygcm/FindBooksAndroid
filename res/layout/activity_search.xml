@@ -51,7 +51,9 @@
         android:dividerHeight="0dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:listSelector="@android:color/transparent" >
+        android:listSelector="@android:color/transparent" 
+        android:overScrollMode="never"
+        android:fadingEdge="none">
     </ListView>
 
 </LinearLayout>
