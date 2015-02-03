@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -35,7 +37,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-public class BookActivity extends ActionBarActivity {
+public class BookActivity extends ActionBarActivity implements OnItemClickListener {
 
 	public static final String BOOK_ID = "book_id";
 	public static final String FROM_HOME = "fromHome";
@@ -43,6 +45,7 @@ public class BookActivity extends ActionBarActivity {
 	public static final String BOOK_TITLE = "title";
 	public static final String BOOK_AUTHORS = "authors";
 	public static final String BOOK_IMAGE = "image";
+	public static final String BOOK_SUBTITLE = "subtitle";
 
 	private ListView list;
 	private String bookId;
@@ -102,20 +105,17 @@ public class BookActivity extends ActionBarActivity {
 		
 		adapterTransactions = new TransactionAdapter(BookActivity.this, new ArrayList<ParseObject>());
 		list.setAdapter(adapterTransactions);
+		list.setOnItemClickListener(this);
 		
 		setTitle("");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 	    updateBackgroundSize();
 		
-		if(!bookId.isEmpty() && !fromHome){
-			
-			wantThisBook();
-			
-		}else if(fromHome){
-			
+		if(fromHome){
 			getTransactions();
-			
+		}else{
+			wantThisBookAndGetOffers();
 		}
 	
 		
@@ -158,7 +158,7 @@ public class BookActivity extends ActionBarActivity {
 			public void done(List<ParseObject> trans, ParseException e) {
 				if(e == null){
 					Log.d(FindBooks.TAG, "total: "+trans.size());
-					TransactionAdapter adapterTransactions = new TransactionAdapter(BookActivity.this, trans);
+					adapterTransactions = new TransactionAdapter(BookActivity.this, trans);
 					list.setAdapter(adapterTransactions);
 					updateBackgroundSize();
 				}else{
@@ -177,7 +177,7 @@ public class BookActivity extends ActionBarActivity {
 	 * para evitar crear otro Want
 	 * 
 	 */
-	private void wantThisBook() {
+	private void wantThisBookAndGetOffers() {
 		
 		progress = new ProgressDialog(this);
 		progress.setTitle("Obteniendo ofertas");
@@ -283,6 +283,31 @@ public class BookActivity extends ActionBarActivity {
 		LayoutParams newParams = new FrameLayout.LayoutParams(params.width, viewHeight+toolbar);
 		
 		frameBackground.setLayoutParams(newParams);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+		//if showing offer or transaction
+		
+		if(fromHome){
+			showTransaction(position);
+		}else{
+			//showOffer
+		}
+	}
+
+	private void showTransaction(int position) {
+
+		Intent intent = new Intent(BookActivity.this, TransactionActivity.class);
+
+		ParseObject transaction = adapterTransactions.getItem(position-1);
+	    
+		String id = transaction.getObjectId();
+	    	    
+	    intent.putExtra(BookActivity.BOOK_ID, id);
+
+	    startActivity(intent);
 	}
 
 	

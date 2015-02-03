@@ -71,6 +71,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.mobileease.findbooks.HomeActivity" />
         </activity>
+        <activity
+            android:name=".TransactionActivity"
+            android:label="Transaccion"
+            android:parentActivityName=".HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.mobileease.findbooks.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package me.mobileease.findbooks.adapter;
 
 import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
 
 import org.json.JSONException;
@@ -117,8 +118,14 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> {
 
 	private String precio(ParseObject bookOffer) {
 		Double price = bookOffer.getDouble("price");
-		if( price != null){
+	    String offerCurrency = bookOffer.getString("currency");
+
+		if( price != 0){
 			NumberFormat format = NumberFormat.getCurrencyInstance();
+			if(offerCurrency != null){				
+				Currency currency = Currency.getInstance(offerCurrency);
+				format.setCurrency(currency);
+			}
 			return format.format(price); 
 		}else{
 			return "gratis"; 

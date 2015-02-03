@@ -130,11 +130,15 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 		
 		offerType.setOnItemSelectedListener(this);
 		
-		config = ParseConfig.getCurrentConfig();
+		getConfigAdapters();
 
+    }
+	
+	private void getConfigAdapters() {
+
+		config = ParseConfig.getCurrentConfig();
 		Log.d("TAG", "Getting the latest config...");
 		ParseConfig.getInBackground(new ConfigCallback() {
-
 		@Override
 		  public void done(ParseConfig config, ParseException e) {
 		    if (e == null) {
@@ -149,9 +153,8 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 		    
 		  }
 		});
+	}
 
-    }
-	
 	protected void setAdapters() {
 
 		JSONArray mBookBookbinding = config.getJSONArray("MyBookBookbinding");
@@ -191,9 +194,14 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 		bookbinding.setAdapter(adapterBookbinding);
 		currency.setAdapter(adapterCurrency);
 		
+		condition.setPrompt("En que condición está el libro");
+		bookbinding.setPrompt("Encuadernación");
+
 		condition.setOnItemSelectedListener(this);
 		bookbinding.setOnItemSelectedListener(this);
 		currency.setOnItemSelectedListener(this);
+		
+		currency.setSelection(0);
 
 	}
 

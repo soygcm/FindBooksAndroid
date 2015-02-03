@@ -38,6 +38,7 @@
                     android:orientation="vertical" >
 
                     <LinearLayout
+                        android:id="@+id/perfilView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal" >
@@ -67,7 +68,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_detalles_agregar"
+                    android:background="@drawable/ic_detalles"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="6dp"
                     />
@@ -87,7 +88,6 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="$50"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Button
