@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+    <style name="ThemeLight" parent="Theme.AppCompat.Light">
 
         <!--
             Theme customizations available in newer API levels can go in
@@ -13,18 +13,20 @@
         -->
         <item name="windowActionBar">false</item>
         <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
-        <item name="colorControlNormal">#c5c5c5</item>
-        <item name="colorControlActivated">@color/blanco_80</item>
-        <item name="colorControlHighlight">@color/blanco_80</item>
-        <item name="homeAsUpIndicator">@drawable/ic_atras</item>
+        <item name="colorControlNormal">@color/text_cafe_claro</item>
+        
+        <item name="colorPrimaryDark">@color/blanco_80</item>
+        <item name="colorPrimary">@color/text_cafe_claro</item>
+        <item name="colorAccent">@color/text_cafe_oscuro</item>
+        
+<!--         <item name="colorControlActivated">@color/blanco_80</item> -->
+         <!--<item name="colorControlHighlight">@color/blanco_80</item>-->
+        
     </style>
-    
-    
-
 
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="ThemeLight">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
 	    
     </style>
