@@ -37,7 +37,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-public class BookActivity extends ActionBarActivity implements OnItemClickListener {
+public class BookActivity extends ActionBarActivity implements
+		OnItemClickListener {
 
 	public static final String BOOK_ID = "book_id";
 	public static final String FROM_HOME = "fromHome";
@@ -66,88 +67,87 @@ public class BookActivity extends ActionBarActivity implements OnItemClickListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book);
-		
+
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {  		
-        		setSupportActionBar(toolbar);
-        }
-		
+		if (toolbar != null) {
+			setSupportActionBar(toolbar);
+		}
+
 		list = (ListView) findViewById(R.id.offerList);
 		imgBook = (ImageView) findViewById(R.id.imgBook);
 		frameBackground = (FrameLayout) findViewById(R.id.frameBackground);
-		
+
 		LayoutInflater inflater = getLayoutInflater();
 		header = inflater.inflate(R.layout.view_book, list, false);
 		list.addHeaderView(header, null, false);
-		
+
 		TextView title = (TextView) header.findViewById(R.id.txtTitle);
 		TextView authors = (TextView) header.findViewById(R.id.txtAuthors);
-		
-//		list.setOnItemClickListener(this);
-		
+
+		// list.setOnItemClickListener(this);
+
 		Intent intent = getIntent();
-		
+
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
 		fromHome = intent.getBooleanExtra(BookActivity.FROM_HOME, false);
 		bookType = intent.getStringExtra(BookActivity.BOOK_TYPE);
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
-		Log.d(FindBooks.TAG , "imageLink: "+ bookImage);
+		Log.d(FindBooks.TAG, "imageLink: " + bookImage);
 		if (bookImage != null) {
 			Ion.with(imgBook).load(bookImage);
-		}else{
+		} else {
 			imgBook.setImageResource(android.R.color.transparent);
 		}
-		
+
 		title.setText(bookTitle);
 		authors.setText(bookAuthors);
-		
-		adapterTransactions = new TransactionAdapter(BookActivity.this, new ArrayList<ParseObject>());
+
+		adapterTransactions = new TransactionAdapter(BookActivity.this,
+				new ArrayList<ParseObject>());
 		list.setAdapter(adapterTransactions);
 		list.setOnItemClickListener(this);
-		
+
 		setTitle("");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
-	    updateBackgroundSize();
-		
-		if(fromHome){
+
+		updateBackgroundSize();
+
+		if (fromHome) {
 			getTransactions();
-		}else{
+		} else {
 			wantThisBookAndGetOffers();
 		}
-	
-		
+
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-		    onBackPressed();
-		    return true;
+			onBackPressed();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/**
-	 * Falta el ACL, para los permisos y posiblemente
-	 * hacer query segun el usuario
+	 * Falta el ACL, para los permisos y posiblemente hacer query segun el
+	 * usuario
 	 */
 	private void getTransactions() {
 
-		
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Transaction");
 		ParseObject book = ParseObject.createWithoutData("MyBook", bookId);
 
-		if(bookType.equals("OFFER") ){			
+		if (bookType.equals("OFFER")) {
 			query.whereEqualTo("bookOffer", book);
-			Log.d(FindBooks.TAG, "OFFER,  bookId:"+ bookId);
-		}else if(bookType.equals("WANT") ){
+			Log.d(FindBooks.TAG, "OFFER,  bookId:" + bookId);
+		} else if (bookType.equals("WANT")) {
 			query.whereEqualTo("bookWant", book);
-			Log.d(FindBooks.TAG, "WANT,  bookId:"+ bookId);
+			Log.d(FindBooks.TAG, "WANT,  bookId:" + bookId);
 		}
-		
+
 		query.include("bookOffer");
 		query.include("bookWant");
 		query.include("bookOffer.user");
@@ -156,29 +156,27 @@ public class BookActivity extends ActionBarActivity implements OnItemClickListen
 
 			@Override
 			public void done(List<ParseObject> trans, ParseException e) {
-				if(e == null){
-					Log.d(FindBooks.TAG, "total: "+trans.size());
-					adapterTransactions = new TransactionAdapter(BookActivity.this, trans);
+				if (e == null) {
+					Log.d(FindBooks.TAG, "total: " + trans.size());
+					adapterTransactions = new TransactionAdapter(
+							BookActivity.this, trans);
 					list.setAdapter(adapterTransactions);
 					updateBackgroundSize();
-				}else{
-					Log.d(FindBooks.TAG, "error: "+ e.getMessage() );
+				} else {
+					Log.d(FindBooks.TAG, "error: " + e.getMessage());
 				}
 			}
-			
-			
-			
+
 		});
-		
+
 	}
 
 	/**
-	 * Descubrir si este libro ya lo quiero,
-	 * para evitar crear otro Want
+	 * Descubrir si este libro ya lo quiero, para evitar crear otro Want
 	 * 
 	 */
 	private void wantThisBookAndGetOffers() {
-		
+
 		progress = new ProgressDialog(this);
 		progress.setTitle("Obteniendo ofertas");
 		progress.setMessage("Estoy buscando si existe alguna oferta disponible para este libro...");
@@ -186,114 +184,113 @@ public class BookActivity extends ActionBarActivity implements OnItemClickListen
 
 		ParseObject book = ParseObject.createWithoutData("Book", bookId);
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
-		query.whereEqualTo("book",  book);
+		query.whereEqualTo("book", book);
 		query.whereEqualTo("type", "WANT");
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
 			public void done(List<ParseObject> list, ParseException e) {
-				if(e==null){
-					if(list.size() > 0){						
+				if (e == null) {
+					if (list.size() > 0) {
 						bookWant = list.get(0);
 					}
 				}
-				
+
 				getOffers();
-				
+
 			}
-			
-			
+
 		});
-		
 
 	}
 
-
 	private void getOffers() {
-		
-		
-		
+
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
-		
-		Log.d("FB", "Libro: "+ bookId);
+
+		Log.d("FB", "Libro: " + bookId);
 		ParseObject book = ParseObject.createWithoutData("Book", bookId);
-		query.whereEqualTo("book",  book);
+		query.whereEqualTo("book", book);
 		query.whereEqualTo("type", "OFFER");
 		query.include("book");
 		query.include("user");
 		query.findInBackground(new FindCallback<ParseObject>() {
-		    public void done(final List<ParseObject> offers, ParseException e) {
-		    		progress.dismiss();
-		    		
-		    		
-		    		if (e == null) {
-		        			        		
-		    			Log.d("FB", "Ofertas: "+ offers.size());
-		        		adapter = new BookOfferAdapter(BookActivity.this, offers, bookWant);
-		        	    list.setAdapter(adapter);
-		    			
-//		    			adapter.addAll(offers);
-		    			
-		        } else {
-		            Log.d("FB", "Error: " + e.getMessage());
-		        }
-		        
-		    }
+			public void done(final List<ParseObject> offers, ParseException e) {
+				progress.dismiss();
+
+				if (e == null) {
+
+					Log.d("FB", "Ofertas: " + offers.size());
+					adapter = new BookOfferAdapter(BookActivity.this, offers,
+							bookWant);
+					list.setAdapter(adapter);
+
+					// adapter.addAll(offers);
+
+				} else {
+					Log.d("FB", "Error: " + e.getMessage());
+				}
+
+			}
 		});
-		
+
 	}
 
 	protected void updateBackgroundSize() {
-		
-//		Log.d(FindBooks.TAG, "height: "+ header.getHeight());
+
+		// Log.d(FindBooks.TAG, "height: "+ header.getHeight());
 
 		ViewTreeObserver viewTreeObserver = header.getViewTreeObserver();
-		
+
 		if (viewTreeObserver.isAlive()) {
-		  viewTreeObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-		    @Override
-		    public void onGlobalLayout() {
-		    	
-		    	if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-		    		header.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-		    	} else {
-		    		header.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-		    	}
-		    	
-		    	int viewWidth = header.getWidth();
-	    		int viewHeight = header.getHeight();
-	    		
-		    	setBackgroundSize(viewHeight);
-    
-//		    		header.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-		    		
-		    		Log.d(FindBooks.TAG, "height: "+ viewHeight);
-		    		
-		    }
-		  });
+			viewTreeObserver
+					.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+						@Override
+						public void onGlobalLayout() {
+
+							if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+								header.getViewTreeObserver()
+										.removeGlobalOnLayoutListener(this);
+							} else {
+								header.getViewTreeObserver()
+										.removeOnGlobalLayoutListener(this);
+							}
+
+							int viewWidth = header.getWidth();
+							int viewHeight = header.getHeight();
+
+							setBackgroundSize(viewHeight);
+
+							// header.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+							Log.d(FindBooks.TAG, "height: " + viewHeight);
+
+						}
+					});
 		}
-		
-		
+
 	}
 
 	protected void setBackgroundSize(int viewHeight) {
-		LayoutParams params = frameBackground.getLayoutParams();	
-		int toolbar =(int) getResources().getDimension(R.dimen.abc_action_bar_default_height_material);
-		LayoutParams newParams = new FrameLayout.LayoutParams(params.width, viewHeight+toolbar);
-		
+		LayoutParams params = frameBackground.getLayoutParams();
+		int toolbar = (int) getResources().getDimension(
+				R.dimen.abc_action_bar_default_height_material);
+		LayoutParams newParams = new FrameLayout.LayoutParams(params.width,
+				viewHeight + toolbar);
+
 		frameBackground.setLayoutParams(newParams);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
-		//if showing offer or transaction
-		
-		if(fromHome){
+		// if showing offer or transaction
+
+		if (fromHome) {
 			showTransaction(position);
-		}else{
-			//showOffer
+		} else {
+			// showOffer
 		}
 	}
 
@@ -301,14 +298,13 @@ public class BookActivity extends ActionBarActivity implements OnItemClickListen
 
 		Intent intent = new Intent(BookActivity.this, TransactionActivity.class);
 
-		ParseObject transaction = adapterTransactions.getItem(position-1);
-	    
-		String id = transaction.getObjectId();
-	    	    
-	    intent.putExtra(BookActivity.BOOK_ID, id);
+		ParseObject transaction = adapterTransactions.getItem(position - 1);
 
-	    startActivity(intent);
+		String id = transaction.getObjectId();
+
+		intent.putExtra(BookActivity.BOOK_ID, id);
+
+		startActivity(intent);
 	}
 
-	
 }

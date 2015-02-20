@@ -50,7 +50,8 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-public class AddOfferActivity extends ActionBarActivity implements OnClickListener, OnItemSelectedListener{
+public class AddOfferActivity extends ActionBarActivity implements
+		OnClickListener, OnItemSelectedListener {
 
 	private ImageView mImageView;
 	private Button takePhotoBtn;
@@ -78,9 +79,9 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_offer);
-		
-		offer = new ParseObject(MyBook.CLASS);
 
+		offer = new ParseObject(MyBook.CLASS);
+		
 		header = findViewById(R.id.header);
 		mImageView = (ImageView) findViewById(R.id.photo);
 		takePhotoBtn = (Button) findViewById(R.id.take_photo);
@@ -102,281 +103,282 @@ public class AddOfferActivity extends ActionBarActivity implements OnClickListen
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
-		
-		Log.d(FindBooks.TAG , "imageLink: "+ bookImage);
+
+		Log.d(FindBooks.TAG, "imageLink: " + bookImage);
 		if (bookImage != null) {
 			Ion.with(imgBook).load(bookImage);
-		}else{
+		} else {
 			imgBook.setImageResource(android.R.color.transparent);
 		}
 		title.setText(bookTitle);
 		authors.setText(bookAuthors);
-		
+
 		takePhotoBtn.setOnClickListener(this);
 		btnSave.setOnClickListener(this);
 		save.setOnClickListener(this);
-		
+
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
-		
+
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {  		
-        		setSupportActionBar(toolbar);
-        }
-		
-        setTitle(null);
+		if (toolbar != null) {
+			setSupportActionBar(toolbar);
+		}
+
+		setTitle(null);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		updateBackgroundSize();
-		
+
 		offerType.setOnItemSelectedListener(this);
-		
+
 		getConfigAdapters();
 
-    }
-	
+	}
+
 	private void getConfigAdapters() {
 
 		config = ParseConfig.getCurrentConfig();
-		Log.d("TAG", "Getting the latest config...");
-		ParseConfig.getInBackground(new ConfigCallback() {
-		@Override
-		  public void done(ParseConfig config, ParseException e) {
-		    if (e == null) {
-		      Log.d("TAG", "Yay! Config was fetched from the server.");
-		    } else {
-		      Log.e("TAG", "Failed to fetch. Using Cached Config.");
-		    }
-		    
-			config = ParseConfig.getCurrentConfig();
-		    
-		    setAdapters();
-		    
-		  }
-		});
+		setAdapters();
+		
 	}
 
 	protected void setAdapters() {
 
 		JSONArray mBookBookbinding = config.getJSONArray("MyBookBookbinding");
 		JSONArray mBookCondition = config.getJSONArray("MyBookCondition");
-		
+
 		List<String> conditions = new ArrayList<String>();
-		for (int i=0;i<mBookCondition.length();i++){ 
+		for (int i = 0; i < mBookCondition.length(); i++) {
 			try {
-				conditions.add(mBookCondition.getJSONObject(i).getString("name"));
+				conditions.add(mBookCondition.getJSONObject(i)
+						.getString("name"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		List<String> bookbindings = new ArrayList<String>();
-		for (int i=0;i<mBookBookbinding.length();i++){ 
+		for (int i = 0; i < mBookBookbinding.length(); i++) {
 			try {
-				bookbindings.add(mBookBookbinding.getJSONObject(i).getString("name"));
+				bookbindings.add(mBookBookbinding.getJSONObject(i).getString(
+						"name"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		List<String> currencies = new ArrayList<String>();
 		currencies.add("₡");
 		currencies.add("$");
-		
-		ArrayAdapter<String> adapterCondition = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, conditions);
-		ArrayAdapter<String> adapterBookbinding = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, bookbindings);
-		ArrayAdapter<String> adapterCurrency = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currencies);
 
-		adapterCondition.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		adapterBookbinding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		adapterCurrency.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<String> adapterCondition = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, conditions);
+		ArrayAdapter<String> adapterBookbinding = new ArrayAdapter<String>(
+				this, android.R.layout.simple_spinner_item, bookbindings);
+		ArrayAdapter<String> adapterCurrency = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, currencies);
+
+		adapterCondition
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		adapterBookbinding
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		adapterCurrency
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		condition.setAdapter(adapterCondition);
 		bookbinding.setAdapter(adapterBookbinding);
 		currency.setAdapter(adapterCurrency);
-		
+
 		condition.setPrompt("En que condición está el libro");
 		bookbinding.setPrompt("Encuadernación");
 
 		condition.setOnItemSelectedListener(this);
 		bookbinding.setOnItemSelectedListener(this);
 		currency.setOnItemSelectedListener(this);
-		
+
 		currency.setSelection(0);
 
 	}
 
 	protected void updateBackgroundSize() {
-		
+
 		ViewTreeObserver viewTreeObserver = header.getViewTreeObserver();
-		
+
 		if (viewTreeObserver.isAlive()) {
-		  viewTreeObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-		    @Override
-		    public void onGlobalLayout() {
-		    	
-		    	if(Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-		    		header.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-		    	} else {
-		    		header.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-		    	}
-		    	
-	    		int viewHeight = header.getHeight();
-	    		
-		    	setBackgroundSize(viewHeight);
-    		    				    		
-		    }
-		  });
+			viewTreeObserver
+					.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+						@Override
+						public void onGlobalLayout() {
+
+							if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+								header.getViewTreeObserver()
+										.removeGlobalOnLayoutListener(this);
+							} else {
+								header.getViewTreeObserver()
+										.removeOnGlobalLayoutListener(this);
+							}
+
+							int viewHeight = header.getHeight();
+
+							setBackgroundSize(viewHeight);
+
+						}
+					});
 		}
-		
+
 	}
-	
+
 	protected void setBackgroundSize(int viewHeight) {
-		LayoutParams params = frameBackground.getLayoutParams();	
-		int toolbar =(int) getResources().getDimension(R.dimen.abc_action_bar_default_height_material);
-		LayoutParams newParams = new FrameLayout.LayoutParams(params.width, viewHeight+toolbar);
-		
+		LayoutParams params = frameBackground.getLayoutParams();
+		int toolbar = (int) getResources().getDimension(
+				R.dimen.abc_action_bar_default_height_material);
+		LayoutParams newParams = new FrameLayout.LayoutParams(params.width,
+				viewHeight + toolbar);
+
 		frameBackground.setLayoutParams(newParams);
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 
 		case android.R.id.home:
-		    onBackPressed();
-		    return true;
+			onBackPressed();
+			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		int id = v.getId();
-		if(id == R.id.take_photo){
+		if (id == R.id.take_photo) {
 			dispatchTakePictureIntent();
 		}
-		if(id == R.id.save || id == R.id.btnSave){
+		if (id == R.id.save || id == R.id.btnSave) {
 			saveOffer();
 		}
 	}
-	
+
 	private void saveOffer() {
-		
 
 		ParseObject book = ParseObject.createWithoutData("Book", bookId);
 
-		offer.put("book", book );
+		offer.put("book", book);
 		offer.put("type", "OFFER");
 		offer.put("user", ParseUser.getCurrentUser());
-		if(price.getText() != null){
-			
-			try{
-				BigDecimal priceDecimal = new BigDecimal(price.getText().toString());
-				if(priceDecimal != null){			
+		if (price.getText() != null) {
+
+			try {
+				BigDecimal priceDecimal = new BigDecimal(price.getText()
+						.toString());
+				if (priceDecimal != null) {
 					offer.put("price", priceDecimal);
 				}
-			}catch(NumberFormatException ex){ // handle your exception
-				 ex.printStackTrace();
+			} catch (NumberFormatException ex) { // handle your exception
+				ex.printStackTrace();
 			}
-			
+
 		}
-		offer.put("comment", comment.getText().toString() );
+		offer.put("comment", comment.getText().toString());
 		offer.saveInBackground(new SaveCallback() {
-			
+
 			@Override
 			public void done(ParseException e) {
-				if(e == null){
-					
+				if (e == null) {
+
 					Log.d("FB", "Oferta Guardada");
-					
+
 					showHome();
-					
-				}else{
-					
+
+				} else {
+
 				}
 			}
 		});
-		
+
 	}
 
 	protected void showHome() {
 		Intent intent = new Intent(this, HomeActivity.class);
-	    startActivity(intent);
+		startActivity(intent);
 	}
 
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 
 	private void dispatchTakePictureIntent() {
-	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-	        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-	    }
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+			startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-	        Bundle extras = data.getExtras();
-	        Bitmap imageBitmap = (Bitmap) extras.get("data");
-	        mImageView.setImageBitmap(imageBitmap);
-	    }
+		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+			Bundle extras = data.getExtras();
+			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			mImageView.setImageBitmap(imageBitmap);
+		}
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View v, int position,
 			long id) {
-		
+
 		JSONArray mBookBookbinding = config.getJSONArray("MyBookBookbinding");
 		JSONArray mBookCondition = config.getJSONArray("MyBookCondition");
-		
+
 		List<String> conditionsCode = new ArrayList<String>();
-		for (int i=0;i<mBookCondition.length();i++){ 
+		for (int i = 0; i < mBookCondition.length(); i++) {
 			try {
-				conditionsCode.add(mBookCondition.getJSONObject(i).getString("code"));
+				conditionsCode.add(mBookCondition.getJSONObject(i).getString(
+						"code"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		List<String> bookbindingsCode = new ArrayList<String>();
-		for (int i=0;i<mBookBookbinding.length();i++){ 
+		for (int i = 0; i < mBookBookbinding.length(); i++) {
 			try {
-				bookbindingsCode.add(mBookBookbinding.getJSONObject(i).getString("code"));
+				bookbindingsCode.add(mBookBookbinding.getJSONObject(i)
+						.getString("code"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		id = parent.getId();
-		
-		if(id == R.id.offerType){
-			
-			if(position == 0){
+
+		if (id == R.id.offerType) {
+
+			if (position == 0) {
 				price.setVisibility(View.GONE);
 				currency.setVisibility(View.GONE);
-			}else if (position == 1){
+			} else if (position == 1) {
 				price.setVisibility(View.VISIBLE);
 				currency.setVisibility(View.VISIBLE);
 			}
-			
-		}else if(id == R.id.currency){
-			
-			if(position == 0){
+
+		} else if (id == R.id.currency) {
+
+			if (position == 0) {
 				offer.put("currency", "CRC");
-			}else if (position == 1){
+			} else if (position == 1) {
 				offer.put("currency", "USD");
 			}
-			
-		}else if(id == R.id.bookbinding){
-			offer.put("bookbinding", bookbindingsCode.get(position) );
-		}else if(id == R.id.condition){
-			offer.put("condition", conditionsCode.get(position) );
+
+		} else if (id == R.id.bookbinding) {
+			offer.put("bookbinding", bookbindingsCode.get(position));
+		} else if (id == R.id.condition) {
+			offer.put("condition", conditionsCode.get(position));
 		}
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		
+
 	}
 
 }

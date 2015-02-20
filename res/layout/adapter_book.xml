@@ -56,7 +56,7 @@
             android:visibility="gone"
             android:orientation="horizontal" >
          <TextView
-            android:id="@+id/txtPrice"
+            android:id="@+id/txtPriceOffers"
             android:layout_width="wrap_content"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:layout_height="wrap_content"

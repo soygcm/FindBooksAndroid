@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 import java.util.List;
 
 import me.mobileease.findbooks.R;
-import me.mobileease.findbooks.adapter.OfferAdapter.ViewHolder;
+import me.mobileease.findbooks.adapter.MyBookAdapter.ViewHolder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,18 +26,19 @@ import android.widget.TextView;
 public class BookAdapter extends ArrayAdapter<ParseObject> {
 
 	static class ViewHolder {
-        public TextView number;
-        public TextView title;
-        public TextView authors;
-        public ImageView image;
-        public ImageView imgArrow;
-    }
+		public TextView number;
+		public TextView title;
+		public TextView authors;
+		public ImageView image;
+		public ImageView imgArrow;
+	}
 
 	private LayoutInflater inflater;
 	private List<ParseObject> books;
 	private boolean searchFind;
-	
-	public BookAdapter(Context context, List<ParseObject> objects, boolean searchFind) {
+
+	public BookAdapter(Context context, List<ParseObject> objects,
+			boolean searchFind) {
 		super(context, -1, objects);
 		inflater = LayoutInflater.from(context);
 		books = objects;
@@ -47,64 +48,62 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
-		
+
 		// reusar view
-	    if (convertView == null ) {
-			  view = inflater.inflate(R.layout.adapter_book, parent, false);
-			  
-			  // configurar el view holder
-			  ViewHolder viewHolder = new ViewHolder();
-			  viewHolder.title = (TextView) view.findViewById(R.id.txtTitle);
-			  viewHolder.image = (ImageView) view.findViewById(R.id.imgBook);
-			  viewHolder.imgArrow = (ImageView) view.findViewById(R.id.imgArrow);
-			  viewHolder.authors = (TextView) view.findViewById(R.id.txtAuthors);
-			  
-			  view.setTag(viewHolder);
-	    }
+		if (convertView == null) {
+			view = inflater.inflate(R.layout.adapter_book, parent, false);
 
-	    // rellenar de datos
-	    ParseObject book = books.get(position);
-	    ViewHolder holder = (ViewHolder) view.getTag();
-	
-	    String title = book.getString("title");
-	    String subtitle = book.getString("subtitle");
-	    
-		
-        JSONObject imageLinks = book.getJSONObject("imageLinks");
-        List<String> authorsList = book.getList("authors");
-        
-        
+			// configurar el view holder
+			ViewHolder viewHolder = new ViewHolder();
+			viewHolder.title = (TextView) view.findViewById(R.id.txtTitle);
+			viewHolder.image = (ImageView) view.findViewById(R.id.imgBook);
+			viewHolder.imgArrow = (ImageView) view.findViewById(R.id.imgArrow);
+			viewHolder.authors = (TextView) view.findViewById(R.id.txtAuthors);
 
-        if (subtitle == null) {
-        		holder.title.setText( title );
-		}else{			
-			holder.title.setText( Html.fromHtml(title+": <small>"+subtitle+"</small>") );
+			view.setTag(viewHolder);
 		}
 
-        if(authorsList != null){
-        		String authors = TextUtils.join(", ", authorsList);        		
-        		holder.authors.setText(authors);	    
-        }else{
-        		holder.authors.setVisibility(View.GONE);
-        }
-	    
-	    if(searchFind){
-	    		holder.imgArrow.setImageResource(R.drawable.ic_detalles_buscar);
-	    }else{
-	    		holder.imgArrow.setImageResource(R.drawable.ic_detalles_agregar);
-	    }
-	    
-	    if (imageLinks != null) {
-	        	try {
-				Ion.with(holder.image).load( imageLinks.getString("thumbnail") );
+		// rellenar de datos
+		ParseObject book = books.get(position);
+		ViewHolder holder = (ViewHolder) view.getTag();
+
+		String title = book.getString("title");
+		String subtitle = book.getString("subtitle");
+
+		JSONObject imageLinks = book.getJSONObject("imageLinks");
+		List<String> authorsList = book.getList("authors");
+
+		if (subtitle == null) {
+			holder.title.setText(title);
+		} else {
+			holder.title.setText(Html.fromHtml(title + ": <small>" + subtitle
+					+ "</small>"));
+		}
+
+		if (authorsList != null) {
+			String authors = TextUtils.join(", ", authorsList);
+			holder.authors.setText(authors);
+		} else {
+			holder.authors.setVisibility(View.GONE);
+		}
+
+		if (searchFind) {
+			holder.imgArrow.setImageResource(R.drawable.ic_detalles_buscar);
+		} else {
+			holder.imgArrow.setImageResource(R.drawable.ic_detalles_agregar);
+		}
+
+		if (imageLinks != null) {
+			try {
+				Ion.with(holder.image).load(imageLinks.getString("thumbnail"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-		}else{
+		} else {
 			holder.image.setImageResource(android.R.color.transparent);
 		}
-	    
-	    return view;
+
+		return view;
 	}
-		
-}	
+
+}

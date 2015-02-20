@@ -8,21 +8,23 @@ import com.parse.ParseUser;
 
 public class FindBooks extends Application {
 
-  public static final String TAG = "FB";
+	public static final String TAG = "FB";
 
-@Override
-  public void onCreate() {
-    super.onCreate();
+	@Override
+	public void onCreate() {
+		super.onCreate();
 
-    // Add your initialization code here
-    Parse.enableLocalDatastore(this);
-    Parse.initialize(this, "C4zgFUST9RGWSJ5scVpyB5G4co2gcMUpNPg0QpaI", "ZLxGCOCWUpKAJP9mnX1Dl54UXKD7EvSqNDmP42Er");
+		// Add your initialization code here
+		Parse.enableLocalDatastore(this);
+		Parse.initialize(this, "C4zgFUST9RGWSJ5scVpyB5G4co2gcMUpNPg0QpaI",
+				"ZLxGCOCWUpKAJP9mnX1Dl54UXKD7EvSqNDmP42Er");
 
-    /// Que es todo esto??
-    ParseUser.enableAutomaticUser();
-    ParseACL defaultACL = new ParseACL();
-    		// If you would like all objects to be private by default, remove this line.
-    defaultACL.setPublicReadAccess(true);
-    ParseACL.setDefaultACL(defaultACL, true);
-  }
+		// / Que es todo esto??
+		ParseUser.enableAutomaticUser();
+		ParseACL defaultACL = new ParseACL();
+		// If you would like all objects to be private by default, remove this
+		// line.
+		defaultACL.setPublicReadAccess(true);
+		ParseACL.setDefaultACL(defaultACL, true);
+	}
 }
