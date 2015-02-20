@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Autores, separados por coma"
         android:textColor="#fff"
+        
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
         

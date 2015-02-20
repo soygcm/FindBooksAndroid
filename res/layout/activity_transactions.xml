@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="@color/ui_fondo_claro">
+    android:background="@color/ui_fondo_claro" 
+    xmlns:app="http://schemas.android.com/apk/res/me.mobileease.findbooks">
      
     
     <android.support.v7.widget.Toolbar
@@ -11,7 +12,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
              >
-             
+         
+        <TextView 
+            android:id="@+id/perfil"
+            android:textColor="@color/text_cafe_claro"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:gravity="left|center_vertical"
+            android:text="TRANSACCIONES"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"     
+             />  
         
              
  </android.support.v7.widget.Toolbar>

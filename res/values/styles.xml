@@ -15,9 +15,9 @@
         <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
         <item name="colorControlNormal">@color/text_cafe_claro</item>
         
-        <item name="colorPrimaryDark">@color/blanco_80</item>
+        <item name="colorPrimaryDark">@color/text_cafe_claro</item>
         <item name="colorPrimary">@color/text_cafe_claro</item>
-        <item name="colorAccent">@color/text_cafe_oscuro</item>
+        <item name="colorAccent">@color/text_cafe_claro</item>
         
 <!--         <item name="colorControlActivated">@color/blanco_80</item> -->
          <!--<item name="colorControlHighlight">@color/blanco_80</item>-->
