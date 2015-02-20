@@ -2,42 +2,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:background="@color/ui_fondo_claro">
+    android:background="@color/ui_fondo_claro"
+    >
      
     
     <android.support.v7.widget.Toolbar
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            
             android:layout_height="wrap_content"
             android:background="@color/ui_menta_busqueda"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            
              >
-    
+             
+<!--         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" -->
+<!--              -->
+   <LinearLayout 
+   	android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginRight="@dimen/abc_action_bar_default_height_material"
+       >
     <EditText
         android:id="@+id/searchQuery"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginRight="@dimen/abc_action_bar_default_height_material"
-        android:layout_gravity="center_horizontal"
+
+        
         android:textColor="@color/blanco"
+        android:background="@android:color/transparent"
         android:hint="Title/Author/ISBN"
         android:textColorHint="@color/blanco_80"
-        
         >
 		
         <requestFocus />
     </EditText>
+    
+    <LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="2dp"
+    android:background="@color/blanco_80" 
+        ></LinearLayout>
+    
+    </LinearLayout> 
 
+    
+    
         <ImageButton
             android:id="@+id/btnSearch"
             android:layout_width="@dimen/abc_action_bar_default_height_material"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:layout_gravity="right"
             android:background="@null"
-            
              />
         
     </android.support.v7.widget.Toolbar>

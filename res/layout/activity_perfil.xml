@@ -1,35 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+   android:orientation="vertical"
+    android:background="@color/ui_fondo_claro">
 
+    
+    
+    <android.support.v7.widget.Toolbar
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             >
+            <TextView 
+            android:id="@+id/perfil"
+            android:textColor="@color/text_cafe_claro"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:gravity="left|center_vertical"
+            android:text="PERFIL"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"     
+             />  
+        
+     </android.support.v7.widget.Toolbar>
+     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        >
+            
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Perfil" />
+			<TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Nombre de usuario"
+	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
+	            android:textColor="@color/text_gris" 
+	            android:layout_gravity="left|center_vertical"
+	            android:layout_marginBottom="3dp"
+	            android:layout_marginLeft="65dp"
+	           />
+	
+	            <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal"
+			        android:layout_gravity="right|center_vertical"
+			        android:layout_marginLeft="3dp"
+			        android:layout_marginBottom="10dp"
+			       >		        
+					<ImageView 
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="left|center_vertical"
+				    android:src="@drawable/ic_person_black"
+				    
+				    />
+		        
+		        <EditText
+		            android:id="@+id/perfilNombre"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="right|bottom"
+		            android:ems="12"
+		            android:textColor="@color/negro"
+		            android:layout_marginLeft="32dp"
+		            android:text="Nombre de usuario" >
+		            <requestFocus />    
+		        </EditText>
+		        
+		        
+		        
+			</LinearLayout>
+			
+		</LinearLayout>
+		
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10" >
+			<TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Correo"
+	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
+	            android:textColor="@color/text_gris" 
+	            android:layout_gravity="left|center_vertical"
+	            android:layout_marginBottom="3dp"
+	            android:layout_marginLeft="65dp"
+	           />
+	
+	            <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal"
+			        android:layout_gravity="right|center_vertical"
+			        android:layout_marginLeft="3dp"
+			        android:layout_marginBottom="10dp"
+			       >		        
+					<ImageView 
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="left|center_vertical"
+				    android:src="@drawable/ic_email_black_24dp"
+				    
+				    />
+		        
+		        <EditText
+		            android:id="@+id/perfilCorreo"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="right|bottom"
+		            android:ems="12"
+		            android:textColor="@color/negro"
+		            android:layout_marginLeft="32dp" 
+		            android:text="usuario@gmail.com">
+		            <requestFocus />    
+		        </EditText>
+		        
+		        
+		        
+			</LinearLayout>
+			
+		</LinearLayout>
+		
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
 
-            <requestFocus />
-        </EditText>
+			<TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Teléfono"
+	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
+	            android:textColor="@color/text_gris" 
+	            android:layout_gravity="left|center_vertical"
+	            android:layout_marginBottom="3dp"
+	            android:layout_marginLeft="65dp"
+	           />
+	
+	            <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal"
+			        android:layout_gravity="right|center_vertical"
+			        android:layout_marginLeft="3dp"
+			        android:layout_marginBottom="10dp"
+			       >		        
+					<ImageView 
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="left|center_vertical"
+				    android:src="@drawable/ic_call_black"
+				    
+				    />
+		        
+		        <EditText
+		            android:id="@+id/perfilTelefono"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="right|bottom"
+		            android:ems="12"
+		            android:textColor="@color/negro"
+		            android:layout_marginLeft="32dp"
+		            android:text="8888 - 8888" >
+		            <requestFocus />    
+		        </EditText>
+		        
+		        
+		        
+			</LinearLayout>
+			
+		</LinearLayout>
+		
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10" />
+			<TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Moneda"
+	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
+	            android:textColor="@color/text_gris" 
+	            android:layout_gravity="left|center_vertical"
+	            android:layout_marginBottom="3dp"
+	            android:layout_marginLeft="65dp"
+	           />
+	
+	            <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal"
+			        android:layout_gravity="right|center_vertical"
+			        android:layout_marginLeft="3dp"
+			        android:layout_marginBottom="10dp"
+			       >		        
+					<ImageView 
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="left|center_vertical"
+				    android:src="@drawable/ic_local_atm_black_24dp"
+				    
+				    />
+
+					<ExpandableListView
+					    android:id="@+id/perfilMonedaxs"
+					    android:layout_width="match_parent"
+					    android:layout_height="wrap_content"
+					    android:layout_weight="1" 
+					    android:layout_gravity="right|bottom"
+					    
+ >
+					</ExpandableListView>		        
+		   
+		        
+		        
+		        
+			</LinearLayout>
+			
+		</LinearLayout>
         
     </LinearLayout>
     
 
-</ScrollView>
+</LinearLayout>
