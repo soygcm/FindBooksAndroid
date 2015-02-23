@@ -3,10 +3,12 @@ package me.mobileease.findbooks;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import me.mobileease.findbooks.adapter.BookOfferAdapter;
 import me.mobileease.findbooks.adapter.TransactionAdapter;
+import me.mobileease.findbooks.helpers.FindBooksConfig;
 import me.mobileease.findbooks.model.MyBook;
 import me.mobileease.findbooks.views.BookView;
 import android.app.ProgressDialog;
@@ -15,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,6 +35,7 @@ import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
 import com.parse.FindCallback;
+import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -62,6 +66,17 @@ public class BookActivity extends ActionBarActivity implements
 	private String bookTitle;
 	private String bookAuthors;
 	private String bookImage;
+	private Button btnWant;
+	private TextView txtUsername;
+	private TextView txtCondition;
+	private View perfilView;
+	private TextView txtPrice;
+	private View offerView;
+	private FindBooksConfig config;
+	private String offerCondition;
+	private String offerBinding;
+	private String offerPrice;
+	private String offerComment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +87,7 @@ public class BookActivity extends ActionBarActivity implements
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 		}
-
+		
 		list = (ListView) findViewById(R.id.offerList);
 		imgBook = (ImageView) findViewById(R.id.imgBook);
 		frameBackground = (FrameLayout) findViewById(R.id.frameBackground);
@@ -83,23 +98,39 @@ public class BookActivity extends ActionBarActivity implements
 
 		TextView title = (TextView) header.findViewById(R.id.txtTitle);
 		TextView authors = (TextView) header.findViewById(R.id.txtAuthors);
+		
+		//offer views
+		btnWant = (Button) header.findViewById(R.id.btnWant);
+		btnWant.setVisibility(View.GONE);
+		perfilView = (View) header.findViewById(R.id.perfilView);
+		perfilView.setVisibility(View.GONE);
+		offerView = (View) header.findViewById(R.id.offerView);
+		
+		txtCondition = (TextView) header.findViewById(R.id.txtCondition);
+		txtPrice = (TextView) header.findViewById(R.id.txtPrice);
 
-		// list.setOnItemClickListener(this);
-
+		//list.setOnItemClickListener(this);
 		Intent intent = getIntent();
-
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
 		fromHome = intent.getBooleanExtra(BookActivity.FROM_HOME, false);
 		bookType = intent.getStringExtra(BookActivity.BOOK_TYPE);
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
+		
+		offerCondition = intent
+				.getStringExtra(TransactionActivity.OFFER_CONDITION);
+		offerBinding = intent.getStringExtra(TransactionActivity.OFFER_BINDING);
+		offerPrice = intent.getStringExtra(TransactionActivity.OFFER_PRICE);
+		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);
+		
 		Log.d(FindBooks.TAG, "imageLink: " + bookImage);
 		if (bookImage != null) {
 			Ion.with(imgBook).load(bookImage);
 		} else {
 			imgBook.setImageResource(android.R.color.transparent);
 		}
+		
 
 		title.setText(bookTitle);
 		authors.setText(bookAuthors);
@@ -111,6 +142,11 @@ public class BookActivity extends ActionBarActivity implements
 
 		setTitle("");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		
+		//Ofer info
+		offerInfo();
+		
 
 		updateBackgroundSize();
 
@@ -119,6 +155,26 @@ public class BookActivity extends ActionBarActivity implements
 		} else {
 			wantThisBookAndGetOffers();
 		}
+
+	}
+	
+	protected void offerInfo() {
+		
+		config = new FindBooksConfig();
+		
+		if (!bookType.equals("OFFER")) {
+			offerView.setVisibility(View.GONE);
+		}else{
+			
+			txtPrice.setText(offerPrice);
+			
+			offerBinding = config.getBindingLocalized(offerBinding);
+			offerCondition = config.getConditionLocalized(offerCondition);
+			txtCondition.setText(Html.fromHtml(offerBinding + ", " + offerCondition+ ", " + offerComment));
+			
+		}
+		
+
 
 	}
 

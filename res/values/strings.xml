@@ -79,5 +79,7 @@
         <item>Ofertas</item>
     </string-array>
     
+    <string name="facebook_app_id" >1539650989656242</string>
+    
 
 </resources>

@@ -16,14 +16,23 @@
             <TextView 
             android:id="@+id/perfil"
             android:textColor="@color/text_cafe_claro"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:gravity="left|center_vertical"
             android:text="PERFIL"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"     
              />  
+             
+            <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="GUARDAR" />
         
      </android.support.v7.widget.Toolbar>
+
+    
      
     <LinearLayout
         android:layout_width="match_parent"

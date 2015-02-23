@@ -4,6 +4,12 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
+        >
+        
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
         android:padding="10dp"
         >
         
@@ -24,8 +30,16 @@
         android:layout_height="wrap_content"
         android:text="Autores, separados por coma"
         android:textColor="#fff"
-        
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
+        
+        </LinearLayout>
+        
+        <include 
+            android:id="@+id/offerView"
+            layout="@layout/adapter_book_offer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
         
     </LinearLayout>

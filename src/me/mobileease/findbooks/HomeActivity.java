@@ -1,5 +1,7 @@
 package me.mobileease.findbooks;
 
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.List;
 
 import me.mobileease.findbooks.adapter.MyBookAdapter;
@@ -125,7 +127,6 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		String authors = TextUtils.join(", ", authorsList);
 		JSONObject image = book.getJSONObject("imageLinks");
 		String imageLink = null;
-
 		if (image != null) {
 			try {
 				imageLink = image.getString("thumbnail");
@@ -134,6 +135,23 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 				e.printStackTrace();
 			}
 		}
+		
+		String offerCondition = mBook.getString("condition");
+		String offerBinding = mBook.getString("bookBinding");
+		String offerComment = mBook.getString("comment");
+		String offerCurrency = mBook.getString("currency");
+		Double price = mBook.getDouble("price");
+		String offerPrice = "";
+		if (price != 0) {
+			NumberFormat format = NumberFormat.getCurrencyInstance();
+			if (offerCurrency != null) {
+				Currency currency = Currency.getInstance(offerCurrency);
+				format.setCurrency(currency);
+			}
+			offerPrice = format.format(price);
+		} else {
+			offerPrice = "gratis";
+		}
 
 		intent.putExtra(BookActivity.BOOK_ID, id);
 		intent.putExtra(BookActivity.FROM_HOME, true);
@@ -141,7 +159,12 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		intent.putExtra(BookActivity.BOOK_TITLE, title);
 		intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
 		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
-
+		
+		intent.putExtra(TransactionActivity.OFFER_CONDITION, offerCondition);
+		intent.putExtra(TransactionActivity.OFFER_PRICE, offerPrice);
+		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
+		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
+		
 		startActivity(intent);
 
 	}

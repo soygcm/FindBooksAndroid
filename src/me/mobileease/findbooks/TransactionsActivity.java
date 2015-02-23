@@ -132,6 +132,8 @@ public class TransactionsActivity extends ActionBarActivity implements
 		String transactionId = transaction.getObjectId();
 		String title = book.getString("title");
 		String subtitle = book.getString("subtitle");
+		
+		//offer
 		String offerCondition = bookOffer.getString("condition");
 		String offerBinding = bookOffer.getString("bookBinding");
 		String offerComment = bookOffer.getString("comment");
@@ -185,10 +187,12 @@ public class TransactionsActivity extends ActionBarActivity implements
 		intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
 		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
 		intent.putExtra(TransactionActivity.TRANSACTION_ID, transactionId);
+		
 		intent.putExtra(TransactionActivity.OFFER_CONDITION, offerCondition);
-		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
 		intent.putExtra(TransactionActivity.OFFER_PRICE, offerPrice);
 		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
+		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
+		
 		intent.putExtra(TransactionActivity.USER_NAME, userName);
 		intent.putExtra(TransactionActivity.USER_PHONE, userPhone);
 		intent.putExtra(TransactionActivity.USER_MAIL, userMail);

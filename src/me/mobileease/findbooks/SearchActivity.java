@@ -196,6 +196,7 @@ public class SearchActivity extends ActionBarActivity implements
 		intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
 		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
 
+
 		startActivity(intent);
 
 	}

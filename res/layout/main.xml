@@ -53,10 +53,9 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/parse_login_help"
-        style="@style/ParseLoginUI.HelpButton"
-        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
-        android:text="@string/com_parse_ui_forgot_password_button_label" />
+        android:id="@+id/facebook_login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Facebook" />
 	</LinearLayout>
 </LinearLayout>

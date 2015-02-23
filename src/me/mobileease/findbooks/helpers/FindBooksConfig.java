@@ -34,7 +34,7 @@ public class FindBooksConfig {
 
 
 	
-	static public String codeToName(JSONArray jsonList, String codeSearch) {
+	private String codeToName(JSONArray jsonList, String codeSearch) {
 
 		String codeReturn = "";
 
@@ -54,7 +54,7 @@ public class FindBooksConfig {
 		return codeReturn;
 	}
 
-	static public List<String> JSONArrayToList(JSONArray jsonArray, String key) {
+	private List<String> JSONArrayToList(JSONArray jsonArray, String key) {
 		List<String> returnList = new ArrayList<String>();
 		for (int i = 0; i < jsonArray.length(); i++) {
 			try {
@@ -186,6 +186,16 @@ public class FindBooksConfig {
 		}
 		
 		
+	}
+
+	public String getBindingLocalized(String offerBinding) {
+		JSONArray mBookBookbinding = config.getJSONArray("MyBookBookbinding");
+		return codeToName(mBookBookbinding, offerBinding);
+	}
+
+	public String getConditionLocalized(String offerCondition) {
+		JSONArray mBookCondition = config.getJSONArray("MyBookCondition");
+		return codeToName(mBookCondition, offerCondition);
 	}
 
 }
