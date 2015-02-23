@@ -32,6 +32,51 @@
         android:padding="16dp"
         >
             
+        
+ <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" 
+	            android:layout_marginBottom="15dp">
+
+	
+	            <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal"
+			        android:layout_gravity="right|center_vertical"
+			        android:layout_marginLeft="3dp"
+			        android:layout_marginBottom="10dp"
+			       >		        
+					<ImageView 
+				    android:id="@+id/PerfilImagen"
+				    
+				    android:layout_width="52dp"
+				    android:layout_height="52dp"
+				    android:layout_gravity="left|center_vertical"
+				    android:src="@drawable/ic_launcher"
+				    
+				    />
+		        
+		        <TextView
+		            android:id="@+id/perfilNombre"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="left|center_vertical"
+		            android:ems="12"
+		            android:textColor="@color/negro"
+		            android:layout_marginLeft="16dp"
+		            android:text="Nombre"
+	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"  
+		             >
+		            <requestFocus />    
+		        </TextView>
+		        
+		        
+		        
+			</LinearLayout>
+			
+		</LinearLayout>       
 	        <LinearLayout
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
@@ -65,10 +110,10 @@
 				    />
 		        
 		        <EditText
-		            android:id="@+id/perfilNombre"
+		            android:id="@+id/perfilUsuario"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
-		            android:layout_gravity="right|bottom"
+		            android:layout_gravity="left|bottom"
 		            android:ems="12"
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp"
@@ -118,7 +163,7 @@
 		            android:id="@+id/perfilCorreo"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
-		            android:layout_gravity="right|bottom"
+		            android:layout_gravity="left|bottom"
 		            android:ems="12"
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp" 
@@ -168,7 +213,7 @@
 		            android:id="@+id/perfilTelefono"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
-		            android:layout_gravity="right|bottom"
+		            android:layout_gravity="left|bottom"
 		            android:ems="12"
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp"
@@ -219,7 +264,7 @@
 					    android:layout_width="match_parent"
 					    android:layout_height="wrap_content"
 					    android:layout_weight="1" 
-					    android:layout_gravity="right|bottom"
+					    android:layout_gravity="left|bottom"
 					    
  >
 					</ExpandableListView>		        
