@@ -87,16 +87,16 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		txtTitle = (TextView) findViewById(R.id.txtTitle);
 		btnWant = (Button) findViewById(R.id.btnWant);
 		btnWant.setVisibility(View.GONE);
-		txtAuthors = (TextView) findViewById(R.id.txtAuthors);
 		txtUsername = (TextView) findViewById(R.id.txtUsername);
-		perfilView = (View) findViewById(R.id.perfilView);
 		txtCondition = (TextView) findViewById(R.id.txtCondition);
+		perfilView = (View) findViewById(R.id.perfilView);
 		txtPrice = (TextView) findViewById(R.id.txtPrice);
+		txtAuthors = (TextView) findViewById(R.id.txtAuthors);
+		profileView = (View) findViewById(R.id.profileView);
 		imgBook = (ImageView) findViewById(R.id.imgBook);
 		txtName = (TextView) findViewById(R.id.txtName);
 		txtPhone = (TextView) findViewById(R.id.txtPhone);
 		txtMail = (TextView) findViewById(R.id.txtMail);
-		profileView = (View) findViewById(R.id.profileView);
 		btnAccept = (Button) findViewById(R.id.btnAccept);
 		btnCancel = (Button) findViewById(R.id.btnCancel);
 		btnConclude = (Button) findViewById(R.id.btnConclude);
@@ -111,11 +111,13 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		bookSubtitle = intent.getStringExtra(BookActivity.BOOK_SUBTITLE);
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
+		
 		offerCondition = intent
 				.getStringExtra(TransactionActivity.OFFER_CONDITION);
 		offerBinding = intent.getStringExtra(TransactionActivity.OFFER_BINDING);
 		offerPrice = intent.getStringExtra(TransactionActivity.OFFER_PRICE);
 		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);
+		
 		userName = intent.getStringExtra(TransactionActivity.USER_NAME);
 		userPhone = intent.getStringExtra(TransactionActivity.USER_PHONE);
 		userMail = intent.getStringExtra(TransactionActivity.USER_MAIL);
@@ -243,22 +245,22 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	private void getConfigConditionBindingComment() {
 
 		config = ParseConfig.getCurrentConfig();
-		Log.d("TAG", "Getting the latest config...");
-		ParseConfig.getInBackground(new ConfigCallback() {
-			@Override
-			public void done(ParseConfig config, ParseException e) {
-				if (e == null) {
-					Log.d("TAG", "Yay! Config was fetched from the server.");
-				} else {
-					Log.e("TAG", "Failed to fetch. Using Cached Config.");
-				}
-
-				config = ParseConfig.getCurrentConfig();
+//		Log.d("TAG", "Getting the latest config...");
+//		ParseConfig.getInBackground(new ConfigCallback() {
+//			@Override
+//			public void done(ParseConfig config, ParseException e) {
+//				if (e == null) {
+//					Log.d("TAG", "Yay! Config was fetched from the server.");
+//				} else {
+//					Log.e("TAG", "Failed to fetch. Using Cached Config.");
+//				}
+//
+//				config = ParseConfig.getCurrentConfig();
 
 				conditionBinding();
 
-			}
-		});
+//			}
+//		});
 
 	}
 

@@ -113,8 +113,7 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> {
 
 		if (imageLinks != null) {
 			try {
-				Ion.with(holder.imgBook)
-						.load(imageLinks.getString("thumbnail"));
+				Ion.with(holder.imgBook).load(imageLinks.getString("thumbnail"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

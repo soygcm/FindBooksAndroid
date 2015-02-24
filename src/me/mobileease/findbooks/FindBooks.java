@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
 public class FindBooks extends Application {
@@ -18,6 +19,7 @@ public class FindBooks extends Application {
 		Parse.enableLocalDatastore(this);
 		Parse.initialize(this, "C4zgFUST9RGWSJ5scVpyB5G4co2gcMUpNPg0QpaI",
 				"ZLxGCOCWUpKAJP9mnX1Dl54UXKD7EvSqNDmP42Er");
+		ParseFacebookUtils.initialize(getResources().getString(R.string.facebook_app_id));
 
 		// / Que es todo esto??
 		ParseUser.enableAutomaticUser();
