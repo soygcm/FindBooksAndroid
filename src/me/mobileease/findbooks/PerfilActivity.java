@@ -84,7 +84,9 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 						
 						Log.d(FindBooks.TAG, "GraphUser");						
 						String email = (String) user.getProperty("email");
+						String name = (String) user.getName();
 						
+						txtUsername.setText(name);
 						txtMail.setText(email);
 						
 					}else{
