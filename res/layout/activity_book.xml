@@ -66,6 +66,7 @@
 	   	android:focusableInTouchMode="false"
 		android:dividerHeight="0dp"
 		
+		
 	    >
 
 </ListView>

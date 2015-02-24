@@ -24,7 +24,15 @@
              />  
         
      </android.support.v7.widget.Toolbar>
-     
+    
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadingEdge="none" 
+    android:fadingEdgeLength="0dp"
+    android:overScrollMode="never"
+     >
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -58,19 +66,20 @@
 				    
 				    />
 		        
-		        <TextView
+		        <EditText
 		            android:id="@+id/perfilNombre"
 		            android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="left|center_vertical"
-		            android:ems="12"
+		            
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="16dp"
-		            android:text="Nombre"
+		            android:text=""
+		            android:background="@android:color/transparent"
 	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"  
 		             >
-		            <requestFocus />    
-		        </TextView>
+		            
+		        </EditText>
 		        
 		        
 		        
@@ -117,8 +126,8 @@
 		            android:ems="12"
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp"
-		            android:text="Nombre de usuario" >
-		            <requestFocus />    
+		            android:text="" >
+		             
 		        </EditText>
 		        
 		        
@@ -167,8 +176,8 @@
 		            android:ems="12"
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp" 
-		            android:text="usuario@gmail.com">
-		            <requestFocus />    
+		            android:text="">
+		           
 		        </EditText>
 		        
 		        
@@ -217,8 +226,8 @@
 		            android:ems="12"
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp"
-		            android:text="8888 - 8888" >
-		            <requestFocus />    
+		            android:text="" >
+		             
 		        </EditText>
 		        
 		        
@@ -277,6 +286,6 @@
 		</LinearLayout>
         
     </LinearLayout>
-    
+    </ScrollView>
 
 </LinearLayout>

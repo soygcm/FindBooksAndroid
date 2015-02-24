@@ -4,7 +4,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        
         >
         
         <TextView
@@ -16,6 +18,7 @@
         android:textSize="30sp"
         android:fontFamily="sans-serif-thin"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="10dp"
         />
         
         <TextView
@@ -24,6 +27,7 @@
         android:layout_height="wrap_content"
         android:text="Autores, separados por coma"
         android:textColor="#fff"
+        android:layout_marginBottom="10dp"
         
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
