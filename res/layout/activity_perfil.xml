@@ -24,11 +24,15 @@
              />  
              
             <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="GUARDAR" />
+         android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@android:color/transparent"
+            android:textColor="@color/text_cafe_claro"
+            android:paddingRight="16dp"
+           
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="GUARDAR"  />
         
      </android.support.v7.widget.Toolbar>
 
@@ -62,18 +66,16 @@
 			        android:layout_height="wrap_content"
 			        android:orientation="horizontal"
 			        android:layout_gravity="right|center_vertical"
-			        android:layout_marginLeft="3dp"
+			        
 			        android:layout_marginBottom="10dp"
 			       >		        
-					<ImageView 
-				    android:id="@+id/PerfilImagen"
-				    
-				    android:layout_width="52dp"
-				    android:layout_height="52dp"
-				    android:layout_gravity="left|center_vertical"
-				    android:src="@drawable/ic_launcher"
-				    
-				    />
+
+					<ImageView
+					    android:id="@+id/PerfilImagen"
+					    android:layout_width="48dp"
+					    android:layout_height="48dp"
+					    android:layout_gravity="left|center_vertical"
+					    android:src="@drawable/ic_launcher" />
 		        
 		        <EditText
 		            android:id="@+id/perfilNombre"
@@ -136,7 +138,7 @@
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp"
 		            android:text="" >
-		             
+		            <requestFocus />
 		        </EditText>
 		        
 		        
