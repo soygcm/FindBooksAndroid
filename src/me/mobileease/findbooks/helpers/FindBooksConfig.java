@@ -1,5 +1,6 @@
 package me.mobileease.findbooks.helpers;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -34,36 +35,14 @@ public class FindBooksConfig {
 
 
 	
-	private String codeToName(JSONArray jsonList, String codeSearch) {
-
-		String codeReturn = "";
-
-		List<String> listName = JSONArrayToList(jsonList, "name");
-		List<String> listCode = JSONArrayToList(jsonList, "code");
-
-		for (String name : listName) {
-			for (String code : listCode) {
-
-				if (code.equals(codeSearch)) {
-					codeReturn = name;
-				}
-
+	private String codeToName(List<AddOfferOptions> list, String codeSearch) {
+		for (AddOfferOptions addOfferOption : list) {
+			if(addOfferOption.getCode().equals(codeSearch)){
+				return addOfferOption.getName();
 			}
 		}
 
-		return codeReturn;
-	}
-
-	private List<String> JSONArrayToList(JSONArray jsonArray, String key) {
-		List<String> returnList = new ArrayList<String>();
-		for (int i = 0; i < jsonArray.length(); i++) {
-			try {
-				returnList.add(jsonArray.getJSONObject(i).getString(key));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		return returnList;
+		return null;
 	}
 
 	/**
@@ -75,7 +54,6 @@ public class FindBooksConfig {
 	 */
 	public List<EndOption> getTransactionEndedOptionList(String endOption) {
 		
-		List<EndOption> list = new ArrayList<EndOption>();
 		JSONObject transactionEnded = config.getJSONObject("TransactionEnded");
 		JSONArray endOptionArray = null;
 		try {
@@ -84,34 +62,82 @@ public class FindBooksConfig {
 			e.printStackTrace();
 		}
 		
-		if(endOptionArray != null){
-			
-			//fill list
-			
-			for (int i = 0; i < endOptionArray.length(); i++) {
+		return converToList(EndOption.class, endOptionArray);
+		
+	}
+	
+	public List<AddOfferOptions> getMyBookConditionList() {
+		JSONArray mBookCondition = config.getJSONArray("MyBookCondition");
+		return converToList(AddOfferOptions.class, mBookCondition);
+	}
+	
+	public List<AddOfferOptions> getMyBookBinding() {
+		JSONArray mBookBookbinding = config.getJSONArray("MyBookBookbinding");
+		return converToList(AddOfferOptions.class, mBookBookbinding);
+	}
+	
+	
+	public String getBindingLocalized(String offerBindingCode) {
+		List<AddOfferOptions> list = getMyBookBinding();
+		return codeToName(list, offerBindingCode);
+	}
+
+	public String getConditionLocalized(String offerConditionCode) {
+		List<AddOfferOptions> list = getMyBookConditionList();
+		return codeToName(list, offerConditionCode);
+	}
+	
+
+	private <T> List<T> converToList(Class<T> type, JSONArray array) {
+		if(array != null){
+			List<T> list = new ArrayList<T>();
+			for (int i = 0; i < array.length(); i++) {
 				
-				EndOption option;
+				JSONObject object = null;
 				try {
-					option = new EndOption(endOptionArray.getJSONObject(i));
-					list.add(option);
+					object = array.getJSONObject(i);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 				
+				if(object != null){					
+					T option = null;
+					if(type == AddOfferOptions.class){
+						option = (T) new AddOfferOptions(object);
+					}
+					if(type == EndOption.class){
+						option = (T) new EndOption(object);
+					}
+
+					if(option != null){						
+						list.add(option);
+					}
+					
+				}
+//				try {
+//					T option = type.getConstructor(JSONObject.class).newInstance(array.getJSONObject(i));
+//					list.add(option);
+//				} catch (InstantiationException | IllegalAccessException
+//						| IllegalArgumentException | InvocationTargetException
+//						| NoSuchMethodException | JSONException e) {
+//	
+//					e.printStackTrace();
+//				} 
 			}
-			
+			return list;
+		}else{
+			return null;
 		}
-		
-		return list;
 	}
 	
+	
+
 	public class EndOption {
 		private String code = null;
 		private boolean success = false;
 		private JSONObject description;
 
 		public EndOption(JSONObject jsonObject) {
-			
 			try {
 				this.code = jsonObject.getString("code");
 			} catch (JSONException e) {
@@ -188,14 +214,59 @@ public class FindBooksConfig {
 		
 	}
 
-	public String getBindingLocalized(String offerBinding) {
-		JSONArray mBookBookbinding = config.getJSONArray("MyBookBookbinding");
-		return codeToName(mBookBookbinding, offerBinding);
+	
+	public class AddOfferOptions {
+		private String name;
+		private String description;
+		private String code;
+
+		public AddOfferOptions(JSONObject jsonObject) {
+			try {
+				
+				name = jsonObject.getString(
+						"name");
+				code = jsonObject.getString(
+						"code");
+				description = jsonObject.getString(
+						"description");
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		@Override
+		public String toString() {
+			return getName();
+		}
+		
+		
 	}
 
-	public String getConditionLocalized(String offerCondition) {
-		JSONArray mBookCondition = config.getJSONArray("MyBookCondition");
-		return codeToName(mBookCondition, offerCondition);
+
+	public static List<String> toStringList(List<AddOfferOptions> list) {
+		List<String> strings = new ArrayList<String>();
+		for (Object object : list) {
+		    strings.add(object != null ? object.toString() : null);
+		}
+		return strings;
 	}
+
+
+	
+	
 
 }

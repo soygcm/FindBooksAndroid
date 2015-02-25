@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import me.mobileease.findbooks.adapter.TransactionAdapter;
 import me.mobileease.findbooks.fragment.FormOfferFragment;
+import me.mobileease.findbooks.helpers.FindBooksConfig;
+import me.mobileease.findbooks.helpers.FindBooksConfig.AddOfferOptions;
 import me.mobileease.findbooks.model.MyBook;
 import android.content.Context;
 import android.content.Intent;
@@ -72,8 +74,18 @@ public class AddOfferActivity extends ActionBarActivity implements
 	private EditText price;
 	private EditText comment;
 	private Spinner offerType;
-	private ParseConfig config;
+	private FindBooksConfig config;
 	private Button save;
+	private boolean editOffer;
+	private String offerCondition;
+	private String offerBinding;
+	private String offerPrice;
+	private String offerComment;
+	private Intent intent;
+	private List<AddOfferOptions> conditions;
+	private List<AddOfferOptions> bookbindings;
+	
+	public static final String EDIT = "edit";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +109,16 @@ public class AddOfferActivity extends ActionBarActivity implements
 		authors = (TextView) findViewById(R.id.txtAuthors);
 		price = (EditText) findViewById(R.id.price);
 		comment = (EditText) findViewById(R.id.comment);
-
-		Intent intent = getIntent();
+		View offerView = (View) findViewById(R.id.offerView);
+		offerView.setVisibility(View.GONE);
+		
+		intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
+		editOffer = intent.getBooleanExtra(EDIT, false);
+		
 
 		Log.d(FindBooks.TAG, "imageLink: " + bookImage);
 		if (bookImage != null) {
@@ -123,58 +139,83 @@ public class AddOfferActivity extends ActionBarActivity implements
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 		}
-
+		
 		setTitle(null);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+		
 		updateBackgroundSize();
-
+		
 		offerType.setOnItemSelectedListener(this);
-
+		
 		getConfigAdapters();
+		
+		if(editOffer){
+			setParamsAndOfferId();
+		}
+		
+	}
 
+	private void setParamsAndOfferId() {
+		//editOfer
+		// offerId (MyBook)
+		offerCondition = intent.getStringExtra(TransactionActivity.OFFER_CONDITION);
+		offerBinding = intent.getStringExtra(TransactionActivity.OFFER_BINDING);
+		offerPrice = intent.getStringExtra(TransactionActivity.OFFER_PRICE);
+		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);
+		
+		comment.setText(offerComment);
+		
+		selectSpinnerItem(condition, conditions, offerCondition);
+		selectSpinnerItem(bookbinding, bookbindings, offerBinding);
+
+		/*
+		 * price
+		 * comment
+		 * currency
+		 * bookbinding
+		 * condition
+		 */
+	}
+
+	private void selectSpinnerItem(Spinner spinner,
+			List<AddOfferOptions> listOfferOptions, String optionCode) {
+
+		for (AddOfferOptions offerOption : listOfferOptions) {
+
+			Log.d(FindBooks.TAG, "equals: "+ offerOption.getCode() + ", "+optionCode);
+			if(offerOption.getCode().equals(optionCode)){
+				int position = listOfferOptions.indexOf(offerOption);
+
+				if(position != -1){	
+					Log.d(FindBooks.TAG, "selection: "+ position);
+					spinner.setSelection(position);				
+				}
+			}
+			
+		}
+		
 	}
 
 	private void getConfigAdapters() {
 
-		config = ParseConfig.getCurrentConfig();
-		setAdapters();
+		config = new FindBooksConfig();
+
+		conditions = config.getMyBookConditionList();
+		bookbindings = config.getMyBookBinding();
+
+		List<String> conditionsString = FindBooksConfig.toStringList(conditions);
+		List<String> bookbindingsString = FindBooksConfig.toStringList(bookbindings);
 		
-	}
-
-	protected void setAdapters() {
-
-		JSONArray mBookBookbinding = config.getJSONArray("MyBookBookbinding");
-		JSONArray mBookCondition = config.getJSONArray("MyBookCondition");
-
-		List<String> conditions = new ArrayList<String>();
-		for (int i = 0; i < mBookCondition.length(); i++) {
-			try {
-				conditions.add(mBookCondition.getJSONObject(i)
-						.getString("name"));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-
-		List<String> bookbindings = new ArrayList<String>();
-		for (int i = 0; i < mBookBookbinding.length(); i++) {
-			try {
-				bookbindings.add(mBookBookbinding.getJSONObject(i).getString(
-						"name"));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-
+		Log.d(FindBooks.TAG, "condition.size: "+ conditions.size());
+		
 		List<String> currencies = new ArrayList<String>();
 		currencies.add("₡");
 		currencies.add("$");
-
+		
 		ArrayAdapter<String> adapterCondition = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, conditions);
+				android.R.layout.simple_spinner_item, conditionsString);
 		ArrayAdapter<String> adapterBookbinding = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, bookbindings);
+				this, android.R.layout.simple_spinner_item, bookbindingsString);
 		ArrayAdapter<String> adapterCurrency = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, currencies);
 
@@ -195,9 +236,11 @@ public class AddOfferActivity extends ActionBarActivity implements
 		condition.setOnItemSelectedListener(this);
 		bookbinding.setOnItemSelectedListener(this);
 		currency.setOnItemSelectedListener(this);
+		
 
 		currency.setSelection(0);
-
+		bookbinding.setSelection(0);
+		condition.setSelection(0);
 	}
 
 	protected void updateBackgroundSize() {
@@ -305,6 +348,7 @@ public class AddOfferActivity extends ActionBarActivity implements
 	}
 
 	static final int REQUEST_IMAGE_CAPTURE = 1;
+	public static final String OFFER_CURRENCY = "currency";
 
 	private void dispatchTakePictureIntent() {
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -326,28 +370,6 @@ public class AddOfferActivity extends ActionBarActivity implements
 	public void onItemSelected(AdapterView<?> parent, View v, int position,
 			long id) {
 
-		JSONArray mBookBookbinding = config.getJSONArray("MyBookBookbinding");
-		JSONArray mBookCondition = config.getJSONArray("MyBookCondition");
-
-		List<String> conditionsCode = new ArrayList<String>();
-		for (int i = 0; i < mBookCondition.length(); i++) {
-			try {
-				conditionsCode.add(mBookCondition.getJSONObject(i).getString(
-						"code"));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-
-		List<String> bookbindingsCode = new ArrayList<String>();
-		for (int i = 0; i < mBookBookbinding.length(); i++) {
-			try {
-				bookbindingsCode.add(mBookBookbinding.getJSONObject(i)
-						.getString("code"));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
 
 		id = parent.getId();
 
@@ -370,9 +392,11 @@ public class AddOfferActivity extends ActionBarActivity implements
 			}
 
 		} else if (id == R.id.bookbinding) {
-			offer.put("bookbinding", bookbindingsCode.get(position));
+			AddOfferOptions option = bookbindings.get(position);
+			offer.put("bookbinding", option.getCode());
 		} else if (id == R.id.condition) {
-			offer.put("condition", conditionsCode.get(position));
+			AddOfferOptions option = conditions.get(position);
+			offer.put("condition", option.getCode());
 		}
 	}
 

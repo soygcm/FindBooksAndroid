@@ -137,7 +137,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		}
 		
 		String offerCondition = mBook.getString("condition");
-		String offerBinding = mBook.getString("bookBinding");
+		String offerBinding = mBook.getString("bookbinding");
 		String offerComment = mBook.getString("comment");
 		String offerCurrency = mBook.getString("currency");
 		Double price = mBook.getDouble("price");
@@ -164,6 +164,10 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		intent.putExtra(TransactionActivity.OFFER_PRICE, offerPrice);
 		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
 		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
+		
+		//currency
+		//
+		
 		
 		startActivity(intent);
 

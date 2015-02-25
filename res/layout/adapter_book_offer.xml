@@ -67,11 +67,14 @@
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                 </LinearLayout>
 
-                <ImageView
+                <ImageButton
+                    android:id="@+id/edit"
+                    android:src="@drawable/ic_detalles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_detalles"
+                    android:background="@android:color/transparent"
                     android:layout_gravity="center_vertical"
+                    android:visibility="gone"
                     android:layout_margin="6dp"
                     />
 

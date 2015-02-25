@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -29,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,7 +44,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class BookActivity extends ActionBarActivity implements
-		OnItemClickListener {
+		OnItemClickListener, OnClickListener {
 
 	public static final String BOOK_ID = "book_id";
 	public static final String FROM_HOME = "fromHome";
@@ -77,6 +79,7 @@ public class BookActivity extends ActionBarActivity implements
 	private String offerBinding;
 	private String offerPrice;
 	private String offerComment;
+	private ImageButton btnEdit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,9 @@ public class BookActivity extends ActionBarActivity implements
 		perfilView = (View) header.findViewById(R.id.perfilView);
 		perfilView.setVisibility(View.GONE);
 		offerView = (View) header.findViewById(R.id.offerView);
+		btnEdit = (ImageButton) header.findViewById(R.id.edit);
+		btnEdit.setVisibility(View.VISIBLE);
+		btnEdit.setOnClickListener(this);
 		
 		txtCondition = (TextView) header.findViewById(R.id.txtCondition);
 		txtPrice = (TextView) header.findViewById(R.id.txtPrice);
@@ -162,15 +168,16 @@ public class BookActivity extends ActionBarActivity implements
 		
 		config = new FindBooksConfig();
 		
-		if (!bookType.equals("OFFER")) {
-			offerView.setVisibility(View.GONE);
-		}else{
+		if (bookType != null && bookType.equals("OFFER")) {
 			
 			txtPrice.setText(offerPrice);
+			Log.d(FindBooks.TAG, offerBinding + ", " + offerCondition);
+			String offerBindingString = config.getBindingLocalized(offerBinding);
+			String offerConditionString = config.getConditionLocalized(offerCondition);
+			txtCondition.setText(Html.fromHtml(offerBindingString + ", " + offerConditionString+ ", " + offerComment));
+		}else{
 			
-			offerBinding = config.getBindingLocalized(offerBinding);
-			offerCondition = config.getConditionLocalized(offerCondition);
-			txtCondition.setText(Html.fromHtml(offerBinding + ", " + offerCondition+ ", " + offerComment));
+			offerView.setVisibility(View.GONE);
 			
 		}
 		
@@ -361,6 +368,45 @@ public class BookActivity extends ActionBarActivity implements
 		intent.putExtra(BookActivity.BOOK_ID, id);
 
 		startActivity(intent);
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		int id = v.getId();
+		
+		if(id == R.id.edit){
+			showAddOffer();
+			
+		}
+	}
+
+	private void showAddOffer() {
+
+		Intent intent = new Intent(this, AddOfferActivity.class);
+		
+		intent.putExtra(BookActivity.BOOK_ID, bookId);
+		intent.putExtra(BookActivity.BOOK_TITLE, bookTitle);
+		intent.putExtra(BookActivity.BOOK_AUTHORS, bookAuthors);
+		intent.putExtra(AddOfferActivity.EDIT, true);
+		intent.putExtra(BookActivity.BOOK_IMAGE, bookImage);
+		
+		intent.putExtra(TransactionActivity.OFFER_PRICE, offerPrice);
+		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
+		intent.putExtra(TransactionActivity.OFFER_CONDITION, offerCondition);
+		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
+//		intent.putExtra(AddOfferActivity.OFFER_CURRENCY, offerCurrency);
+
+		/*
+		 * price
+		 * comment
+		 * currency
+		 * bookbinding
+		 * condition
+		 * 			
+		 */
+		startActivity(intent);
+
 	}
 
 }
