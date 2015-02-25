@@ -1,6 +1,8 @@
 package me.mobileease.findbooks;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -53,6 +55,7 @@ public class BookActivity extends ActionBarActivity implements
 	public static final String BOOK_AUTHORS = "authors";
 	public static final String BOOK_IMAGE = "image";
 	public static final String BOOK_SUBTITLE = "subtitle";
+	public static final String OFFER_ID = "offerId";
 
 	private ListView list;
 	private String bookId;
@@ -77,9 +80,11 @@ public class BookActivity extends ActionBarActivity implements
 	private FindBooksConfig config;
 	private String offerCondition;
 	private String offerBinding;
-	private String offerPrice;
+	private double offerPrice;
 	private String offerComment;
 	private ImageButton btnEdit;
+	private String offerCurrency;
+	private String offerId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +123,7 @@ public class BookActivity extends ActionBarActivity implements
 		//list.setOnItemClickListener(this);
 		Intent intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
+		offerId = intent.getStringExtra(BookActivity.OFFER_ID);
 		fromHome = intent.getBooleanExtra(BookActivity.FROM_HOME, false);
 		bookType = intent.getStringExtra(BookActivity.BOOK_TYPE);
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
@@ -127,8 +133,10 @@ public class BookActivity extends ActionBarActivity implements
 		offerCondition = intent
 				.getStringExtra(TransactionActivity.OFFER_CONDITION);
 		offerBinding = intent.getStringExtra(TransactionActivity.OFFER_BINDING);
-		offerPrice = intent.getStringExtra(TransactionActivity.OFFER_PRICE);
+		offerPrice = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
 		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);
+
+		offerCurrency = intent.getStringExtra(AddOfferActivity.OFFER_CURRENCY);
 		
 		Log.d(FindBooks.TAG, "imageLink: " + bookImage);
 		if (bookImage != null) {
@@ -152,7 +160,6 @@ public class BookActivity extends ActionBarActivity implements
 		
 		//Ofer info
 		offerInfo();
-		
 
 		updateBackgroundSize();
 
@@ -166,11 +173,26 @@ public class BookActivity extends ActionBarActivity implements
 	
 	protected void offerInfo() {
 		
+		
+		
 		config = new FindBooksConfig();
 		
 		if (bookType != null && bookType.equals("OFFER")) {
+
+			String offerPriceString = "";
+			if (offerPrice > 0) {
+				NumberFormat format = NumberFormat.getCurrencyInstance();
+				if (offerCurrency != null) {
+					Currency currency = Currency.getInstance(offerCurrency);
+					format.setCurrency(currency);
+				}
+				offerPriceString = format.format(offerPrice);
+			} else if(offerPrice == 0) {
+				offerPriceString = "gratis";
+			}
 			
-			txtPrice.setText(offerPrice);
+			
+			txtPrice.setText(offerPriceString);
 			Log.d(FindBooks.TAG, offerBinding + ", " + offerCondition);
 			String offerBindingString = config.getBindingLocalized(offerBinding);
 			String offerConditionString = config.getConditionLocalized(offerCondition);
@@ -201,7 +223,7 @@ public class BookActivity extends ActionBarActivity implements
 	private void getTransactions() {
 
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Transaction");
-		ParseObject book = ParseObject.createWithoutData("MyBook", bookId);
+		ParseObject book = ParseObject.createWithoutData("MyBook", offerId);
 
 		if (bookType.equals("OFFER")) {
 			query.whereEqualTo("bookOffer", book);
@@ -386,6 +408,7 @@ public class BookActivity extends ActionBarActivity implements
 		Intent intent = new Intent(this, AddOfferActivity.class);
 		
 		intent.putExtra(BookActivity.BOOK_ID, bookId);
+		intent.putExtra(BookActivity.OFFER_ID, offerId);
 		intent.putExtra(BookActivity.BOOK_TITLE, bookTitle);
 		intent.putExtra(BookActivity.BOOK_AUTHORS, bookAuthors);
 		intent.putExtra(AddOfferActivity.EDIT, true);
@@ -395,7 +418,7 @@ public class BookActivity extends ActionBarActivity implements
 		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
 		intent.putExtra(TransactionActivity.OFFER_CONDITION, offerCondition);
 		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
-//		intent.putExtra(AddOfferActivity.OFFER_CURRENCY, offerCurrency);
+		intent.putExtra(AddOfferActivity.OFFER_CURRENCY, offerCurrency);
 
 		/*
 		 * price

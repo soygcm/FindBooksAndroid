@@ -119,9 +119,10 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		ParseObject mBook = adapter.getItem(position - 1);
 
 		Intent intent = new Intent(HomeActivity.this, BookActivity.class);
-		String id = mBook.getObjectId();
+		String offerId = mBook.getObjectId();
 		String type = mBook.getString("type");
 		ParseObject book = mBook.getParseObject("book");
+		String bookId = book.getObjectId();
 		String title = book.getString("title");
 		List<String> authorsList = book.getList("authors");
 		String authors = TextUtils.join(", ", authorsList);
@@ -141,32 +142,23 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		String offerComment = mBook.getString("comment");
 		String offerCurrency = mBook.getString("currency");
 		Double price = mBook.getDouble("price");
-		String offerPrice = "";
-		if (price != 0) {
-			NumberFormat format = NumberFormat.getCurrencyInstance();
-			if (offerCurrency != null) {
-				Currency currency = Currency.getInstance(offerCurrency);
-				format.setCurrency(currency);
-			}
-			offerPrice = format.format(price);
-		} else {
-			offerPrice = "gratis";
-		}
-
-		intent.putExtra(BookActivity.BOOK_ID, id);
+		
+		
 		intent.putExtra(BookActivity.FROM_HOME, true);
+		intent.putExtra(BookActivity.OFFER_ID, offerId);
+		intent.putExtra(BookActivity.BOOK_ID, bookId);
 		intent.putExtra(BookActivity.BOOK_TYPE, type);
 		intent.putExtra(BookActivity.BOOK_TITLE, title);
 		intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
 		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
 		
 		intent.putExtra(TransactionActivity.OFFER_CONDITION, offerCondition);
-		intent.putExtra(TransactionActivity.OFFER_PRICE, offerPrice);
+		intent.putExtra(TransactionActivity.OFFER_PRICE, price);
 		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
 		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
 		
-		//currency
-		//
+		intent.putExtra(AddOfferActivity.OFFER_CURRENCY, offerCurrency);
+		
 		
 		
 		startActivity(intent);

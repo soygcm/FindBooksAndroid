@@ -79,11 +79,13 @@ public class AddOfferActivity extends ActionBarActivity implements
 	private boolean editOffer;
 	private String offerCondition;
 	private String offerBinding;
-	private String offerPrice;
+	private double offerPrice;
 	private String offerComment;
 	private Intent intent;
 	private List<AddOfferOptions> conditions;
 	private List<AddOfferOptions> bookbindings;
+	private String offerCurrency;
+	private String offerId;
 	
 	public static final String EDIT = "edit";
 
@@ -91,8 +93,6 @@ public class AddOfferActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_offer);
-
-		offer = new ParseObject(MyBook.CLASS);
 		
 		header = findViewById(R.id.header);
 		mImageView = (ImageView) findViewById(R.id.photo);
@@ -114,12 +114,15 @@ public class AddOfferActivity extends ActionBarActivity implements
 		
 		intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
+		offerId = intent.getStringExtra(BookActivity.OFFER_ID);
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
+
 		editOffer = intent.getBooleanExtra(EDIT, false);
 		
-
+		offer = new ParseObject(MyBook.CLASS);
+		
 		Log.d(FindBooks.TAG, "imageLink: " + bookImage);
 		if (bookImage != null) {
 			Ion.with(imgBook).load(bookImage);
@@ -132,8 +135,6 @@ public class AddOfferActivity extends ActionBarActivity implements
 		takePhotoBtn.setOnClickListener(this);
 		btnSave.setOnClickListener(this);
 		save.setOnClickListener(this);
-
-		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		if (toolbar != null) {
@@ -156,18 +157,39 @@ public class AddOfferActivity extends ActionBarActivity implements
 	}
 
 	private void setParamsAndOfferId() {
-		//editOfer
+		
+		offer = ParseObject.createWithoutData(MyBook.CLASS, offerId);
+		
 		// offerId (MyBook)
 		offerCondition = intent.getStringExtra(TransactionActivity.OFFER_CONDITION);
 		offerBinding = intent.getStringExtra(TransactionActivity.OFFER_BINDING);
-		offerPrice = intent.getStringExtra(TransactionActivity.OFFER_PRICE);
+		offerPrice = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
 		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);
+		offerCurrency = intent.getStringExtra(AddOfferActivity.OFFER_CURRENCY);
 		
 		comment.setText(offerComment);
+		
+		if(offerPrice > 0){
+			offerType.setSelection(1);
+			price.setText(String.valueOf(offerPrice));
+			
+			/*
+			 * SeleccionarMoneda spinner, monedasUsuario, monedaCode
+			 */
+			if (offerCurrency.equals("CRC")) {
+				currency.setSelection(0);
+			} else if (offerCurrency.equals("USD")) {
+				currency.setSelection(1);
+			}
+			
+		}else{
+			offerType.setSelection(0);
+		}
 		
 		selectSpinnerItem(condition, conditions, offerCondition);
 		selectSpinnerItem(bookbinding, bookbindings, offerBinding);
 
+		
 		/*
 		 * price
 		 * comment
