@@ -24,13 +24,13 @@
              />  
              
             <Button
-         android:layout_width="wrap_content"
+         	android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
             android:textColor="@color/text_cafe_claro"
             android:paddingRight="16dp"
-           
+            android:id="@+id/save"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="GUARDAR"  />
         
