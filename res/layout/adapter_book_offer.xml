@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
         android:background="@color/ui_fondo_claro"
     android:orientation="horizontal" >
     
@@ -68,13 +68,13 @@
 
                 <ImageButton
                     android:id="@+id/edit"
-                    android:src="@drawable/ic_detalles"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_edit_black_24dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:background="@android:color/transparent"
                     android:layout_gravity="center_vertical"
                     android:visibility="gone"
-                    android:layout_margin="6dp"
+                    
                     />
 
             </LinearLayout>
