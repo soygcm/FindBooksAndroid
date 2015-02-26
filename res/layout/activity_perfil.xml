@@ -147,6 +147,8 @@
 			
 		</LinearLayout>
 		
+	        
+	        
 	        <LinearLayout
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
@@ -247,6 +249,67 @@
 			
 		</LinearLayout>
 		
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
+
+			<TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Ciudad"
+	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
+	            android:textColor="@color/text_gris" 
+	            android:layout_gravity="left|center_vertical"
+	            android:layout_marginBottom="3dp"
+	            android:layout_marginLeft="65dp"
+	           />
+	
+	            <LinearLayout
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal"
+			        android:layout_gravity="right|center_vertical"
+			        android:layout_marginLeft="3dp"
+			        android:layout_marginBottom="10dp"
+			       >		        
+					<ImageView 
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_gravity="left|center_vertical"
+				    android:src="@drawable/ic_person_black"
+				    
+				    />
+		        
+		        <AutoCompleteTextView 
+		            android:id="@+id/place"
+		            android:layout_weight="1"
+		            android:layout_width="0dp"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="left|bottom"
+		            android:layout_marginLeft="32dp"
+		            android:ems="12"
+		            android:text=""
+		            android:textColor="@color/negro" />
+		            
+		        
+		        
+		        <ImageButton
+            android:id="@+id/searchPlace"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="right|bottom"
+            android:background="@null"
+            
+            android:src="@drawable/ic_buscar"
+             />
+		        
+		        
+		        
+			</LinearLayout>
+			
+		</LinearLayout>
+	        
 	        <LinearLayout
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
