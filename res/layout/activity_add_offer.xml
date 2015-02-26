@@ -82,14 +82,15 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:background="@color/ui_fondo_claro"
-		        android:padding="16dp"
+		        android:padding="10dp"
 		        android:orientation="vertical" >
 
 		        <Spinner
 		            android:id="@+id/offerType"
 		            android:layout_width="match_parent"
 		            android:entries="@array/offer_array"
-		            android:layout_height="wrap_content" />
+		            android:layout_height="wrap_content"
+		            android:paddingLeft="0dp" />
 
 <EditText
         android:id="@+id/price"
@@ -109,9 +110,11 @@
 
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="3dp"
+    android:layout_height="2dp"
     android:background="@color/ui_fondo_medio"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
 </LinearLayout>
 
 <Spinner
@@ -130,6 +133,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="Comentario adicional"
+    android:paddingLeft="6dp"
+    android:paddingRight="16dp"
     android:ems="10" />
 
 
