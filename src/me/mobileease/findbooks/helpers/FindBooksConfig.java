@@ -256,16 +256,6 @@ public class FindBooksConfig {
 		
 	}
 
-
-	public static List<String> toStringList(List<AddOfferOptions> list) {
-		List<String> strings = new ArrayList<String>();
-		for (Object object : list) {
-		    strings.add(object != null ? object.toString() : null);
-		}
-		return strings;
-	}
-
-
 	
 	
 

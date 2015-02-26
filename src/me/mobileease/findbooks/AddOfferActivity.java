@@ -224,9 +224,6 @@ public class AddOfferActivity extends ActionBarActivity implements
 
 		conditions = config.getMyBookConditionList();
 		bookbindings = config.getMyBookBinding();
-
-		List<String> conditionsString = FindBooksConfig.toStringList(conditions);
-		List<String> bookbindingsString = FindBooksConfig.toStringList(bookbindings);
 		
 		Log.d(FindBooks.TAG, "condition.size: "+ conditions.size());
 		
@@ -234,10 +231,10 @@ public class AddOfferActivity extends ActionBarActivity implements
 		currencies.add("₡");
 		currencies.add("$");
 		
-		ArrayAdapter<String> adapterCondition = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, conditionsString);
-		ArrayAdapter<String> adapterBookbinding = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, bookbindingsString);
+		ArrayAdapter<AddOfferOptions> adapterCondition = new ArrayAdapter<AddOfferOptions>(this,
+				android.R.layout.simple_spinner_item, conditions);
+		ArrayAdapter<AddOfferOptions> adapterBookbinding = new ArrayAdapter<AddOfferOptions>(
+				this, android.R.layout.simple_spinner_item, bookbindings);
 		ArrayAdapter<String> adapterCurrency = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, currencies);
 
