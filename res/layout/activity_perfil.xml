@@ -254,6 +254,12 @@
 	            android:layout_height="wrap_content"
 	            android:orientation="vertical" >
 
+			
+			<LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal" >
+		        
 			<TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -264,6 +270,18 @@
 	            android:layout_marginBottom="3dp"
 	            android:layout_marginLeft="65dp"
 	           />
+			
+			<ImageView 
+				    android:layout_width="18dp"
+				    android:layout_height="18dp"
+				    android:layout_gravity="right|center_vertical"
+				    android:src="@drawable/ic_done_24px"
+				    android:layout_marginBottom="3dp"
+				    android:layout_marginLeft="3dp"
+				    
+				    />
+			
+			</LinearLayout>
 	
 	            <LinearLayout
 			        android:layout_width="match_parent"
@@ -342,15 +360,21 @@
 				    
 				    />
 
-					<ExpandableListView
+					
+					
+					<TextView
 					    android:id="@+id/perfilMonedaxs"
-					    android:layout_width="match_parent"
-					    android:layout_height="wrap_content"
-					    android:layout_weight="1" 
-					    android:layout_gravity="left|bottom"
-					    
- >
-					</ExpandableListView>		        
+	            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="left|bottom"
+		           
+		            android:textColor="@color/negro"
+		            android:layout_marginLeft="32dp"
+		            android:text="Moneda"
+		            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+	            
+	           />
+			        
 		   
 		        
 		        
