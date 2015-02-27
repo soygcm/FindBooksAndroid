@@ -6,16 +6,35 @@
     android:orientation="vertical" 
     android:background="@color/ui_fondo_claro">
 
+    
+    
+    
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+       android:layout_marginLeft="16dp"
+       android:layout_marginRight="16dp"
+       android:layout_marginTop="16dp">
+        
+       <LinearLayout
+        android:id="@+id/marcaTrans"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/ui_boton_rojo"
+        android:orientation="horizontal"
+        >
+        </LinearLayout> 
+        
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blanco"
         android:orientation="horizontal"
-       android:layout_marginLeft="16dp"
-       android:layout_marginRight="16dp"
-       android:layout_marginTop="16dp"
         android:padding="5dp">
 
+        
+        
         <ImageView
             android:id="@+id/imgBook"
             android:layout_width="31dp"
@@ -47,6 +66,7 @@
             android:layout_gravity="center_vertical"
              />
         
-    </LinearLayout>
+   			 </LinearLayout>
+        </LinearLayout>
 
 </LinearLayout>

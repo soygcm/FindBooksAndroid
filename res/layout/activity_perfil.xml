@@ -304,11 +304,12 @@
 		            android:layout_weight="1"
 		            android:layout_width="0dp"
 		            android:layout_height="wrap_content"
-		            android:layout_gravity="left|bottom"
+		            android:layout_gravity="left|center_vertical"
 		            android:layout_marginLeft="32dp"
 		            android:ems="12"
 		            android:text=""
-		            android:textColor="@color/negro" />
+		            android:textColor="@color/negro"
+		            android:background="@android:color/transparent" />
 		            
 		        
 		        
