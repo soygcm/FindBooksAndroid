@@ -364,11 +364,10 @@
 					
 					
 					<TextView
-					    android:id="@+id/perfilMonedaxs"
-	            android:layout_width="match_parent"
+					android:id="@+id/txtCurrency"
+	            	android:layout_width="match_parent"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="left|bottom"
-		           
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp"
 		            android:text="Moneda"
