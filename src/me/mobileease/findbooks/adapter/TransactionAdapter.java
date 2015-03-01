@@ -12,6 +12,8 @@ import me.mobileease.findbooks.FindBooks;
 import me.mobileease.findbooks.R;
 import me.mobileease.findbooks.TransactionActivity;
 import me.mobileease.findbooks.TransactionsActivity;
+import me.mobileease.findbooks.model.MyBook;
+import me.mobileease.findbooks.model.Transaction;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
@@ -64,7 +66,8 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 					.findViewById(R.id.txtDescription);
 			viewHolder.imgBook = (ImageView) view.findViewById(R.id.imgBook);
 			viewHolder.imgArrow = (ImageView) view.findViewById(R.id.imgArrow);
-
+			viewHolder.statusView = (View) view.findViewById(R.id.marcaTrans);
+			
 			view.setTag(viewHolder);
 		}
 
@@ -72,62 +75,41 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		ParseObject transaction = transactions.get(position);
 		boolean accepted = transaction.getBoolean("accepted");
 		ViewHolder holder = (ViewHolder) view.getTag();
-
+		
+		boolean endedWant = transaction.getBoolean("endedWant");
+		boolean endedOffer = transaction.getBoolean("endedOffer");
+		
 		ParseObject bookOffer = transaction.getParseObject("bookOffer");
 		ParseUser userOffer = bookOffer.getParseUser("user");
 		ParseObject book = bookOffer.getParseObject("book");
 		ParseObject bookWant = transaction.getParseObject("bookWant");
 		ParseUser userWant = bookWant.getParseUser("user");
-
-		StringBuilder messageTransaction = new StringBuilder();
-
-		if (user.getObjectId().equals(userWant.getObjectId())) {
-
-			if (accepted) {
-				messageTransaction.append("<b>Tú</b> ");
-				messageTransaction.append("y ");
-				messageTransaction.append("<b>"
-						+ userOffer.getString("username") + "</b>, ");
-				messageTransaction.append("están en contacto por ");
-				if (!showBook) {					
-					messageTransaction.append("este libro ");
-				}
-			} else {
-				messageTransaction.append("<b>Tú</b> ");
-				messageTransaction.append("deseas adquirir el libro de ");
-				messageTransaction.append("<b>"
-						+ userOffer.getString("username") + "</b>");
-				if (showBook) {					
-					messageTransaction.append(", ");
-				}
+		
+		if(endedOffer || endedWant){
+			holder.statusView.setVisibility(View.VISIBLE);
+			holder.statusView.setBackgroundColor(c.getResources().getColor(
+					R.color.ui_boton_rojo));
+		}else{
+			if(accepted){
+				holder.statusView.setVisibility(View.VISIBLE);
+				holder.statusView.setBackgroundColor(c.getResources().getColor(
+						R.color.ui_boton_verde));
+			}else{
+				holder.statusView.setVisibility(View.GONE);
 			}
-
+		}
+		
+		if (user.getObjectId().equals(userWant.getObjectId())) {
 			holder.imgArrow.setImageResource(R.drawable.ic_detalles_buscar);
 		} else {
-
-			if (accepted) {
-				messageTransaction.append("<b>Tú</b> ");
-				messageTransaction.append("y ");
-				messageTransaction.append("<b>"
-						+ userWant.getString("username") + "</b>, ");
-				messageTransaction.append("están en contacto por tu libro ");
-			} else {
-				messageTransaction.append("<b>"
-						+ userWant.getString("username") + "</b>, ");
-				messageTransaction.append("desea adquirir tu libro ");
-			}
 			holder.imgArrow.setImageResource(R.drawable.ic_detalles_agregar);
 		}
-		if (showBook) {			
-			messageTransaction.append("<b>" + book.getString("title") + "</b> ");
-		}
-		if (showOffer){
-			messageTransaction.append("<font color=\"#00BA16\">"
-					+ precio(bookOffer) + "</font> ");			
-		}
+		
+		Transaction transactionModel = new Transaction(transaction);
+		
+		String messageString = transactionModel.getMessage(showBook, showOffer);
 
-		holder.txtDescription.setText(Html.fromHtml(messageTransaction
-				.toString()));
+		holder.txtDescription.setText( Html.fromHtml(messageString) );
 
 		JSONObject imageLinks = book.getJSONObject("imageLinks");
 
@@ -144,27 +126,12 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		return view;
 	}
 
-	private String precio(ParseObject bookOffer) {
-		Double price = bookOffer.getDouble("price");
-		String offerCurrency = bookOffer.getString("currency");
-
-		if (price != 0) {
-			NumberFormat format = NumberFormat.getCurrencyInstance();
-			if (offerCurrency != null) {
-				Currency currency = Currency.getInstance(offerCurrency);
-				format.setCurrency(currency);
-			}
-			return format.format(price);
-		} else {
-			return "gratis";
-		}
-	}
-
 	static class ViewHolder {
 		public TextView txtDescription;
 		public TextView price;
 		public ImageView imgBook;
 		public ImageView imgArrow;
+		public View statusView;
 
 	}
 
@@ -199,23 +166,17 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		String title = book.getString("title");
 		String subtitle = book.getString("subtitle");
 		
+		boolean endedWant = transaction.getBoolean("endedWant");
+		boolean endedOffer = transaction.getBoolean("endedOffer");
+		
 		//offer
 		String offerCondition = bookOffer.getString("condition");
 		String offerBinding = bookOffer.getString("bookbinding");
 		String offerComment = bookOffer.getString("comment");
-		String offerCurrency = bookOffer.getString("currency");
-		Double price = bookOffer.getDouble("price");
-		String offerPrice = "";
-		if (price != 0) {
-			NumberFormat format = NumberFormat.getCurrencyInstance();
-			if (offerCurrency != null) {
-				Currency currency = Currency.getInstance(offerCurrency);
-				format.setCurrency(currency);
-			}
-			offerPrice = format.format(price);
-		} else {
-			offerPrice = "gratis";
-		}
+		
+		MyBook myBookOffer = new MyBook(bookOffer);
+		
+		String offerPrice = myBookOffer.getPriceFormated();
 		
 		Log.d(FindBooks.TAG, "price: "+offerPrice);
 
@@ -225,11 +186,11 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 
 		boolean offering = user.getObjectId().equals(userOffer.getObjectId());
 		if (offering) {
-			userName = userWant.getString("username");
+			userName = userWant.getString("nickname");
 			userPhone = userWant.getString("phone");
 			userMail = userWant.getString("email");
 		} else {
-			userName = userOffer.getString("username");
+			userName = userOffer.getString("nickname");
 			userPhone = userOffer.getString("phone");
 			userMail = userOffer.getString("email");
 		}
@@ -264,7 +225,12 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		intent.putExtra(TransactionActivity.USER_MAIL, userMail);
 		intent.putExtra(TransactionActivity.OFFERING, offering);
 		intent.putExtra(TransactionActivity.ACCEPTED, accepted);
+		
+		intent.putExtra(TransactionActivity.TRANSACTION_END_WANT, endedWant);
+		intent.putExtra(TransactionActivity.TRANSACTION_END_OFFER, endedOffer);
 
+		
+		
 		//
 		c.startActivity(intent);
 	}

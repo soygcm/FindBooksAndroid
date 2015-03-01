@@ -68,7 +68,7 @@ public class TransactionsActivity extends ActionBarActivity {
 
 		ParseQuery<ParseObject> queryOffer = ParseQuery.getQuery("Transaction");
 		queryOffer.whereMatchesQuery("bookOffer", userQuery);
-		queryWant.whereNotEqualTo("endedOffer", true);
+		queryOffer.whereNotEqualTo("endedOffer", true);
 
 		ArrayList<ParseQuery<ParseObject>> queryList = new ArrayList<ParseQuery<ParseObject>>();
 		queryList.add(queryOffer);

@@ -82,11 +82,13 @@ public class BookActivity extends ActionBarActivity implements
 	private FindBooksConfig config;
 	private String offerCondition;
 	private String offerBinding;
-	private double offerPrice;
+//	private double offerPrice;
 	private String offerComment;
 	private ImageButton btnEdit;
-	private String offerCurrency;
+//	private String offerCurrency;
 	private String offerId;
+	private Intent intent;
+	private double offerPrice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +121,11 @@ public class BookActivity extends ActionBarActivity implements
 		btnEdit.setVisibility(View.VISIBLE);
 		btnEdit.setOnClickListener(this);
 		
+		
 		txtCondition = (TextView) header.findViewById(R.id.txtCondition);
 		txtPrice = (TextView) header.findViewById(R.id.txtPrice);
 
-		Intent intent = getIntent();
+		intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
 		offerId = intent.getStringExtra(BookActivity.OFFER_ID);
 		fromHome = intent.getBooleanExtra(BookActivity.FROM_HOME, false);
@@ -130,14 +133,12 @@ public class BookActivity extends ActionBarActivity implements
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
+		offerPrice = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
 		
 		offerCondition = intent
 				.getStringExtra(TransactionActivity.OFFER_CONDITION);
 		offerBinding = intent.getStringExtra(TransactionActivity.OFFER_BINDING);
-		offerPrice = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
 		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);
-
-		offerCurrency = intent.getStringExtra(AddOfferActivity.OFFER_CURRENCY);
 		
 		Log.d(FindBooks.TAG, "imageLink: " + bookImage);
 		if (bookImage != null) {
@@ -179,19 +180,10 @@ public class BookActivity extends ActionBarActivity implements
 		config = new FindBooksConfig();
 		
 		if (bookType != null && bookType.equals("OFFER")) {
-
-			String offerPriceString = "";
-			if (offerPrice > 0) {
-				NumberFormat format = NumberFormat.getCurrencyInstance();
-				if (offerCurrency != null) {
-					Currency currency = Currency.getInstance(offerCurrency);
-					format.setCurrency(currency);
-				}
-				offerPriceString = format.format(offerPrice);
-			} else if(offerPrice == 0) {
-				offerPriceString = "gratis";
-			}
 			
+			MyBook myBook = new MyBook(intent);
+			
+			String offerPriceString = myBook.getPriceFormated();
 			
 			txtPrice.setText(offerPriceString);
 			Log.d(FindBooks.TAG, offerBinding + ", " + offerCondition);
@@ -230,11 +222,11 @@ public class BookActivity extends ActionBarActivity implements
 		
 		if (bookType.equals("OFFER")) {
 			query.whereEqualTo("bookOffer", book);
-			Log.d(FindBooks.TAG, "OFFER,  bookId:" + bookId);
+			query.whereNotEqualTo("endedOffer", true);
 		} else if (bookType.equals("WANT")) {
 			showOffer = true;
 			query.whereEqualTo("bookWant", book);
-			Log.d(FindBooks.TAG, "WANT,  bookId:" + bookId);
+			query.whereNotEqualTo("endedWant", true);
 		}
 		
 		final boolean finalShowOffer = showOffer;
@@ -402,8 +394,7 @@ public class BookActivity extends ActionBarActivity implements
 		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
 		intent.putExtra(TransactionActivity.OFFER_CONDITION, offerCondition);
 		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
-		intent.putExtra(AddOfferActivity.OFFER_CURRENCY, offerCurrency);
-
+		
 		/*
 		 * price
 		 * comment

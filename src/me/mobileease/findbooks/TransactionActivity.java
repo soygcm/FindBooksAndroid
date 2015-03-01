@@ -3,6 +3,8 @@ package me.mobileease.findbooks;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.mobileease.findbooks.model.Transaction;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -34,12 +36,14 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	public static final String OFFER_BINDING = "binding";
 	public static final String OFFER_PRICE = "price";
 	public static final String OFFER_COMMENT = "comment";
-	public static final String USER_NAME = "username";
+	public static final String USER_NAME = "nickname";
 	public static final String USER_PHONE = "phone";
 	public static final String USER_MAIL = "mail";
 	public static final String OFFERING = "offering";
 	public static final String ACCEPTED = "accepted";
 	public static final String TRANSACTION_ID = "transactionId";
+	public static final String TRANSACTION_END_WANT = "endedWant";
+	public static final String TRANSACTION_END_OFFER = "endedOffer";
 	private TextView txtTitle;
 	private TextView txtAuthors;
 	private TextView txtUsername;
@@ -72,6 +76,9 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	private TextView txtMessageTransaction;
 	private String transactionId;
 	private Toolbar toolbar;
+	private Intent intent;
+	private boolean endedWant;
+	private boolean endedOffer;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -105,7 +112,7 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		btnCancel.setOnClickListener(this);
 		btnConclude.setOnClickListener(this);
 		
-		Intent intent = getIntent();
+		intent = getIntent();
 
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookSubtitle = intent.getStringExtra(BookActivity.BOOK_SUBTITLE);
@@ -125,6 +132,8 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		accepted = intent.getBooleanExtra(TransactionActivity.ACCEPTED, false);
 		transactionId = intent.getStringExtra(TransactionActivity.TRANSACTION_ID);
 
+		endedWant = intent.getBooleanExtra(TransactionActivity.TRANSACTION_END_WANT, false);
+		endedOffer = intent.getBooleanExtra(TransactionActivity.TRANSACTION_END_OFFER, false);
 		
 		/**
 		 * BookInfo
@@ -157,7 +166,7 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		 */
 		txtCondition.setText(Html.fromHtml(offerBinding + ", " + offerCondition
 				+ ", " + offerComment));
-		Log.d(FindBooks.TAG, "price: "+ offerPrice);
+
 		txtPrice.setText(offerPrice.toString());
 		
 		getConfigConditionBindingComment();
@@ -179,66 +188,59 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		/**
 		 * Transaction info
 		 */
-		StringBuilder messageTransaction = new StringBuilder();
+		
+		Transaction transactionModel = new Transaction(intent);
+		String messageString = transactionModel.getMessage(false, false);
+		txtMessageTransaction.setText(Html.fromHtml(messageString.toUpperCase()));
+		
 		if (offering) {
 			toolbar.setBackgroundColor(getResources().getColor(
 					R.color.ui_magenta_oferta));
 			perfilView.setVisibility(View.GONE);
-			setTitle("EN TRANSACCION");
 			
 			if(accepted){
 				btnAccept.setVisibility(View.GONE);
 				btnCancel.setVisibility(View.GONE);
 				btnConclude.setVisibility(View.VISIBLE);
 				
-				messageTransaction.append("<b>Tú</b> ");
-				messageTransaction.append("y ");
-				messageTransaction.append("<b>"
-						+ userName + "</b> ");
-				messageTransaction.append("están en contacto por tu libro ");
-				
 			}else{
 				btnAccept.setVisibility(View.VISIBLE);
 				btnCancel.setVisibility(View.VISIBLE);
 				btnConclude.setVisibility(View.GONE);
 				
-				messageTransaction.append("<b>"
-						+ userName + "</b> ");
-				messageTransaction.append("desea adquirir tu libro ");
-				
 			}
 		} else {
 			toolbar.setBackgroundColor(getResources().getColor(
 					R.color.ui_menta_busqueda));
-			txtUsername.setText(userName);
-			setTitle("CASI LO TIENES");
-			
+			txtUsername.setText(userName);			
 			btnAccept.setVisibility(View.GONE);
 			
 			if(accepted){
 				btnCancel.setVisibility(View.GONE);
 				btnConclude.setVisibility(View.VISIBLE);
 				
-				messageTransaction.append("<b>Tú</b> ");
-				messageTransaction.append("y ");
-				messageTransaction.append("<b>"
-						+ userName + "</b> ");
-				messageTransaction.append("ya están en contacto ");
 			}else{
 				btnConclude.setVisibility(View.GONE);
 				btnCancel.setVisibility(View.VISIBLE);
-				
-				messageTransaction.append("<b>Tú</b> ");
-				messageTransaction.append("deseas adquirir el libro de ");
-				messageTransaction.append("<b>"
-						+ userName + "</b> ");
-				
 				profileView.setVisibility(View.GONE);
 				
 			}
 		}
 		
-		txtMessageTransaction.setText(Html.fromHtml(messageTransaction.toString().toUpperCase()));
+		if(endedOffer || endedWant){
+			toolbar.setBackgroundColor(getResources().getColor(
+					R.color.ui_boton_rojo));
+			profileView.setVisibility(View.GONE);
+		}else{
+			if(accepted){
+				
+				
+			}else{
+				
+				
+			}
+		}
+		
 		
 	}
 

@@ -72,23 +72,13 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		ParseUser user = offer.getParseUser("user");
 		ViewHolder holder = (ViewHolder) view.getTag();
 
-		String title = user.getString("username");
+		String title = user.getString("nickname");
 		String offerCondition = offer.getString("condition");
 		String offerBinding = offer.getString("bookbinding");
 		String offerComment = offer.getString("comment");
-		String offerCurrency = offer.getString("currency");
-		Double price = offer.getDouble("price");
-		String offerPrice = "";
-		if (price != 0) {
-			NumberFormat format = NumberFormat.getCurrencyInstance();
-			if (offerCurrency != null) {
-				Currency currency = Currency.getInstance(offerCurrency);
-				format.setCurrency(currency);
-			}
-			offerPrice = format.format(price);
-		} else {
-			offerPrice = "gratis";
-		}
+
+		MyBook myBook = new MyBook(offer);
+		String offerPrice = myBook.getPriceFormated();
 
 		holder.username.setText(title);
 		holder.btnWant.setOnClickListener(holder);

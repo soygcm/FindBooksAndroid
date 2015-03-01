@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseGeoPoint;
@@ -69,7 +70,7 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 	    
 	    currentUser = ParseUser.getCurrentUser();
 	    
-		if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
+		if (currentUser != null) {
 			getUserFacebookInfo();
 		}
 	    
@@ -104,25 +105,22 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 
 	private void getUserFacebookInfo() {
 		
-		Log.d(FindBooks.TAG, "get GraphUser");						
+		Log.d(FindBooks.TAG, "get GraphUser");	
+		
+		currentUser.fetchInBackground(new GetCallback<ParseUser>() {
+			@Override
+			public void done(ParseUser currentUser, ParseException arg1) {
+				
+				printUserInfo();
+				
+				
+			}
+		});
+		
+		printUserInfo();
 
-		String name = currentUser.getString("name");
-		String email = currentUser.getString("email");
-		String username = currentUser.getString("nickname");
-		String phone = currentUser.getString("phone");
-		String address = currentUser.getString("address");
-		String currencyCode = currentUser.getString("currency");
-
 		
-		setProfileImage(currentUser.getString("facebookId"));
 		
-		txtName.setText(name);
-		txtMail.setText(email);
-		txtUsername.setText(username);
-		txtPhone.setText(phone);
-		place.setText(address);
-		
-		setCurrency(currencyCode);
       
 		Session session = ParseFacebookUtils.getSession();
 		
@@ -169,6 +167,26 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 			request.executeAsync();
 			
 		}
+	}
+
+	private void printUserInfo() {
+
+		String name = currentUser.getString("name");
+		String email = currentUser.getString("email");
+		String username = currentUser.getString("nickname");
+		String phone = currentUser.getString("phone");
+		String address = currentUser.getString("address");
+		String currencyCode = currentUser.getString("currency");
+
+		txtName.setText(name);
+		txtMail.setText(email);
+		txtUsername.setText(username);
+		txtPhone.setText(phone);
+		place.setText(address);
+
+		setCurrency(currencyCode);
+		
+		setProfileImage(currentUser.getString("facebookId"));
 	}
 
 	private void setProfileImage(String facebookId) {

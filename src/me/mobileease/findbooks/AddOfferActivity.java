@@ -2,6 +2,7 @@ package me.mobileease.findbooks;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -60,7 +61,7 @@ public class AddOfferActivity extends ActionBarActivity implements
 	private Button btnSave;
 	private String bookId;
 	private ParseObject offer;
-	private Spinner currency;
+//	private Spinner currency;
 	private Spinner condition;
 	private Spinner bookbinding;
 	private String bookTitle;
@@ -84,8 +85,9 @@ public class AddOfferActivity extends ActionBarActivity implements
 	private Intent intent;
 	private List<AddOfferOptions> conditions;
 	private List<AddOfferOptions> bookbindings;
-	private String offerCurrency;
+//	private String offerCurrency;
 	private String offerId;
+	private TextView txtCurrency;
 	
 	public static final String EDIT = "edit";
 
@@ -100,7 +102,7 @@ public class AddOfferActivity extends ActionBarActivity implements
 		btnSave = (Button) findViewById(R.id.btnSave);
 		save = (Button) findViewById(R.id.save);
 		offerType = (Spinner) findViewById(R.id.offerType);
-		currency = (Spinner) findViewById(R.id.currency);
+//		currency = (Spinner) findViewById(R.id.currency);
 		condition = (Spinner) findViewById(R.id.condition);
 		bookbinding = (Spinner) findViewById(R.id.bookbinding);
 		imgBook = (ImageView) findViewById(R.id.imgBook);
@@ -111,6 +113,7 @@ public class AddOfferActivity extends ActionBarActivity implements
 		comment = (EditText) findViewById(R.id.comment);
 		View offerView = (View) findViewById(R.id.offerView);
 		offerView.setVisibility(View.GONE);
+		txtCurrency = (TextView) findViewById(R.id.txtCurrency);
 		
 		intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
@@ -150,12 +153,28 @@ public class AddOfferActivity extends ActionBarActivity implements
 		
 		getConfigAdapters();
 		
+		ParseUser user = ParseUser.getCurrentUser();
+		
+		setCurrency(user.getString("currency"));
+		
 		if(editOffer){
 			setParamsAndOfferId();
 		}
 		
 	}
 
+	private void setCurrency(String currencyCode) {
+		
+		Currency currency  = Currency.getInstance(currencyCode);
+		
+		String currencyString = currency.getSymbol() + " ("+ currency.getCurrencyCode() + ") ";
+		
+		
+		txtCurrency.setText(currencyString);
+		
+		
+	}
+	
 	private void setParamsAndOfferId() {
 		
 		offer = ParseObject.createWithoutData(MyBook.CLASS, offerId);
@@ -164,23 +183,14 @@ public class AddOfferActivity extends ActionBarActivity implements
 		offerCondition = intent.getStringExtra(TransactionActivity.OFFER_CONDITION);
 		offerBinding = intent.getStringExtra(TransactionActivity.OFFER_BINDING);
 		offerPrice = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
-		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);
-		offerCurrency = intent.getStringExtra(AddOfferActivity.OFFER_CURRENCY);
+		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);		
+		
 		
 		comment.setText(offerComment);
 		
 		if(offerPrice > 0){
 			offerType.setSelection(1);
 			price.setText(String.valueOf(offerPrice));
-			
-			/*
-			 * SeleccionarMoneda spinner, monedasUsuario, monedaCode
-			 */
-			if (offerCurrency.equals("CRC")) {
-				currency.setSelection(0);
-			} else if (offerCurrency.equals("USD")) {
-				currency.setSelection(1);
-			}
 			
 		}else{
 			offerType.setSelection(0);
@@ -247,17 +257,17 @@ public class AddOfferActivity extends ActionBarActivity implements
 
 		condition.setAdapter(adapterCondition);
 		bookbinding.setAdapter(adapterBookbinding);
-		currency.setAdapter(adapterCurrency);
+//		currency.setAdapter(adapterCurrency);
 
 		condition.setPrompt("En que condición está el libro");
 		bookbinding.setPrompt("Encuadernación");
 
 		condition.setOnItemSelectedListener(this);
 		bookbinding.setOnItemSelectedListener(this);
-		currency.setOnItemSelectedListener(this);
+//		currency.setOnItemSelectedListener(this);
 		
 
-		currency.setSelection(0);
+//		currency.setSelection(0);
 		bookbinding.setSelection(0);
 		condition.setSelection(0);
 	}
@@ -396,10 +406,10 @@ public class AddOfferActivity extends ActionBarActivity implements
 
 			if (position == 0) {
 				price.setVisibility(View.GONE);
-				currency.setVisibility(View.GONE);
+				txtCurrency.setVisibility(View.GONE);
 			} else if (position == 1) {
 				price.setVisibility(View.VISIBLE);
-				currency.setVisibility(View.VISIBLE);
+				txtCurrency.setVisibility(View.VISIBLE);
 			}
 
 		} else if (id == R.id.currency) {
