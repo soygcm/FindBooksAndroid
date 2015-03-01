@@ -62,13 +62,48 @@
     
     
     <!-- App -->
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_transactions">Transacciones</string>
+    
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="Find_Books">Find\nBooks</string>
+    
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_transactions">Transacciones</string> 
     <string name="title_activity_add_offer">AddOfferActivity</string>
     <string name="title_activity_book">BookActivity</string>
+    <string name="title_end_transaction">Cuentame, ¿Como fue la transacción?</string>
+    <string name="title_perfil">PERFIL</string>
+    <string name="title_transacciones">TRANSACCIONES</string>
+    
+    <string name="contacto_nombrre_usuario">Nombre de usuario</string>
+    <string name="contacto_correo">Correo</string>
+    <string name="contacto_telefono">Teléfono</string>
+    <string name="contacto_ciudad">Ciudad</string>
+    <string name="contacto_moneda">Moneda</string>
+    
+    
+    
+    <string name="btn_guardar">GUARDAR</string>
+    <string name="btn_aceptar">ACEPTAR</string>
+    <string name="btn_cancelar">CANCELAR</string>
+    <string name="btn_concluir">CONCLUIR</string>
+    <string name="btn_lo_quiero">LO QUIERO</string>
+    
+    
+    <string name="hint_precio">Precio</string>
+    <string name="hint_comentario_libro">Comenta sobre el libro</string>
+    <string name="hint_buscador">Title/Author/ISBN</string>    
+    
+    <string name="btn_foto_libro">Toma una foto a tu libro</string>
+        
+    
       			
+    
+    
+    
+    
+    
+    
     <string-array name="offer_array">
         <item>Regalar</item>
         <item>Vender</item>

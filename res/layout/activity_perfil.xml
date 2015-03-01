@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:gravity="left|center_vertical"
-            android:text="PERFIL"
+            android:text="@string/title_perfil"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"     
              />  
              
@@ -32,7 +32,7 @@
             android:paddingRight="16dp"
             android:id="@+id/save"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="GUARDAR"  />
+            android:text="@string/btn_guardar"  />
         
      </android.support.v7.widget.Toolbar>
 
@@ -105,7 +105,7 @@
 			<TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Nombre de usuario"
+	            android:text="@string/contacto_nombrre_usuario"
 	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
 	            android:textColor="@color/text_gris" 
 	            android:layout_gravity="left|center_vertical"
@@ -157,7 +157,7 @@
 			<TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Correo"
+	            android:text="@string/contacto_correo"
 	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
 	            android:textColor="@color/text_gris" 
 	            android:layout_gravity="left|center_vertical"
@@ -207,7 +207,7 @@
 			<TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Teléfono"
+	            android:text="@string/contacto_telefono"
 	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
 	            android:textColor="@color/text_gris" 
 	            android:layout_gravity="left|center_vertical"
@@ -239,7 +239,8 @@
 		            android:ems="12"
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp"
-		            android:text="" >
+		            android:text="" 
+		            >
 		             
 		        </EditText>
 		        
@@ -263,7 +264,7 @@
 			<TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Ciudad"
+	            android:text="@string/contacto_ciudad"
 	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
 	            android:textColor="@color/text_gris" 
 	            android:layout_gravity="left|center_vertical"
@@ -298,19 +299,27 @@
 				    android:src="@drawable/ic_place_black_24dp"
 				    
 				    />
-		        
+		    
+		    
+		    
+		       >
 		        <AutoCompleteTextView 
 		            android:id="@+id/place"
-		            android:layout_weight="1"
-		            android:layout_width="0dp"
-		            android:layout_height="wrap_content"
-		            android:layout_gravity="left|center_vertical"
-		            android:layout_marginLeft="32dp"
+					android:layout_weight="1"
+		    android:layout_width="0dp"
+		    android:layout_height="wrap_content"
+		            
 		            android:ems="12"
 		            android:text=""
 		            android:textColor="@color/negro"
-		            android:background="@android:color/transparent" />
-		            
+		            android:layout_gravity="left|bottom"
+					android:background="@drawable/edit_text_cafe"
+		            android:layout_marginLeft="32dp"
+		            />
+		           
+		           
+		    
+		   
 		        
 		        
 		        <ImageButton
@@ -337,7 +346,7 @@
 			<TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Moneda"
+	            android:text="@string/contacto_moneda"
 	            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"  
 	            android:textColor="@color/text_gris" 
 	            android:layout_gravity="left|center_vertical"
@@ -370,7 +379,7 @@
 		            android:layout_gravity="left|bottom"
 		            android:textColor="@color/negro"
 		            android:layout_marginLeft="32dp"
-		            android:text="Moneda"
+		            android:text=""
 		            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
 	            
 	           />

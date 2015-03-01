@@ -50,10 +50,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:gravity="right|center_vertical"
-            android:paddingRight="15dp"
             android:text="USUARIO"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"  
-             />
+            />
           
         
     </android.support.v7.widget.Toolbar>

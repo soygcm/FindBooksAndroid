@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:gravity="left|center_vertical"
-            android:text="TRANSACCIONES"
+            android:text="@string/title_transacciones"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"     
              />  
         

@@ -24,7 +24,7 @@
     		    android:layout_marginRight="48dp"
             android:textColor="@color/text_cafe_claro"
 			android:textAlignment="gravity"
-            android:text="Cuentame, ¿Como fue la transacción?"
+            android:text="@string/title_end_transaction"
              />
              
  </android.support.v7.widget.Toolbar>

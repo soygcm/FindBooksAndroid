@@ -50,11 +50,11 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
-            android:textColor="#fff"
+            android:textColor="@color/blanco"
             android:paddingRight="16dp"
            
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="GUARDAR" 
+            android:text="@string/btn_guardar"
             
             />
         
@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:visibility="gone"
-        android:hint="Precio"
+        android:hint="@string/hint_precio"
         android:inputType="numberDecimal"
          />
 
@@ -133,7 +133,7 @@
     android:id="@+id/comment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="Comentario adicional"
+    android:hint="@string/hint_comentario_libro"
 
 
     android:ems="10" />
@@ -146,7 +146,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="center_horizontal"
-		            android:text="Tomale una foto a tu libro" />
+		            android:text="@string/btn_foto_libro" />
 
 		        <ImageView
 		            android:id="@+id/photo"
@@ -161,7 +161,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="center_horizontal"
-		            android:text="Guardar" />
+		            android:text="@string/btn_guardar" />
 		    </LinearLayout>
 		</LinearLayout>
 

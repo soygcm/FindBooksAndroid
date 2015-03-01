@@ -49,7 +49,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:layout_height="wrap_content"
-            android:text="Tú deseas adquirir el libro de Daniel, ¡Crear o Morir!"
+            android:text="Tú deseas adquirir el libro de ---, ----___"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageView

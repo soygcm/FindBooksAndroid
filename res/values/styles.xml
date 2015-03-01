@@ -52,10 +52,17 @@
 
     <style name="Botonbasic">
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">10dp</item>
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:layout_marginTop">6dp</item>
+        
         <item name="android:background">@color/ui_fondo_medio</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/text_cafe_oscuro</item>
     </style>
 

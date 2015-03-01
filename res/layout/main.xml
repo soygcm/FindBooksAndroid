@@ -6,29 +6,68 @@
     android:gravity="center"
     android:id="@+id/parse_login"
     android:visibility="visible"
+    android:background="@color/ui_fondo_claro"
     >
 
+    
+    <ScrollView 
+        android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadingEdge="none" 
+    android:fadingEdgeLength="0dp"
+    android:overScrollMode="never"
+        >
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="16dp" >
+        
+        
+    
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:orientation="horizontal"
+		        android:layout_marginBottom="20dp" >
+		        
+			    <ImageView
+			        android:layout_width="80dp"
+			        android:layout_height="80dp"
+			        android:layout_gravity="center_vertical"
+			        
+			        android:src="@drawable/finbooks" />
+			    
+			    
+			    <TextView
+			    android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:lines="2"
+		        android:text="@string/Find_Books" 
+		        android:layout_gravity="center_vertical"
+		       android:textSize="30dp"
+		       android:layout_marginLeft="12dp"
+		        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"  />
+		    
+		    </LinearLayout>
     
 
     <EditText
         android:id="@+id/login_username_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ParseLoginUI.EditText"
-        android:hint="@string/com_parse_ui_username_input_hint" />
+        
+        android:hint="Usuario" />
 
     <EditText
         android:id="@+id/login_password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ParseLoginUI.EditText"
+        
         android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
         android:fontFamily="sans-serif"
-        android:hint="@string/com_parse_ui_password_input_hint"
+        android:hint="Contraseña"
         android:inputType="textPassword"
         android:selectAllOnFocus="true" />
 
@@ -58,4 +97,5 @@
         android:layout_height="wrap_content"
         android:text="Facebook" />
 	</LinearLayout>
+	</ScrollView>
 </LinearLayout>

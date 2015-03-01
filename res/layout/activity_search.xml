@@ -18,35 +18,35 @@
              
 <!--         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" -->
 <!--              -->
-   <LinearLayout 
-   	android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginRight="@dimen/abc_action_bar_default_height_material"
-       >
-    <EditText
-        android:id="@+id/searchQuery"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-
-        
-        android:textColor="@color/blanco"
-        android:background="@android:color/transparent"
-        android:hint="Title/Author/ISBN"
-        android:textColorHint="@color/blanco_80"
-        >
-		
-        <requestFocus />
-    </EditText>
-    
-    <LinearLayout 
-    android:layout_width="fill_parent"
-    android:layout_height="2dp"
-    android:background="@color/blanco_80" 
-        ></LinearLayout>
-    
-    </LinearLayout> 
+		   <LinearLayout 
+		   	android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:layout_gravity="center_horizontal"
+		    android:layout_marginRight="@dimen/abc_action_bar_default_height_material"
+		       >
+			    <EditText
+			        android:id="@+id/searchQuery"
+			        android:layout_width="fill_parent"
+			        android:layout_height="fill_parent"
+			
+			        
+			        android:textColor="@color/blanco"
+			        android:background="@android:color/transparent"
+			        android:hint="@string/hint_buscador"
+			        android:textColorHint="@color/blanco_80"
+			        >
+					
+			        <requestFocus />
+			    </EditText>
+			    
+			    <LinearLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="2dp"
+			    android:background="@color/blanco_80" 
+			        ></LinearLayout>
+		    
+		    </LinearLayout> 
 
     
     

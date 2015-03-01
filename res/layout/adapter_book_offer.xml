@@ -54,7 +54,7 @@
                             android:id="@+id/txtUsername"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Nombre"
+                            android:text="@string/contacto_nombrre_usuario"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
                     </LinearLayout>
 
@@ -62,7 +62,7 @@
                         android:id="@+id/txtCondition"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Condicion, est ado, comen tario"
+                        android:text="@string/hint_comentario_libro"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
                 </LinearLayout>
 
@@ -99,11 +99,11 @@
                     android:id="@+id/btnWant"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
+					android:layout_height="wrap_content"
                     style="@style/Botonbasic"
                     android:layout_gravity="right"
-                    android:text="Lo quiero"
-                    android:textSize="20dp" />
+                    android:text="@string/btn_lo_quiero"
+                     />
                 
             </LinearLayout>
             
