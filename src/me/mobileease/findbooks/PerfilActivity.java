@@ -1,7 +1,12 @@
 package me.mobileease.findbooks;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
@@ -15,6 +20,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -26,6 +32,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.AutoCompleteTextView.Validator;
@@ -33,7 +42,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PerfilActivity extends ActionBarActivity implements OnClickListener {
+public class PerfilActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
 
 	public static final String USER_NEW = "userNew";
 	private ParseUser currentUser;
@@ -46,6 +55,8 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 	private ImageView imgPerfil;
 	private AutoCompleteTextView place;
 	private ImageView searchPlace;
+	protected ArrayAdapter<PlaceResult> adapter;
+	private TextView txtCurrency;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,6 +90,7 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
         txtName = (TextView) findViewById(R.id.perfilNombre);
         txtPhone = (TextView) findViewById(R.id.perfilTelefono);
         txtMail = (TextView) findViewById(R.id.perfilCorreo);
+        txtCurrency = (TextView) findViewById(R.id.txtCurrency);
         imgPerfil = (ImageView) findViewById(R.id.PerfilImagen);
         place = (AutoCompleteTextView) findViewById(R.id.place); 
         save = (Button) findViewById(R.id.save);
@@ -86,7 +98,7 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
         save.setOnClickListener(this);
         searchPlace.setOnClickListener(this);
         
-        
+        place.setOnItemClickListener(this);
         
 	}
 
@@ -98,6 +110,9 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		String email = currentUser.getString("email");
 		String username = currentUser.getString("nickname");
 		String phone = currentUser.getString("phone");
+		String address = currentUser.getString("address");
+		String currencyCode = currentUser.getString("currency");
+
 		
 		setProfileImage(currentUser.getString("facebookId"));
 		
@@ -105,6 +120,9 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		txtMail.setText(email);
 		txtUsername.setText(username);
 		txtPhone.setText(phone);
+		place.setText(address);
+		
+		setCurrency(currencyCode);
       
 		Session session = ParseFacebookUtils.getSession();
 		
@@ -188,9 +206,17 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 	private void searchPlace() {
 		
 		String address = place.getText().toString();
-		String url = "http://maps.googleapis.com/maps/api/geocode/json?address="+address+"&sensor=true";
+		String url = null;
+		try {
+			url = "http://maps.googleapis.com/maps/api/geocode/json?address="+URLEncoder.encode(address, "UTF-8")+"&sensor=true";
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
 		
-//		Ion.with(this).load(url).set
+		if(url != null){
+		
+		Log.d(FindBooks.TAG, "searching Place: "+ url);
+
 		
 		Ion.with(this)
 		.load(url)
@@ -207,26 +233,29 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 				   
 				   for (JsonElement jsonElement : results) {
 					   
-					   PlaceResult place = new PlaceResult(jsonElement.getAsJsonObject());
+					   PlaceResult placeResult = new PlaceResult(jsonElement.getAsJsonObject());
 					   
-					   places.add(place);
+					   places.add(placeResult);
 					   
 				   }
 				   
 				   Log.d(FindBooks.TAG, "searchPlace: "+ results.size());
 				   
-				   ArrayAdapter<PlaceResult> adapter = new ArrayAdapter<PlaceResult>(PerfilActivity.this, android.R.layout.simple_list_item_1, places);
+				   adapter = new ArrayAdapter<PlaceResult>(PerfilActivity.this, android.R.layout.simple_list_item_1, places);
 				   place.setAdapter(adapter);
 				   place.setText("");
 				   place.showDropDown();
+
 				   
 			   }else{
-				   
+				   Log.d(FindBooks.TAG, "error Searching: "+ e.getLocalizedMessage());
 			   }
 
 		   
 		   	}
 		});
+		
+		}
 
 //		
 	}
@@ -236,18 +265,29 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		
 
 		private String name;
-		private long lat;
-		private long lng;
+		private double lat;
+		private double lng;
 		private String countryCode;
+		private String currencyCode;
 		
 		public PlaceResult(JsonObject jsonObject) {
 			
 			name = jsonObject.get("formatted_address").getAsString();
+			
 			JsonArray address_components = jsonObject.getAsJsonArray("address_components");
-			
 			JsonObject country = address_components.get(address_components.size()-1).getAsJsonObject();
-			
 			countryCode = country.get("short_name").getAsString();
+			
+			JsonObject geometry = jsonObject.getAsJsonObject("geometry");
+			JsonObject location = geometry.getAsJsonObject("location");
+			lat = location.get("lat").getAsDouble();
+			lng = location.get("lng").getAsDouble();
+			
+			Locale locale = Locale.getDefault();
+			
+			Locale currencyLocale = new Locale(locale.getLanguage(), countryCode);
+			Currency currency = Currency.getInstance(currencyLocale);
+			currencyCode = currency.getCurrencyCode();
 			
 		}
 
@@ -255,11 +295,11 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 			return name;
 		}
 
-		public long getLat() {
+		public double getLat() {
 			return lat;
 		}
 
-		public long getLng() {
+		public double getLng() {
 			return lng;
 		}
 
@@ -269,6 +309,10 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		
 		public String toString(){
 			return this.name;
+		}
+
+		public String getCurrency() {
+			return this.currencyCode;
 		}
 		
 	}
@@ -311,6 +355,41 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 	protected void showHome() {
 		Intent intent = new Intent(this, HomeActivity.class);
 		startActivity(intent);
+	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+		///current user put currency
+				///address
+				///lat, lng
+				///
+				
+		PlaceResult placeResult = adapter.getItem(position);
+		
+		Log.d(FindBooks.TAG, "place selected:" + placeResult.getName());
+		
+		currentUser.put("currency", placeResult.getCurrency() );
+		currentUser.put("address", placeResult.getName() );
+		double latitude = placeResult.getLat();
+		double longitude = placeResult.getLng();
+		currentUser.put("location", new ParseGeoPoint(latitude, longitude)  );
+	
+		setCurrency(placeResult.getCurrency());
+		
+	}
+
+	private void setCurrency(String currencyCode) {
+		
+		Currency currency  = Currency.getInstance(currencyCode);
+		
+		String currencyString = currency.getSymbol() + " ("+ currency.getCurrencyCode() + ") ";
+		
+		
+		txtCurrency.setText(currencyString);
+		
+		
 	}
 
 }

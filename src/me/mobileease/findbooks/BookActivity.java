@@ -46,7 +46,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class BookActivity extends ActionBarActivity implements
-		OnItemClickListener, OnClickListener {
+	OnClickListener {
 
 	public static final String BOOK_ID = "book_id";
 	public static final String FROM_HOME = "fromHome";
@@ -60,14 +60,16 @@ public class BookActivity extends ActionBarActivity implements
 	private ListView list;
 	private String bookId;
 	private ProgressDialog progress;
-	protected BookOfferAdapter adapter;
+	
+	protected BookOfferAdapter adapterOffers;
+	private TransactionAdapter adapterTransactions;
+	
 	protected ParseObject bookWant;
 	private boolean fromHome;
 	private String bookType;
 	private ImageView imgBook;
 	private FrameLayout frameBackground;
 	private View header;
-	private TransactionAdapter adapterTransactions;
 	private String bookTitle;
 	private String bookAuthors;
 	private String bookImage;
@@ -120,7 +122,6 @@ public class BookActivity extends ActionBarActivity implements
 		txtCondition = (TextView) header.findViewById(R.id.txtCondition);
 		txtPrice = (TextView) header.findViewById(R.id.txtPrice);
 
-		//list.setOnItemClickListener(this);
 		Intent intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
 		offerId = intent.getStringExtra(BookActivity.OFFER_ID);
@@ -148,12 +149,12 @@ public class BookActivity extends ActionBarActivity implements
 
 		title.setText(bookTitle);
 		authors.setText(bookAuthors);
-
+		
 		adapterTransactions = new TransactionAdapter(BookActivity.this,
-				new ArrayList<ParseObject>());
+				new ArrayList<ParseObject>(), false, false);
 		list.setAdapter(adapterTransactions);
-		list.setOnItemClickListener(this);
 
+		
 		setTitle("");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -166,7 +167,7 @@ public class BookActivity extends ActionBarActivity implements
 		if (fromHome) {
 			getTransactions();
 		} else {
-			wantThisBookAndGetOffers();
+			knowUserWantBookAndGetOffers();
 		}
 
 	}
@@ -217,7 +218,7 @@ public class BookActivity extends ActionBarActivity implements
 	}
 
 	/**
-	 * Falta el ACL, para los permisos y posiblemente hacer query segun el
+	 * Falta el ACL??, para los permisos y posiblemente hacer query segun el
 	 * usuario
 	 */
 	private void getTransactions() {
@@ -225,13 +226,18 @@ public class BookActivity extends ActionBarActivity implements
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Transaction");
 		ParseObject book = ParseObject.createWithoutData("MyBook", offerId);
 
+		boolean showOffer = false;
+		
 		if (bookType.equals("OFFER")) {
 			query.whereEqualTo("bookOffer", book);
 			Log.d(FindBooks.TAG, "OFFER,  bookId:" + bookId);
 		} else if (bookType.equals("WANT")) {
+			showOffer = true;
 			query.whereEqualTo("bookWant", book);
 			Log.d(FindBooks.TAG, "WANT,  bookId:" + bookId);
 		}
+		
+		final boolean finalShowOffer = showOffer;
 
 		query.include("bookOffer");
 		query.include("bookWant");
@@ -244,9 +250,12 @@ public class BookActivity extends ActionBarActivity implements
 				if (e == null) {
 					Log.d(FindBooks.TAG, "total: " + trans.size());
 					adapterTransactions = new TransactionAdapter(
-							BookActivity.this, trans);
+							BookActivity.this, trans, false, finalShowOffer);
 					list.setAdapter(adapterTransactions);
-					updateBackgroundSize();
+					adapterTransactions.notifyDataSetChanged();
+					list.setOnItemClickListener(adapterTransactions);
+
+//					updateBackgroundSize();
 				} else {
 					Log.d(FindBooks.TAG, "error: " + e.getMessage());
 				}
@@ -260,7 +269,7 @@ public class BookActivity extends ActionBarActivity implements
 	 * Descubrir si este libro ya lo quiero, para evitar crear otro Want
 	 * 
 	 */
-	private void wantThisBookAndGetOffers() {
+	private void knowUserWantBookAndGetOffers() {
 
 		progress = new ProgressDialog(this);
 		progress.setTitle("Obteniendo ofertas");
@@ -307,9 +316,9 @@ public class BookActivity extends ActionBarActivity implements
 				if (e == null) {
 
 					Log.d("FB", "Ofertas: " + offers.size());
-					adapter = new BookOfferAdapter(BookActivity.this, offers,
+					adapterOffers = new BookOfferAdapter(BookActivity.this, offers,
 							bookWant);
-					list.setAdapter(adapter);
+					list.setAdapter(adapterOffers);
 
 					// adapter.addAll(offers);
 
@@ -368,42 +377,17 @@ public class BookActivity extends ActionBarActivity implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-		// if showing offer or transaction
-
-		if (fromHome) {
-			showTransaction(position);
-		} else {
-			// showOffer
-		}
-	}
-
-	private void showTransaction(int position) {
-
-		Intent intent = new Intent(BookActivity.this, TransactionActivity.class);
-
-		ParseObject transaction = adapterTransactions.getItem(position - 1);
-
-		String id = transaction.getObjectId();
-
-		intent.putExtra(BookActivity.BOOK_ID, id);
-
-		startActivity(intent);
-	}
-
-	@Override
 	public void onClick(View v) {
 
 		int id = v.getId();
 		
 		if(id == R.id.edit){
-			showAddOffer();
+			showEditOffer();
 			
 		}
 	}
 
-	private void showAddOffer() {
+	private void showEditOffer() {
 
 		Intent intent = new Intent(this, AddOfferActivity.class);
 		

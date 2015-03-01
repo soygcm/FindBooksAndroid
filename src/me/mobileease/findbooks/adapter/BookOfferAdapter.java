@@ -74,7 +74,7 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 
 		String title = user.getString("username");
 		String offerCondition = offer.getString("condition");
-		String offerBinding = offer.getString("bookBinding");
+		String offerBinding = offer.getString("bookbinding");
 		String offerComment = offer.getString("comment");
 		String offerCurrency = offer.getString("currency");
 		Double price = offer.getDouble("price");
