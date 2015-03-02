@@ -50,7 +50,10 @@
 		            android:layout_width="wrap_content"
 		            android:entries="@array/my_book_array"
 					android:layout_gravity="right"
-		            android:layout_height="fill_parent" />
+		            android:layout_height="fill_parent"
+		            android:paddingRight="16dp"
+		            
+		         />
         
         </android.support.v7.widget.Toolbar>
 

@@ -11,7 +11,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="16dp"
-    android:padding="5dp"
+    android:padding="6dp"
     android:background="@color/blanco"
     android:orientation="horizontal" >
 
@@ -36,7 +36,9 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="6dp" >
 
                     <LinearLayout
                         android:id="@+id/perfilView"
@@ -55,15 +57,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/contacto_nombrre_usuario"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceMedium" 
+                            android:layout_gravity="center_vertical"/>
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/txtCondition"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/hint_comentario_libro"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:text="rellenar aqui"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_gravity="center_vertical"
+                         />
                 </LinearLayout>
 
                 <ImageButton
@@ -73,7 +78,7 @@
                     android:layout_height="48dp"
                     android:background="@android:color/transparent"
                     android:layout_gravity="center_vertical"
-                    android:visibility="gone"
+                                            android:visibility="gone"
                     
                     />
 

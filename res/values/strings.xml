@@ -88,16 +88,14 @@
     <string name="btn_cancelar">CANCELAR</string>
     <string name="btn_concluir">CONCLUIR</string>
     <string name="btn_lo_quiero">LO QUIERO</string>
+    <string name="btn_foto_libro">TOMALE UNA FOTO</string>     
     
     
     <string name="hint_precio">Precio</string>
     <string name="hint_comentario_libro">Comenta sobre el libro</string>
     <string name="hint_buscador">Title/Author/ISBN</string>    
     
-    <string name="btn_foto_libro">Toma una foto a tu libro</string>
-        
-    
-      			
+     			
     
     
     

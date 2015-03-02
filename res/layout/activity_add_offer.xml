@@ -74,16 +74,24 @@
 		    android:orientation="vertical" >
 		    
 		    
+		    
 		    <include layout="@layout/view_book"
 		        android:id="@+id/header"
 		        />
 
+		    
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical" >
+		        
 		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:background="@color/ui_fondo_claro"
 		        android:padding="16dp"
 		        android:orientation="vertical" >
+		        
 
 		        <Spinner
 		            android:id="@+id/offerType"
@@ -95,7 +103,9 @@
 		        <TextView
     android:id="@+id/txtCurrency"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="3dp"
+    />
 		        
 <EditText
         android:id="@+id/price"
@@ -107,16 +117,23 @@
         android:inputType="numberDecimal"
          />
 
-
+</LinearLayout>
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="2dp"
     android:background="@color/ui_fondo_medio"
     android:orientation="vertical" 
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp">
+   >
 </LinearLayout>
+
+ <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:background="@color/ui_fondo_claro"
+		        android:padding="16dp"
+		        android:orientation="vertical" >
+		        
 
 <Spinner
     android:id="@+id/bookbinding"
@@ -143,26 +160,30 @@
 		        <Button
 		            android:id="@+id/take_photo"
 		            style="@style/Botonbasic"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
+		            
 		            android:layout_gravity="center_horizontal"
-		            android:text="@string/btn_foto_libro" />
+		            android:text="@string/btn_foto_libro"
+		            android:visibility="gone" />
 
 		        <ImageView
 		            android:id="@+id/photo"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="center_horizontal"
-		            android:src="@drawable/ic_launcher" />
+		            android:src="@drawable/ic_launcher"
+		             android:visibility="gone" />
 
 		        <Button
 		            android:id="@+id/btnSave"
 		            style="@style/Botonbasic"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
+		            
 		            android:layout_gravity="center_horizontal"
-		            android:text="@string/btn_guardar" />
+		            android:text="@string/btn_guardar"
+		             android:visibility="gone" />
 		    </LinearLayout>
+		
+		
+		</LinearLayout>
 		</LinearLayout>
 
  </ScrollView>

@@ -50,6 +50,7 @@
             android:paddingRight="5dp"
             android:layout_height="wrap_content"
             android:text="Tú deseas adquirir el libro de ---, ----___"
+            android:layout_gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageView

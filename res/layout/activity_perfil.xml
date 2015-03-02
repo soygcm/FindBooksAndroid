@@ -329,7 +329,7 @@
             android:layout_gravity="right|bottom"
             android:background="@null"
             
-            android:src="@drawable/ic_buscar"
+            android:src="@drawable/ic_cafe_buscar"
              />
 		        
 		        

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -52,8 +52,8 @@
 
     <style name="Botonbasic">
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_width">36dp</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
         <item name="android:layout_marginLeft">4dp</item>
         <item name="android:layout_marginRight">4dp</item>
         <item name="android:layout_marginBottom">6dp</item>
@@ -66,11 +66,18 @@
         <item name="android:textColor">@color/text_cafe_oscuro</item>
     </style>
 
+    
     <style name="spinnerItemStyle">
-        <item name="android:padding">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">3dp</item>
+        
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/text_cafe_oscuro</item>
     </style>
+    
+    
+    
 
     <style name="ParseLoginUI.HelpButton" parent="@android:style/Widget.Button">
         <item name="android:layout_width">wrap_content</item>
