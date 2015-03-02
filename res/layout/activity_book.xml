@@ -21,7 +21,7 @@
     <LinearLayout 
         android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
-		android:background="#34110800"
+		android:background="@color/ui_fondo_libro"
         >
         
     </LinearLayout>
@@ -52,6 +52,7 @@
 					android:layout_gravity="right"
 		            android:layout_height="fill_parent"
 		            android:paddingRight="16dp"
+		            android:visibility="gone"
 		            
 		         />
         

@@ -30,6 +30,7 @@
             android:id="@+id/imageBook"
             android:scaleType="centerCrop"
             android:background="@color/blanco"
+            android:src="@drawable/finbooks"
             />
         
         <TextView

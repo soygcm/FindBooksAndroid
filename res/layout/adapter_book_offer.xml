@@ -102,9 +102,9 @@
 
                 <Button
                     android:id="@+id/btnWant"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-					android:layout_height="wrap_content"
+                    
+                    
+					
                     style="@style/Botonbasic"
                     android:layout_gravity="right"
                     android:text="@string/btn_lo_quiero"

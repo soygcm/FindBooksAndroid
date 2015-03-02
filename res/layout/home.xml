@@ -34,6 +34,7 @@
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:background="@null"
             android:src="@drawable/ic_buscar"
+            android:visibility="gone"
             />
           <ImageButton
             android:id="@+id/btnagregar"
@@ -41,6 +42,7 @@
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:background="@null"
             android:src="@drawable/ic_agregar"
+            android:visibility="gone"
             />
           
           

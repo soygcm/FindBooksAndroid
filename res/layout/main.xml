@@ -82,21 +82,32 @@
             android:id="@+id/parse_login_button"
             style="@style/ParseLoginUI.Button"
             android:layout_weight="0.5"
-            android:text="@string/com_parse_ui_parse_login_button_label" />
+            android:text="@string/com_parse_ui_parse_login_button_label" 
+
+	            android:padding="5dp"
+	            android:background="@color/ui_boton_verde"
+	            android:textColor="@color/blanco"	            
+	            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <Button
             android:id="@+id/parse_signup_button"
             style="@style/ParseLoginUI.Button"
             android:layout_marginLeft="@dimen/com_parse_ui_small_horizontal_spacing"
             android:layout_weight="0.5"
-            android:text="@string/com_parse_ui_parse_signup_button_label" />
+            android:text="@string/com_parse_ui_parse_signup_button_label"
+            
+            android:padding="5dp"
+	            android:background="@color/ui_boton_verde"
+	            android:textColor="@color/blanco"	            
+	            android:textAppearance="?android:attr/textAppearanceMedium"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/facebook_login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Facebook" />
+        android:text="Facebook"
+        style="@style/Botonbasic" />
 	</LinearLayout>
 	</ScrollView>
 </LinearLayout>

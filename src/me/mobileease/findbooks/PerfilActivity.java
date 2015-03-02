@@ -304,8 +304,14 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 			Locale locale = Locale.getDefault();
 			
 			Locale currencyLocale = new Locale(locale.getLanguage(), countryCode);
-			Currency currency = Currency.getInstance(currencyLocale);
-			currencyCode = currency.getCurrencyCode();
+			
+			
+			try {
+				Currency currency = Currency.getInstance(currencyLocale);
+				currencyCode = currency.getCurrencyCode();				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 		}
 
@@ -400,12 +406,16 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 
 	private void setCurrency(String currencyCode) {
 		
-		Currency currency  = Currency.getInstance(currencyCode);
+		if(currencyCode != null){
+			
+			Currency currency  = Currency.getInstance(currencyCode);
+			
+			String currencyString = currency.getSymbol() + " ("+ currency.getCurrencyCode() + ") ";
+			
+			
+			txtCurrency.setText(currencyString);
+		}
 		
-		String currencyString = currency.getSymbol() + " ("+ currency.getCurrencyCode() + ") ";
-		
-		
-		txtCurrency.setText(currencyString);
 		
 		
 	}
