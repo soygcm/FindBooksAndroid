@@ -360,11 +360,11 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 				
 				if(e == null){
 					
-					if (userNew) {
-						showHome();
-					}else{						
-						onBackPressed();
-					}
+					showHome();
+//					if (userNew) {
+//					}else{						
+//						onBackPressed();
+//					}
 					
 				}else{
 					Log.d(FindBooks.TAG, "erro: "+ e.getLocalizedMessage());

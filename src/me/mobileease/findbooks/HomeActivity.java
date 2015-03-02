@@ -31,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.ConfigCallback;
 import com.parse.FindCallback;
@@ -53,6 +54,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	private ActionBarDrawerToggle mDrawerToggle;
 	private ListView listTransactions;
 	private ImageButton btnTransactions;
+	private TextView txtUsername;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,6 +80,8 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		// el icono
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+		txtUsername = (TextView) findViewById(R.id.perfil);
+		txtUsername.setText(user.getString("nickname"));
 		btnTransactions = (ImageButton) findViewById(R.id.btnTransactions);
 		btnTransactions.setOnClickListener(this);
 		// set clicklistener
@@ -308,7 +312,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 					// getApplication()).clearApplicationData();
 					// Go to the login view
 					finish();
-					// startLoginActivity();
+					startLoginActivity();
 
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
@@ -323,6 +327,15 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 				.setPositiveButton("Si", dialogClickListener)
 				.setNegativeButton("No", dialogClickListener).show();
 
+	}
+
+	protected void startLoginActivity() {
+
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+		startActivity(intent);
+		
 	}
 
 	private void editProfile() {

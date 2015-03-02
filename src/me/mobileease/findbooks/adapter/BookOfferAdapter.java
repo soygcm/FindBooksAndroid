@@ -172,7 +172,11 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 				@Override
 				public void done(ParseException e) {
 					if (e == null) {
-						btnWant.setBackgroundColor(Color.GREEN);
+						
+						btnWant.setVisibility(View.GONE);
+						
+//						btnWant.setBackgroundColor(Color.GREEN);
+						
 					} else {
 						e.printStackTrace();
 					}
