@@ -25,7 +25,6 @@ public class MyBook {
 		ParseUser user = ParseUser.getCurrentUser();
 		offerCurrency = user.getString("currency");
 		price = bookOffer.getDouble("price");
-		
 	}
 
 	public MyBook(Intent intent) {

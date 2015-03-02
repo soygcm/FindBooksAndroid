@@ -122,6 +122,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		String offerId = mBook.getObjectId();
 		String type = mBook.getString("type");
 		ParseObject book = mBook.getParseObject("book");
+		Number count = mBook.getNumber("transactionCount");
 		String bookId = book.getObjectId();
 		String title = book.getString("title");
 		List<String> authorsList = book.getList("authors");
@@ -159,7 +160,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		
 		intent.putExtra(AddOfferActivity.OFFER_CURRENCY, offerCurrency);
 		
-		
+		intent.putExtra(TransactionActivity.OFFER_TRANSACTION_COUNT, count);
 		
 		startActivity(intent);
 
@@ -205,6 +206,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
 		query.whereEqualTo("user", user);
+		query.whereNotEqualTo("deleted", true);
 		query.include("book");
 		query.findInBackground(new FindCallback<ParseObject>() {
 

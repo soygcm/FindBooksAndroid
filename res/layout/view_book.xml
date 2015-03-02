@@ -38,6 +38,20 @@
         android:layout_marginBottom="10dp"      
         android:textAppearance="?android:attr/textAppearanceMedium"
         />
+
+        <Button
+            android:id="@+id/noWant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Ya no lo quiero" />
+        
+        <Button
+            android:id="@+id/noOffer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Dejar de ofrecer" />
         
         </LinearLayout>
         

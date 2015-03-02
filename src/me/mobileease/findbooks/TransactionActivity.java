@@ -44,6 +44,7 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	public static final String TRANSACTION_ID = "transactionId";
 	public static final String TRANSACTION_END_WANT = "endedWant";
 	public static final String TRANSACTION_END_OFFER = "endedOffer";
+	public static final String OFFER_TRANSACTION_COUNT = "transactionCount";
 	private TextView txtTitle;
 	private TextView txtAuthors;
 	private TextView txtUsername;
@@ -231,6 +232,7 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 			toolbar.setBackgroundColor(getResources().getColor(
 					R.color.ui_boton_rojo));
 			profileView.setVisibility(View.GONE);
+			btnAccept.setVisibility(View.GONE);
 		}else{
 			if(accepted){
 				

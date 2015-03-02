@@ -13,7 +13,9 @@ import me.mobileease.findbooks.adapter.TransactionAdapter;
 import me.mobileease.findbooks.helpers.FindBooksConfig;
 import me.mobileease.findbooks.model.MyBook;
 import me.mobileease.findbooks.views.BookView;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,12 +40,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class BookActivity extends ActionBarActivity implements
 	OnClickListener {
@@ -89,6 +93,9 @@ public class BookActivity extends ActionBarActivity implements
 	private String offerId;
 	private Intent intent;
 	private double offerPrice;
+	private Button noOffer;
+	private Button noWant;
+	private int transactionCount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +131,8 @@ public class BookActivity extends ActionBarActivity implements
 		
 		txtCondition = (TextView) header.findViewById(R.id.txtCondition);
 		txtPrice = (TextView) header.findViewById(R.id.txtPrice);
+		noWant = (Button) header.findViewById(R.id.noWant);
+		noOffer = (Button) header.findViewById(R.id.noOffer);
 
 		intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
@@ -134,6 +143,7 @@ public class BookActivity extends ActionBarActivity implements
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
 		offerPrice = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
+		transactionCount = intent.getIntExtra(TransactionActivity.OFFER_TRANSACTION_COUNT, 0);
 		
 		offerCondition = intent
 				.getStringExtra(TransactionActivity.OFFER_CONDITION);
@@ -167,12 +177,29 @@ public class BookActivity extends ActionBarActivity implements
 
 		if (fromHome) {
 			getTransactions();
+			
+			noWantOfferInterface();
+			
 		} else {
 			knowUserWantBookAndGetOffers();
 		}
 
 	}
 	
+	private void noWantOfferInterface() {
+		
+		
+		if (bookType.equals("OFFER")) {
+			noOffer.setVisibility(View.VISIBLE);			
+		}else if (bookType.equals("WANT")) {
+			noWant.setVisibility(View.VISIBLE);
+		}
+		
+		noWant.setOnClickListener(this);
+		noOffer.setOnClickListener(this);
+		
+	}
+
 	protected void offerInfo() {
 		
 		
@@ -375,8 +402,70 @@ public class BookActivity extends ActionBarActivity implements
 		
 		if(id == R.id.edit){
 			showEditOffer();
+		}
+		if(id == R.id.noWant){
+			confirmDeleteBook();
+		}
+		if(id == R.id.noOffer){
+			confirmDeleteBook();
+		}
+	}
+
+	private void confirmDeleteBook() {
+		
+		if(transactionCount == 0){
+			
+			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if (which == DialogInterface.BUTTON_POSITIVE){
+						deleteBook();
+					}
+				}
+			};
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Deseas eliminar este libro?")
+					.setPositiveButton("Si", dialogClickListener)
+					.setNegativeButton("No", dialogClickListener).show();
+			
+		}else{
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Para eliminar este libro, todas las transacciones deben ser concluidas.").setPositiveButton("Ok", null).show();
 			
 		}
+		
+	}
+
+	protected void deleteBook() {
+		
+		ParseObject book = ParseObject.createWithoutData("MyBook", offerId);
+
+		book.put("deleted", true);
+		book.saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException e) {
+				
+				if(e == null){
+					
+					backHome();					
+				}
+				
+			}
+		});
+		
+		
+	}
+	
+	protected void backHome() {
+
+		Intent intent = new Intent(this, HomeActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+		startActivity(intent);
+		
 	}
 
 	private void showEditOffer() {
