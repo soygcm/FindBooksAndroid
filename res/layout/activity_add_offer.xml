@@ -66,6 +66,9 @@
     android:fadingEdge="none" 
     android:fadingEdgeLength="0dp"
     android:overScrollMode="never"
+	
+    
+	   
      >
 
 		<LinearLayout
