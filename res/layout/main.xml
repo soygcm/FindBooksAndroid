@@ -86,7 +86,8 @@
 
 	            android:padding="5dp"
 	            android:background="@color/ui_boton_verde"
-	            android:textColor="@color/blanco"	            
+	            android:textColor="@color/blanco"	    
+	            android:layout_marginLeft="3dp"        
 	            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <Button
@@ -97,6 +98,7 @@
             android:text="@string/com_parse_ui_parse_signup_button_label"
             
             android:padding="5dp"
+            android:layout_marginRight="3dp"
 	            android:background="@color/ui_boton_verde"
 	            android:textColor="@color/blanco"	            
 	            android:textAppearance="?android:attr/textAppearanceMedium"/>
