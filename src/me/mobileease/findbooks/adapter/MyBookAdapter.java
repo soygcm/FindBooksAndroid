@@ -2,9 +2,12 @@ package me.mobileease.findbooks.adapter;
 
 import java.util.List;
 
+import me.mobileease.findbooks.AddOfferActivity;
+import me.mobileease.findbooks.BookActivity;
 import me.mobileease.findbooks.HomeActivity;
 import me.mobileease.findbooks.R;
 import me.mobileease.findbooks.SearchActivity;
+import me.mobileease.findbooks.TransactionActivity;
 import me.mobileease.findbooks.model.MyBook;
 
 import org.json.JSONException;
@@ -12,24 +15,94 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /// Es posible que la mejor opción sea ArrayAdapter
 public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
-		OnClickListener {
+		OnClickListener, OnItemClickListener {
 	private Context mContext;
 	private List<ParseObject> offerList;
 	private LayoutInflater inflater;
 
+	public void onItemClick(AdapterView<?> parent, View v,
+			int position, long id) {
+
+		if (position != 0) {
+
+			showBook(position);
+
+		}
+
+	}
+	
+	protected void showBook(int position) {
+
+		ParseObject mBook = getItem(position - 1);
+
+		Intent intent = new Intent( mContext, BookActivity.class);
+		String offerId = mBook.getObjectId();
+		String type = mBook.getString("type");
+		ParseObject book = mBook.getParseObject("book");
+		Number count = mBook.getNumber("transactionCount");
+		String bookId = book.getObjectId();
+		String title = book.getString("title");
+		List<String> authorsList = book.getList("authors");
+		String authors = TextUtils.join(", ", authorsList);
+		JSONObject image = book.getJSONObject("imageLinks");
+		String imageLink = null;
+		if (image != null) {
+			try {
+				imageLink = image.getString("thumbnail");
+				imageLink = imageLink.replaceAll("zoom=[^&]+", "zoom=" + 4);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		String offerCondition = mBook.getString("condition");
+		String offerBinding = mBook.getString("bookbinding");
+		String offerComment = mBook.getString("comment");
+		ParseUser user = ParseUser.getCurrentUser();
+		String offerCurrency = user.getString("currency");
+//		String offerCurrency = mBook.getString("currency");
+		Double price = mBook.getDouble("price");
+		
+		
+		intent.putExtra(BookActivity.FROM_HOME, true);
+		intent.putExtra(BookActivity.OFFER_ID, offerId);
+		intent.putExtra(BookActivity.BOOK_ID, bookId);
+		intent.putExtra(BookActivity.BOOK_TYPE, type);
+		intent.putExtra(BookActivity.BOOK_TITLE, title);
+		intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
+		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
+		
+		intent.putExtra(TransactionActivity.OFFER_CONDITION, offerCondition);
+		intent.putExtra(TransactionActivity.OFFER_PRICE, price);
+		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
+		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
+		
+		intent.putExtra(AddOfferActivity.OFFER_CURRENCY, offerCurrency);
+		
+		intent.putExtra(TransactionActivity.OFFER_TRANSACTION_COUNT, count);
+		
+		mContext.startActivity(intent);
+
+	}
+	
+	
 	public MyBookAdapter(Context c, List<ParseObject> list) {
 		super(c, -1, list);
 		mContext = c;

@@ -4,8 +4,10 @@ import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.List;
 
+import me.mobileease.findbooks.FindBooks.FirstConfigCallback;
 import me.mobileease.findbooks.adapter.MyBookAdapter;
 import me.mobileease.findbooks.model.MyBook;
+import me.mobileease.findbooks.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +47,7 @@ import com.parse.ParseUser;
 public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	public static final String SEARCH_ADD = "search_add";
 	public static final String SEARCH_FIND = "search_find";
-	private ParseUser user;
+	private User user;
 	private GridView gridview;
 	private ProgressDialog progress;
 	protected List<ParseObject> userOffers;
@@ -59,8 +61,8 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
-
-		user = ParseUser.getCurrentUser();
+		
+		user = User.getCurrentUser();
 
 		// cargar la vista grilla
 		gridview = (GridView) findViewById(R.id.gridview);
@@ -81,92 +83,25 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 		txtUsername = (TextView) findViewById(R.id.perfil);
-		txtUsername.setText(user.getString("nickname"));
+		txtUsername.setText(user.getNickname());
 		btnTransactions = (ImageButton) findViewById(R.id.btnTransactions);
 		btnTransactions.setOnClickListener(this);
-		// set clicklistener
-		gridview.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-
-				if (position != 0) {
-
-					showBook(position);
-
+		
+		
+		if (user.isValidLogin()){
+			FindBooks.firstConfig(new FirstConfigCallback() {
+				@Override
+				public void done(Exception e) {		
+					if(e == null){
+						getMyBooks();						
+					}else{	
+						e.printStackTrace();
+					}
 				}
-
-			}
-		});
-
-		if (user.getObjectId() != null) {
-			getOffers();
-		} else {
-			Log.d("FB", "No hay usuario?");
+			});
+		}else{
+			Log.d("FB", "No hay usuario?");			
 		}
-		
-		Log.d("TAG", "Getting the latest config...");
-		ParseConfig.getInBackground(new ConfigCallback() {
-			@Override
-			public void done(ParseConfig config, ParseException e) {
-				if (e == null) {
-					Log.d("TAG", "Yay! Config was fetched from the server.");
-				} else {
-					Log.e("TAG", "Failed to fetch. Using Cached Config.");
-				}
-			}
-		});
-
-	}
-
-	protected void showBook(int position) {
-
-		ParseObject mBook = adapter.getItem(position - 1);
-
-		Intent intent = new Intent(HomeActivity.this, BookActivity.class);
-		String offerId = mBook.getObjectId();
-		String type = mBook.getString("type");
-		ParseObject book = mBook.getParseObject("book");
-		Number count = mBook.getNumber("transactionCount");
-		String bookId = book.getObjectId();
-		String title = book.getString("title");
-		List<String> authorsList = book.getList("authors");
-		String authors = TextUtils.join(", ", authorsList);
-		JSONObject image = book.getJSONObject("imageLinks");
-		String imageLink = null;
-		if (image != null) {
-			try {
-				imageLink = image.getString("thumbnail");
-				imageLink = imageLink.replaceAll("zoom=[^&]+", "zoom=" + 4);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		String offerCondition = mBook.getString("condition");
-		String offerBinding = mBook.getString("bookbinding");
-		String offerComment = mBook.getString("comment");
-		String offerCurrency = mBook.getString("currency");
-		Double price = mBook.getDouble("price");
-		
-		
-		intent.putExtra(BookActivity.FROM_HOME, true);
-		intent.putExtra(BookActivity.OFFER_ID, offerId);
-		intent.putExtra(BookActivity.BOOK_ID, bookId);
-		intent.putExtra(BookActivity.BOOK_TYPE, type);
-		intent.putExtra(BookActivity.BOOK_TITLE, title);
-		intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
-		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
-		
-		intent.putExtra(TransactionActivity.OFFER_CONDITION, offerCondition);
-		intent.putExtra(TransactionActivity.OFFER_PRICE, price);
-		intent.putExtra(TransactionActivity.OFFER_COMMENT, offerComment);
-		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
-		
-		intent.putExtra(AddOfferActivity.OFFER_CURRENCY, offerCurrency);
-		
-		intent.putExtra(TransactionActivity.OFFER_TRANSACTION_COUNT, count);
-		
-		startActivity(intent);
 
 	}
 
@@ -174,14 +109,14 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	 * Obtener las ofertas disponibles (no prestados o en transaccion) del
 	 * usuario
 	 */
-	private void getOffers() {
+	private void getMyBooks() {
 
 		progress = new ProgressDialog(this);
 		progress.setTitle("Cargando tus libros");
 		progress.setMessage("Dame un momento, estoy apunto de mostrarte tus libros...");
 		progress.show();
 
-		Log.d("FB", "Obteniendo Ofertas");
+		Log.d("FB", "Obteniendo MyBooks");
 
 		// ParseQuery<ParseObject> queryLocal =
 		// ParseQuery.getQuery(MyBook.CLASS);
@@ -207,9 +142,9 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		// Log.d("FB", "Error: " + e.getMessage());
 		// progress.dismiss();
 		// }
-
+		
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
-		query.whereEqualTo("user", user);
+		query.whereEqualTo("user", user.getParseUser());
 		query.whereNotEqualTo("deleted", true);
 		query.include("book");
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -223,6 +158,9 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 
 					adapter = new MyBookAdapter(HomeActivity.this, offersOnline);
 					gridview.setAdapter(adapter);
+					adapter.notifyDataSetChanged();
+					// set clicklistener
+					gridview.setOnItemClickListener(adapter);
 
 					// Log.d("FB", "Ofertas Online obtenidas");
 					//

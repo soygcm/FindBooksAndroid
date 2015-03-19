@@ -13,7 +13,7 @@ import android.util.Log;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class Transaction {
+public class Transaction extends ParseObject {
 
 	private ParseObject transaction;
 	private boolean endedWant;

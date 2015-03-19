@@ -10,7 +10,7 @@ import android.content.Intent;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class MyBook {
+public class MyBook extends ParseObject {
 
 	public static final String CLASS = "MyBook";
 	public static final String OFFER = "OFFER";
@@ -22,7 +22,8 @@ public class MyBook {
 	
 
 	public MyBook(ParseObject bookOffer) {
-		ParseUser user = ParseUser.getCurrentUser();
+//		ParseUser user = ParseUser.getCurrentUser();
+		ParseUser user = bookOffer.getParseUser("user");
 		offerCurrency = user.getString("currency");
 		price = bookOffer.getDouble("price");
 	}
@@ -31,7 +32,7 @@ public class MyBook {
 		ParseUser user = ParseUser.getCurrentUser();
 		offerCurrency = user.getString("currency");
 		price = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
-
+		
 	}
 
 	public String getPriceFormated() {

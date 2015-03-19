@@ -5,13 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import me.mobileease.findbooks.FindBooks;
+import me.mobileease.findbooks.FindBooks.FirstConfigCallback;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.R.bool;
+import android.util.Log;
 
+import com.parse.ConfigCallback;
 import com.parse.ParseConfig;
+import com.parse.ParseException;
 
 public class FindBooksConfig {
 	
@@ -30,6 +36,14 @@ public class FindBooksConfig {
 	 * @return
 	 */
 	private ParseConfig getCurrentConfig() {
+		
+		refreshConfig(new FirstConfigCallback() {
+			@Override
+			public void done(Exception e) {
+				
+			}
+		});
+		
 		return ParseConfig.getCurrentConfig();
 	}
 
@@ -256,7 +270,47 @@ public class FindBooksConfig {
 		
 	}
 
-	
-	
+	/**
+	 * Aqui se puede saber si es necesario o no
+	 * refrescar La configuración
+	 * Se comprueba cada vez que el app inicia, si es necesario 
+	 * refrescar. y cada vez que se solicita la configuracion
+	 * 
+	 * Cuando es necesario?? cada dia. cada vez que que??
+	 * 
+	 * Lo deje segun lo que parse.com dice cada 12 horas por ejecución
+	 * 
+	 * @param callback
+	 */
+	public static void refreshConfig(final FirstConfigCallback callback) {
+
+		// Fetches the config at most once every 12 hours per app runtime
+		 
+	    long currentTime = System.currentTimeMillis();
+	    if (currentTime - lastFetchedTime > configRefreshInterval) {
+	      lastFetchedTime = currentTime;
+	      
+	      Log.d("TAG", "Getting the latest config...");
+	      ParseConfig.getInBackground(new ConfigCallback() {
+	    	  @Override
+	    	  public void done(ParseConfig config, ParseException e) {
+	    		  callback.done(e);
+	    		  if (e == null) {
+	    			  Log.d("TAG", "Yay! Config was fetched from the server.");
+	    		  } else {
+	    			  Log.e("TAG", "Failed to fetch. Using Cached Config.");
+	    		  }
+	    	  }
+	      });
+	    }else{
+		  Log.d(FindBooks.TAG, "Fetches the config at most once every 12 hours per app runtime");
+		  callback.done(null);
+	    }
+		
+		
+	}
+	 
+	private static final long configRefreshInterval = 12 * 60 * 60 * 1000;
+	private static long lastFetchedTime;
 
 }
