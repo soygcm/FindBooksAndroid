@@ -55,8 +55,18 @@
             android:label="@string/title_activity_transactions"
             android:parentActivityName=".HomeActivity" >
             
-            <intent-filter> 
-            		<action android:name="android.intent.action.VIEW" />                
+            <intent-filter>             		
+            		<action android:name="android.intent.action.VIEW" />
+		        <category android:name="android.intent.category.DEFAULT" />
+		        <category android:name="android.intent.category.BROWSABLE" />
+
+		       <!--  <data android:scheme="http"
+		              android:host="findbooks.me"
+		              android:pathPrefix="/transaction" /> -->
+
+		        <data android:scheme="findbooks"
+		              android:host="transaction" />
+		        
             </intent-filter>
             
             <meta-data

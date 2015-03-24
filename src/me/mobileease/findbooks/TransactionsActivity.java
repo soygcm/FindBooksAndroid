@@ -1,35 +1,24 @@
 package me.mobileease.findbooks;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
-import java.util.Locale;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import me.mobileease.findbooks.adapter.TransactionAdapter;
 import me.mobileease.findbooks.model.MyBook;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class TransactionsActivity extends ActionBarActivity {
 	private ParseUser user;
@@ -102,7 +91,24 @@ public class TransactionsActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 
 		case android.R.id.home:
-			onBackPressed();
+//			onBackPressed();
+			
+			Intent upIntent = NavUtils.getParentActivityIntent(this);
+	        if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+	            // This activity is NOT part of this app's task, so create a new task
+	            // when navigating up, with a synthesized back stack.
+	            TaskStackBuilder.create(this)
+	                    // Add all of this activity's parents to the back stack
+	                    .addNextIntentWithParentStack(upIntent)
+	                    // Navigate up to the closest parent
+	                    .startActivities();
+	        } else {
+	            // This activity is part of this app's task, so simply
+	            // navigate up to the logical parent activity.
+	            NavUtils.navigateUpTo(this, upIntent);
+	        }
+//	        return true;
+			
 			return true;
 		}
 

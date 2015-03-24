@@ -8,20 +8,12 @@ import me.mobileease.findbooks.model.Transaction;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.koushikdutta.ion.Ion;
-import com.parse.ConfigCallback;
-import com.parse.Parse;
-import com.parse.ParseConfig;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
-
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +21,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.koushikdutta.ion.Ion;
+import com.parse.ParseConfig;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 public class TransactionActivity extends ActionBarActivity implements OnClickListener {
 
@@ -83,37 +81,28 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_transaction);
-
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
-		if (toolbar != null) {
-			setSupportActionBar(toolbar);
-		}
-
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		txtTitle = (TextView) findViewById(R.id.txtTitle);
-		btnWant = (Button) findViewById(R.id.btnWant);
-		btnWant.setVisibility(View.GONE);
-		txtUsername = (TextView) findViewById(R.id.txtUsername);
-		txtCondition = (TextView) findViewById(R.id.txtCondition);
-		perfilView = (View) findViewById(R.id.perfilView);
-		txtPrice = (TextView) findViewById(R.id.txtPrice);
-		txtAuthors = (TextView) findViewById(R.id.txtAuthors);
-		profileView = (View) findViewById(R.id.profileView);
-		imgBook = (ImageView) findViewById(R.id.imgBook);
-		txtName = (TextView) findViewById(R.id.txtName);
-		txtPhone = (TextView) findViewById(R.id.txtPhone);
-		txtMail = (TextView) findViewById(R.id.txtMail);
-		btnAccept = (Button) findViewById(R.id.btnAccept);
-		btnCancel = (Button) findViewById(R.id.btnCancel);
-		btnConclude = (Button) findViewById(R.id.btnConclude);
-		txtMessageTransaction = (TextView) findViewById(R.id.txtMessageTransaction);
-		btnAccept.setOnClickListener(this);
-		btnCancel.setOnClickListener(this);
-		btnConclude.setOnClickListener(this);
+		initUI();	    
 		
 		intent = getIntent();
+		
+		String action = intent.getAction();
+	    Uri data = intent.getData();
+	    
+	    
+	    if (data == null){
+	    	
+	    		fillUIData();
+	    	
+	    }else{
+	    	
+	    		Log.d(FindBooks.TAG, data.getQuery()+ ", action:" + action);
+	    }
+		
+
+	}
+
+	private void fillUIData() {
 
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookSubtitle = intent.getStringExtra(BookActivity.BOOK_SUBTITLE);
@@ -180,8 +169,38 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		txtPhone.setText(userPhone);
 		txtMail.setText(userMail);
 
-		
+	}
 
+	private void initUI() {
+		setContentView(R.layout.activity_transaction);
+
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		if (toolbar != null) {
+			setSupportActionBar(toolbar);
+		}
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		txtTitle = (TextView) findViewById(R.id.txtTitle);
+		btnWant = (Button) findViewById(R.id.btnWant);
+		btnWant.setVisibility(View.GONE);
+		txtUsername = (TextView) findViewById(R.id.txtUsername);
+		txtCondition = (TextView) findViewById(R.id.txtCondition);
+		perfilView = (View) findViewById(R.id.perfilView);
+		txtPrice = (TextView) findViewById(R.id.txtPrice);
+		txtAuthors = (TextView) findViewById(R.id.txtAuthors);
+		profileView = (View) findViewById(R.id.profileView);
+		imgBook = (ImageView) findViewById(R.id.imgBook);
+		txtName = (TextView) findViewById(R.id.txtName);
+		txtPhone = (TextView) findViewById(R.id.txtPhone);
+		txtMail = (TextView) findViewById(R.id.txtMail);
+		btnAccept = (Button) findViewById(R.id.btnAccept);
+		btnCancel = (Button) findViewById(R.id.btnCancel);
+		btnConclude = (Button) findViewById(R.id.btnConclude);
+		txtMessageTransaction = (TextView) findViewById(R.id.txtMessageTransaction);
+		btnAccept.setOnClickListener(this);
+		btnCancel.setOnClickListener(this);
+		btnConclude.setOnClickListener(this);
 	}
 
 	private void transactionInfo() {

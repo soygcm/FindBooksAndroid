@@ -16,6 +16,14 @@ import com.parse.ParsePushBroadcastReceiver;
 
 public class Receiver extends ParsePushBroadcastReceiver {
 
+	/**
+	 * http://stackoverflow.com/questions/11411395/how-to-get-current-foreground-activity-context-in-android
+	 * La vara es que cuando este en la parte de notificaciones, 
+	 * la transacción aparezca.
+	 * Y cuado este en la notificación, la información cambie
+	 * 
+	 */
+	
     @Override
     public void onPushOpen(Context context, Intent intent) {
     		
