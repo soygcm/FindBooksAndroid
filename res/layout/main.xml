@@ -109,7 +109,7 @@
     <Button
         android:id="@+id/facebook_login"
         android:layout_width="fill_parent"
-
+	
         android:text="FACEBOOK"
         style="@style/Botonbasic"
         android:background="#3b5998" 
