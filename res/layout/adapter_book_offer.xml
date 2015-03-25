@@ -111,6 +111,7 @@
                     style="@style/Botonbasic"
 
                     android:text="@string/btn_lo_quiero"
+                    android:textAppearance="?android:attr/textAppearanceButton"
                      />
                 
             </LinearLayout>
