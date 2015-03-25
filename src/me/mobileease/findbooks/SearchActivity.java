@@ -177,8 +177,14 @@ public class SearchActivity extends ActionBarActivity implements
 
 		String id = book.getObjectId();
 		String title = book.getString("title");
+		String subtitle = book.getString("subtitle");
 		List<String> authorsList = book.getList("authors");
-		String authors = TextUtils.join(", ", authorsList);
+		
+		if (authorsList != null) {
+			String authors = TextUtils.join(", ", authorsList);
+			intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
+		}
+		
 		JSONObject image = book.getJSONObject("imageLinks");
 		String imageLink = null;
 
@@ -193,7 +199,7 @@ public class SearchActivity extends ActionBarActivity implements
 
 		intent.putExtra(BookActivity.BOOK_ID, id);
 		intent.putExtra(BookActivity.BOOK_TITLE, title);
-		intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
+		intent.putExtra(BookActivity.BOOK_SUBTITLE, subtitle);
 		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
 
 

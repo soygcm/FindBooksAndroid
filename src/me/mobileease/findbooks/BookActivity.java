@@ -98,6 +98,8 @@ public class BookActivity extends ActionBarActivity implements
 	private Button noOffer;
 	private Button noWant;
 	private int transactionCount;
+	private Button shareIt;
+	private String bookSubtitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +137,7 @@ public class BookActivity extends ActionBarActivity implements
 		txtPrice = (TextView) header.findViewById(R.id.txtPrice);
 		noWant = (Button) header.findViewById(R.id.noWant);
 		noOffer = (Button) header.findViewById(R.id.noOffer);
+		shareIt = (Button) header.findViewById(R.id.shareIt);
 
 		intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
@@ -142,6 +145,8 @@ public class BookActivity extends ActionBarActivity implements
 		fromHome = intent.getBooleanExtra(BookActivity.FROM_HOME, false);
 		bookType = intent.getStringExtra(BookActivity.BOOK_TYPE);
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
+		bookSubtitle = intent.getStringExtra(BookActivity.BOOK_SUBTITLE);
+		
 		bookAuthors = intent.getStringExtra(BookActivity.BOOK_AUTHORS);
 		bookImage = intent.getStringExtra(BookActivity.BOOK_IMAGE);
 		offerPrice = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
@@ -161,7 +166,14 @@ public class BookActivity extends ActionBarActivity implements
 		
 
 		title.setText(bookTitle);
-		authors.setText(bookAuthors);
+		
+		if(bookAuthors == null){
+			authors.setVisibility(View.GONE);
+		}else{
+			authors.setVisibility(View.VISIBLE);
+			authors.setText(bookAuthors);
+		}
+		
 		
 		adapterTransactions = new TransactionAdapter(BookActivity.this,
 				new ArrayList<ParseObject>(), false, false);
@@ -335,8 +347,15 @@ public class BookActivity extends ActionBarActivity implements
 				progress.dismiss();
 
 				if (e == null) {
-
-					Log.d("FB", "Ofertas: " + offers.size());
+					
+					if(offers.size() == 0){
+						
+						shareItQuestion();
+						showStareItButton();
+						
+						Log.d(FindBooks.TAG, "No hay ofertas, dile a tus amigos, que estas buscando este libro.");						
+					}
+					
 					adapterOffers = new BookOfferAdapter(BookActivity.this, offers,
 							bookWant);
 					list.setAdapter(adapterOffers);
@@ -350,6 +369,31 @@ public class BookActivity extends ActionBarActivity implements
 			}
 		});
 
+	}
+
+	protected void showStareItButton() {
+		shareIt.setVisibility(View.VISIBLE);
+		shareIt.setOnClickListener(this);
+	}
+
+	protected void shareItQuestion() {
+		
+
+		
+		DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (which == DialogInterface.BUTTON_POSITIVE){
+					shareIt();
+				}
+			}
+		};
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("No hay ofertas disponibles, para este libro. ¿Deseas pedirle a tus amigos que te ayuden a encontrarlo?")
+				.setPositiveButton("Si", dialogClickListener)
+				.setNegativeButton("No", dialogClickListener).show();
+				
 	}
 
 	protected void updateBackgroundSize() {
@@ -411,6 +455,29 @@ public class BookActivity extends ActionBarActivity implements
 		if(id == R.id.noOffer){
 			confirmDeleteBook();
 		}
+		if(id == R.id.shareIt){
+			shareIt();
+		}
+	}
+
+	private void shareIt() {
+
+		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+		sharingIntent.setType("text/plain");
+		String shareBody = "";
+		
+		
+		if(bookAuthors == null){			
+			shareBody = "Hola, ¿me ayudas a encontrar este libro? \"" + bookTitle +"\". Lo estoy buscando en http://findbooks.me/ pero nadie lo esta ofreciendo :( ";
+		}else{			
+			shareBody = "Hola, ¿me ayudas a encontrar este libro? \"" + bookTitle +" ("+bookAuthors+") \". Lo estoy buscando en http://findbooks.me/ pero nadie lo esta ofreciendo :( ";
+		}
+		
+//		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Estoy buscando un libro en Findbooks");
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+		startActivity(Intent.createChooser(sharingIntent, "Share via"));
+		
+		
 	}
 
 	private void confirmDeleteBook() {

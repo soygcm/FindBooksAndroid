@@ -31,6 +31,7 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 		public TextView authors;
 		public ImageView image;
 		public ImageView imgArrow;
+		public TextView offerCount;
 	}
 
 	private LayoutInflater inflater;
@@ -59,7 +60,9 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 			viewHolder.image = (ImageView) view.findViewById(R.id.imgBook);
 			viewHolder.imgArrow = (ImageView) view.findViewById(R.id.imgArrow);
 			viewHolder.authors = (TextView) view.findViewById(R.id.txtAuthors);
-
+			viewHolder.offerCount = (TextView) view.findViewById(R.id.txtOfferCount);
+			
+			
 			view.setTag(viewHolder);
 		}
 
@@ -72,6 +75,15 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 
 		JSONObject imageLinks = book.getJSONObject("imageLinks");
 		List<String> authorsList = book.getList("authors");
+		
+		int count = book.getInt("offersCount");
+		
+		if (count == 0){
+			holder.offerCount.setVisibility(View.GONE);
+		}else{	
+			holder.offerCount.setVisibility(View.VISIBLE);
+			holder.offerCount.setText(count+" ofertas");
+		}
 
 		if (subtitle == null) {
 			holder.title.setText(title);
