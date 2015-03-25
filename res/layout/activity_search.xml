@@ -55,7 +55,7 @@
             android:layout_width="@dimen/abc_action_bar_default_height_material"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:layout_gravity="right"
-            android:background="@null"
+            android:background="@drawable/button_claro"
              />
         
     </android.support.v7.widget.Toolbar>

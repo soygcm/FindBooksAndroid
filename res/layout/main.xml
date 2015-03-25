@@ -80,25 +80,27 @@
 
         <Button
             android:id="@+id/parse_login_button"
-            style="@style/ParseLoginUI.Button"
+            style="@style/Botonbasic"
             android:layout_weight="0.5"
-            android:text="@string/com_parse_ui_parse_login_button_label" 
+            android:layout_width="1dp"
+            android:text="INICIAR" 
+            
 
-	            android:padding="5dp"
+	            
 	            android:background="@color/ui_boton_verde"
 	            android:textColor="@color/blanco"	    
-	            android:layout_marginLeft="3dp"        
+
 	            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <Button
             android:id="@+id/parse_signup_button"
-            style="@style/ParseLoginUI.Button"
-            android:layout_marginLeft="@dimen/com_parse_ui_small_horizontal_spacing"
+            style="@style/Botonbasic"
+            android:layout_width="1dp"
             android:layout_weight="0.5"
-            android:text="@string/com_parse_ui_parse_signup_button_label"
+            android:text="REGISTRARSE"
             
-            android:padding="5dp"
-            android:layout_marginRight="3dp"
+            
+
 	            android:background="@color/ui_boton_verde"
 	            android:textColor="@color/blanco"	            
 	            android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -107,9 +109,12 @@
     <Button
         android:id="@+id/facebook_login"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Facebook"
-        style="@style/Botonbasic" />
+
+        android:text="FACEBOOK"
+        style="@style/Botonbasic"
+        android:background="#3b5998" 
+        android:textColor="@color/blanco"
+       />
 	</LinearLayout>
 	</ScrollView>
 </LinearLayout>
