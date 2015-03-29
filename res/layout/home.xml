@@ -24,8 +24,9 @@
             android:id="@+id/btnTransactions"
             android:layout_width="@dimen/abc_action_bar_default_height_material"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:background="@null"
+           
             android:src="@drawable/ic_transaccion"
+           android:background="@drawable/button_oscuro"
             
             />
          <ImageButton

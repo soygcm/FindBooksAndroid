@@ -27,7 +27,7 @@
          	android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:background="@android:color/transparent"
+            android:background="@drawable/button_oscuro"
             android:textColor="@color/text_cafe_claro"
             android:paddingRight="16dp"
             android:id="@+id/save"
@@ -279,6 +279,7 @@
 				    android:src="@drawable/ic_done_24px"
 				    android:layout_marginBottom="3dp"
 				    android:layout_marginLeft="3dp"
+				    android:visibility="gone"
 				    
 				    />
 			
@@ -327,7 +328,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="right|bottom"
-            android:background="@null"
+            android:background="@drawable/button_oscuro"
             
             android:src="@drawable/ic_cafe_buscar"
              />

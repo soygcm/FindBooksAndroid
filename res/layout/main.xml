@@ -87,7 +87,7 @@
             
 
 	            
-	            android:background="@color/ui_boton_verde"
+	            android:background="@drawable/button_verde"
 	            android:textColor="@color/blanco"	    
 
 	            android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -101,7 +101,7 @@
             
             
 
-	            android:background="@color/ui_boton_verde"
+	            android:background="@drawable/button_verde"
 	            android:textColor="@color/blanco"	            
 	            android:textAppearance="?android:attr/textAppearanceMedium"/>
     </LinearLayout>
