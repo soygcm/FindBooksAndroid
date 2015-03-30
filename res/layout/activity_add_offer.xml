@@ -46,13 +46,33 @@
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
              >
              
-       <ProgressBar
-        android:id="@+id/loading"
+             <LinearLayout 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+                android:layout_gravity="right"
+    
+    
+    >
+             
+       <LinearLayout 
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:orientation="vertical"
+            android:layout_gravity="center_vertical|center_horizontal"
+                android:gravity="center"
+    
+    >
+        
+        <ProgressBar
+	android:id="@+id/loading"
         android:layout_width="wrap_content"
 		style="?android:attr/progressBarStyleSmall"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:visibility="gone"
          />
+        
+        </LinearLayout>
         
         <Button
             android:id="@+id/save"
@@ -68,6 +88,7 @@
             android:text="@string/btn_guardar"
             
             />
+        </LinearLayout>
         
         </android.support.v7.widget.Toolbar>
 	

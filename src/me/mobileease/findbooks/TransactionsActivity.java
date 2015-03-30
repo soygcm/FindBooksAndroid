@@ -38,6 +38,7 @@ public class TransactionsActivity extends ActionBarActivity {
 		listTransactions = (ListView) findViewById(R.id.transactionsList);
 		
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 		}
@@ -47,6 +48,16 @@ public class TransactionsActivity extends ActionBarActivity {
 			getTransactions();
 		}
 
+	}
+	
+	@Override
+	protected void onResume() {
+
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+		setSupportActionBar(toolbar);
+		
+		super.onResume();
 	}
 
 	private void getTransactions() {

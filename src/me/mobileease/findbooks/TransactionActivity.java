@@ -102,6 +102,16 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		
 
 	}
+	
+	@Override
+	protected void onResume() {
+
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+		setSupportActionBar(toolbar);
+		
+		super.onResume();
+	}
 
 	private void fillUIData() {
 

@@ -134,7 +134,7 @@ public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 
 			buscar.setOnClickListener(this);
 			agregar.setOnClickListener(this);
-
+			
 		} else {
 
 			view = convertView;

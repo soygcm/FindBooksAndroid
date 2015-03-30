@@ -108,6 +108,16 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		}
 
 	}
+	
+	@Override
+	protected void onResume() {
+
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+		setSupportActionBar(toolbar);
+		
+		super.onResume();
+	}
 
 	/**
 	 * Obtener las ofertas disponibles (no prestados o en transaccion) del
