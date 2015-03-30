@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:background="@color/ui_fondo_claro"
+
     >
      
     
@@ -23,6 +24,8 @@
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical"
 		    android:layout_gravity="center_horizontal"
+		    android:layout_marginTop="6dp"
+    		android:layout_marginBottom="6dp"
 		    android:layout_marginRight="@dimen/abc_action_bar_default_height_material"
 		    
 		       >
@@ -57,7 +60,7 @@
             android:id="@+id/btnSearch"
             android:layout_width="@dimen/abc_action_bar_default_height_material"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:layout_gravity="right"
+            android:layout_gravity="right|top"
             android:background="@drawable/button_claro"
             
              />

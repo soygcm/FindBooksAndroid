@@ -30,7 +30,11 @@
     <color name="ui_boton_rojo">#EA5863</color>
     <color name="ui_boton_rojo_15">#EF6C82</color>
     <color name="ui_boton_naranja">#F3AA44</color>
-    <color name="ui_boton_naranja_15">#FCB663</color>    
+    <color name="ui_boton_naranja_15">#FCB663</color> 
+       
+    <color name="ui_fondo_libro">#66BA37C9</color> <!-- 40% -->
+    <color name="ui_fondo_magenta_40">#66BA37C9</color> <!-- 40% -->
+    <color name="ui_fondo_menta_40">#66008DA3</color> <!-- 40% x-->
 
     
     <color name="text_cafe_oscuro">#542200</color>
@@ -43,11 +47,10 @@
     <color name="blanco">#FFFFFF</color>
     <color name="blanco_80">#99FFFFFF</color> <!--realmente esta a 60% -->
     <color name="blanco_20">#26FFFFFF</color> 
-    <color name="gris_15">#26686868</color>
-    <color name="gris">#EAE7DF</color> 
+    <color name="gris_15">#269B754C</color>
+    <color name="gris">#E8CFAF</color> 
     
     <color name="negro">#000000</color>
-    <color name="ui_fondo_libro">#99532100</color>
 
 
 </resources>
