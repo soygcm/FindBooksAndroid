@@ -156,6 +156,7 @@ public class EndTransactionActivity extends ActionBarActivity implements
 		
 		loading.setVisibility(View.VISIBLE);
 		list.setOnItemClickListener(null);
+		list.setEnabled(false);
 		
 		transaction.saveInBackground(new SaveCallback() {
 			@Override
@@ -163,6 +164,7 @@ public class EndTransactionActivity extends ActionBarActivity implements
 
 				loading.setVisibility(View.GONE);
 				list.setOnItemClickListener(EndTransactionActivity.this);
+				list.setEnabled(true);
 				
 				if (e == null){
 					Log.d(FindBooks.TAG, "transaccion finalizada");

@@ -556,11 +556,16 @@ public class BookActivity extends ActionBarActivity implements
 		ParseObject book = ParseObject.createWithoutData("MyBook", myBookId);
 
 		book.put("deleted", true);
+		loading.setVisibility(View.VISIBLE);
+		noWant.setEnabled(false);
+		noOffer.setEnabled(false);
 		book.saveInBackground(new SaveCallback() {
 			
 			@Override
 			public void done(ParseException e) {
-				
+				loading.setVisibility(View.GONE);
+				noWant.setEnabled(true);
+				noOffer.setEnabled(true);
 				if(e == null){
 					
 					backHome();					

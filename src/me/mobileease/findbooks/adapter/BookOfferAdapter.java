@@ -12,7 +12,9 @@ import me.mobileease.findbooks.R;
 import me.mobileease.findbooks.TransactionActivity;
 import me.mobileease.findbooks.model.MyBook;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.Html;
 import android.util.Log;
@@ -23,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.ParseACL;
@@ -39,12 +42,14 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 	private ParseObject bookWant;
 	private ParseConfig config;
 	private List<ParseObject> transactions;
+	private Context c;
 
 	public BookOfferAdapter(Context context, List<ParseObject> objects,
 			ParseObject bookWant, List<ParseObject> transactions) {
 		super(context, -1, objects);
 		inflater = LayoutInflater.from(context);
 		offers = objects;
+		this.c = context;
 		this.bookWant = bookWant;
 		this.transactions = transactions;
 		config = ParseConfig.getCurrentConfig();
@@ -67,6 +72,8 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 			ViewHolder viewHolder = new ViewHolder(offer, bookWant, this);
 			viewHolder.username = (TextView) view
 					.findViewById(R.id.txtUsername);
+			viewHolder.loading = (ProgressBar) view.findViewById(R.id.loading);
+
 			viewHolder.price = (TextView) view.findViewById(R.id.txtPrice);
 			viewHolder.condition = (TextView) view
 					.findViewById(R.id.txtCondition);
@@ -94,6 +101,14 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		if(onTransaction){
 			holder.btnWant.setEnabled(false);
 			holder.btnWant.setText("EN TRANSACCIÓN");
+		}
+		
+		if (holder.isLoading){
+			
+			holder.loading.setVisibility(View.GONE);
+			holder.btnWant.setEnabled(true);
+			holder.btnWant.setText("SOLICITANDO...");
+
 		}
 
 		holder.username.setText(title);
@@ -150,6 +165,8 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		private ParseObject offer;
 		private ParseObject bookWant;
 		private BookOfferAdapter adapter;
+		private boolean isLoading;
+		private ProgressBar loading;
 
 		public ViewHolder(ParseObject offer, ParseObject bookWant, BookOfferAdapter adapter) {
 			this.offer = offer;
@@ -162,8 +179,21 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 			int id = v.getId();
 
 			if (id == R.id.btnWant) {
+				
+				DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == DialogInterface.BUTTON_POSITIVE){
+							newWant();
+						}
+					}
+				};
 
-				newWant();
+				AlertDialog.Builder builder = new AlertDialog.Builder(adapter.c);
+				builder.setMessage("¿Deseas que tus datos de contacto, sean enviados al dueño del libro? ")
+						.setPositiveButton("Si", dialogClickListener)
+						.setNegativeButton("No", dialogClickListener).show();
+
 
 			}
 		}
@@ -171,7 +201,12 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		private void newWant() {
 
 			ParseObject book = offer.getParseObject("book");
-
+			
+			loading.setVisibility(View.VISIBLE);
+			btnWant.setEnabled(false);
+			isLoading = true;
+			btnWant.setText("SOLICITANDO...");
+			
 			if (bookWant == null) {
 				final ParseObject want = new ParseObject(MyBook.CLASS);
 				want.put("book", book);
@@ -217,6 +252,10 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 				@Override
 				public void done(ParseException e) {
 					if (e == null) {
+						
+						loading.setVisibility(View.GONE);
+						btnWant.setEnabled(true);
+						isLoading = false;
 												
 						adapter.addTransaction(transaction);
 						adapter.offersOnTransaction();

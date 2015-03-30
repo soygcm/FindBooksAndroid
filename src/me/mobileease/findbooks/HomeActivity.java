@@ -116,6 +116,8 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 
 		setSupportActionBar(toolbar);
 		
+		invalidateOptionsMenu();
+		
 		super.onResume();
 	}
 
