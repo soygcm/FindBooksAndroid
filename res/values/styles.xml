@@ -61,6 +61,9 @@
         <item name="android:background">@color/ui_fondo_medio</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
+		<item name="android:paddingBottom">3dp</item>
+		<item name="android:paddingTop">3dp</item>        
+
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/text_cafe_oscuro</item>
     </style>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    
+    android:background="@drawable/button_claro" 
     android:orientation="vertical"
 
     >
@@ -13,7 +13,8 @@
        	android:layout_height="188dp"                              
         android:layout_gravity="center_horizontal"        
         android:orientation="vertical" 
-        android:layout_margin="8dp"       
+        android:layout_margin="8dp"   
+           
         >
         
         

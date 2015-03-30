@@ -47,23 +47,38 @@
         <Button
             android:id="@+id/noWant"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:visibility="gone"
-            android:text="Ya no lo quiero" />
+            android:textColor="@color/negro"
+            android:paddingRight="6dp"
+            android:paddingLeft="6dp"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:background="@drawable/button_cafe"
+            android:text="@string/btn_yanoloquiero" />
         
         <Button
             android:id="@+id/noOffer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:visibility="gone"
-            android:text="Dejar de ofrecer" />
+            android:textColor="@color/negro"
+            android:paddingRight="6dp"
+            android:paddingLeft="6dp"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:background="@drawable/button_cafe"
+            android:text="@string/btn_dejar_de_ofreser" />
         
         <Button
             android:id="@+id/shareIt"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:visibility="gone"
-            android:text="No hay ofertas... ¡pide ayuda a tus amigos!" />
+            android:textColor="@color/negro"
+            android:paddingRight="6dp"
+            android:paddingLeft="6dp"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:background="@drawable/button_cafe"
+            android:text="@string/btn_no_ofertas" />
         
         </LinearLayout>
         

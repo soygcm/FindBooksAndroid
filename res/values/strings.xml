@@ -88,7 +88,12 @@
     <string name="btn_cancelar">CANCELAR</string>
     <string name="btn_concluir">CONCLUIR</string>
     <string name="btn_lo_quiero">LO QUIERO</string>
-    <string name="btn_foto_libro">TOMALE UNA FOTO</string>     
+    <string name="btn_foto_libro">TOMALE UNA FOTO</string>
+    
+    <string name="btn_yanoloquiero">YA NO LO QUIERO</string>
+    <string name="btn_dejar_de_ofreser">DEJAR DE OFRECER</string>
+    <string name="btn_no_ofertas">No hay ofertas... ¡pide ayuda a tus amigos!</string>
+         
     
     
     <string name="hint_precio">Precio</string>

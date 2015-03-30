@@ -43,7 +43,8 @@
     <color name="blanco">#FFFFFF</color>
     <color name="blanco_80">#99FFFFFF</color> <!--realmente esta a 60% -->
     <color name="blanco_20">#26FFFFFF</color> 
-    <color name="gris_15">#26686868</color> 
+    <color name="gris_15">#26686868</color>
+    <color name="gris">#EAE7DF</color> 
     
     <color name="negro">#000000</color>
     <color name="ui_fondo_libro">#99532100</color>

@@ -17,19 +17,21 @@
     
     
     <LinearLayout 
-	android:id="@+id/buscar_libro"
+	
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+>
     
        
     <FrameLayout
+        android:id="@+id/buscar_libro"
 		android:layout_width="90dp"
         android:layout_height="50dp"
        
         android:layout_gravity="center_horizontal"
-        android:background="@color/blanco"
+        android:background="@drawable/button_blanco"
         >
         <ImageView
             android:layout_width="24dp"
@@ -53,19 +55,21 @@
       </LinearLayout>
       
     <LinearLayout 
-	android:id="@+id/agregar_libro"
+	
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+ >
     
        
     <FrameLayout
+        android:id="@+id/agregar_libro"
 		android:layout_width="90dp"
         android:layout_height="50dp"
   
         android:layout_gravity="center_horizontal"
-        android:background="@color/blanco"
+        android:background="@drawable/button_blanco"
         >
         <ImageView
             android:layout_width="24dp"
