@@ -1,6 +1,7 @@
 package me.mobileease.findbooks.adapter;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -37,14 +38,20 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 	private List<ParseObject> offers;
 	private ParseObject bookWant;
 	private ParseConfig config;
+	private List<ParseObject> transactions;
 
 	public BookOfferAdapter(Context context, List<ParseObject> objects,
-			ParseObject bookWant) {
+			ParseObject bookWant, List<ParseObject> transactions) {
 		super(context, -1, objects);
 		inflater = LayoutInflater.from(context);
 		offers = objects;
 		this.bookWant = bookWant;
+		this.transactions = transactions;
 		config = ParseConfig.getCurrentConfig();
+		if(transactions != null){
+			offersOnTransaction();
+		}
+		
 	}
 
 	@Override
@@ -57,7 +64,7 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 			view = inflater.inflate(R.layout.adapter_book_offer, null);
 
 			// configurar el view holder
-			ViewHolder viewHolder = new ViewHolder(offer, bookWant);
+			ViewHolder viewHolder = new ViewHolder(offer, bookWant, this);
 			viewHolder.username = (TextView) view
 					.findViewById(R.id.txtUsername);
 			viewHolder.price = (TextView) view.findViewById(R.id.txtPrice);
@@ -69,6 +76,9 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		}
 
 		// rellenar de datos
+		
+		
+		
 		ParseUser user = offer.getParseUser("user");
 		ViewHolder holder = (ViewHolder) view.getTag();
 
@@ -79,6 +89,12 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 
 		MyBook myBook = new MyBook(offer);
 		String offerPrice = myBook.getPriceFormated();
+		
+		boolean onTransaction = offer.getBoolean("onTransaction");
+		if(onTransaction){
+			holder.btnWant.setEnabled(false);
+			holder.btnWant.setText("EN TRANSACCIÓN");
+		}
 
 		holder.username.setText(title);
 		holder.btnWant.setOnClickListener(holder);
@@ -97,6 +113,32 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 
 		return view;
 	}
+	
+	protected void offersOnTransaction() {
+
+
+		for(ParseObject offer : offers){
+			
+			if(transactions != null){
+				
+				for (ParseObject transaction : transactions) {
+					
+					ParseObject bookOffer = transaction.getParseObject("bookOffer");
+					
+					if(offer.getObjectId().equals(bookOffer.getObjectId())){
+						
+						offer.put("onTransaction", true);
+						
+					}
+					
+				}
+			}
+			
+		}
+		
+		
+		
+	}
 
 	static class ViewHolder implements OnClickListener {
 		public TextView condition;
@@ -107,10 +149,12 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		public Button btnWant;
 		private ParseObject offer;
 		private ParseObject bookWant;
+		private BookOfferAdapter adapter;
 
-		public ViewHolder(ParseObject offer, ParseObject bookWant) {
+		public ViewHolder(ParseObject offer, ParseObject bookWant, BookOfferAdapter adapter) {
 			this.offer = offer;
 			this.bookWant = bookWant;
+			this.adapter = adapter;
 		}
 
 		@Override
@@ -156,7 +200,8 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 
 		protected void newTransaction(ParseObject bookOffer,
 				ParseObject bookWant) {
-			ParseObject transaction = new ParseObject("Transaction");
+			
+			final ParseObject transaction = new ParseObject("Transaction");
 			transaction.put("bookOffer", bookOffer);
 			transaction.put("bookWant", bookWant);
 			ParseACL transactionACL = new ParseACL();
@@ -172,10 +217,10 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 				@Override
 				public void done(ParseException e) {
 					if (e == null) {
-						
-						btnWant.setVisibility(View.GONE);
-						
-//						btnWant.setBackgroundColor(Color.GREEN);
+												
+						adapter.addTransaction(transaction);
+						adapter.offersOnTransaction();
+						adapter.notifyDataSetChanged();
 						
 					} else {
 						e.printStackTrace();
@@ -184,6 +229,14 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 			});
 		}
 
+	}
+
+	protected void addTransaction(ParseObject transaction) {
+		if(transactions == null){
+			transactions = new ArrayList<ParseObject>();
+		}
+		
+		transactions.add(transaction);
 	}
 
 }

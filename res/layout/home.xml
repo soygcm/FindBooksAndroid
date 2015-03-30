@@ -59,6 +59,14 @@
         
     </android.support.v7.widget.Toolbar>
 
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+		style="?android:attr/progressBarStyleSmall"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+         />
+
     <GridView 
 	    android:id="@+id/gridview"
 	    android:layout_width="match_parent"
@@ -69,12 +77,8 @@
 	    android:gravity="center"
 	    android:paddingLeft="8dp"
 	    android:paddingRight="8dp"
-	    
-
-
 	    android:overScrollMode="never"
 	    android:fadingEdge="none"
-	    
 	    android:listSelector="@android:color/transparent"
 	/>
 

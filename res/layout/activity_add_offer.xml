@@ -43,6 +43,14 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
              >
+             
+       <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+		style="?android:attr/progressBarStyleSmall"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+         />
         
         <Button
             android:id="@+id/save"
@@ -52,7 +60,6 @@
             android:background="@android:color/transparent"
             android:textColor="@color/blanco"
             android:paddingRight="16dp"
-           
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/btn_guardar"
             

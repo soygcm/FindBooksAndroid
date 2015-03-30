@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import me.mobileease.findbooks.adapter.BookAdapter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import me.mobileease.findbooks.adapter.BookAdapter;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -17,21 +20,23 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class SearchActivity extends ActionBarActivity implements
 		OnItemClickListener {
@@ -39,14 +44,16 @@ public class SearchActivity extends ActionBarActivity implements
 	private EditText searchQuery;
 	private ListView list;
 	protected BookAdapter adapter;
-	private ProgressDialog progress;
 	private boolean searchFind;
 	private boolean searchAdd;
+	private View loading;
+	private ImageButton btnSearch;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search);
+		loading = (View) findViewById(R.id.loading);
 
 		list = (ListView) findViewById(R.id.resultList);
 
@@ -64,27 +71,32 @@ public class SearchActivity extends ActionBarActivity implements
 		ActionBar mActionBar = getSupportActionBar();
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 
-		ImageButton imageButton = (ImageButton) findViewById(R.id.btnSearch);
+		btnSearch = (ImageButton) findViewById(R.id.btnSearch);
 
 		if (searchFind) {
 			toolbar.setBackgroundColor(getResources().getColor(
 					R.color.ui_menta_busqueda));
-			imageButton.setImageResource(R.drawable.ic_buscar_blanco);
+			btnSearch.setImageResource(R.drawable.ic_buscar_blanco);
 		} else if (searchAdd) {
 			toolbar.setBackgroundColor(getResources().getColor(
 					R.color.ui_magenta_oferta));
-			imageButton.setImageResource(R.drawable.ic_agregar_blanco);
+			btnSearch.setImageResource(R.drawable.ic_agregar_blanco);
 		}
 
 		searchQuery = (EditText) findViewById(R.id.searchQuery);
 		// mTitleTextView.setText("My Own Title");
+		
+		addButtonNoBook();
 
-		imageButton.setOnClickListener(new OnClickListener() {
+
+		btnSearch.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
-
-				getBooks();
+				String query = searchQuery.getText().toString();
+				if (!query.isEmpty()){					
+					getBooks();
+				}
 
 			}
 		});
@@ -103,12 +115,10 @@ public class SearchActivity extends ActionBarActivity implements
 	}
 
 	protected void getBooks() {
-
-		progress = new ProgressDialog(this);
-		progress.setTitle("Buscando");
-		progress.setMessage("En unos segundos, te mostrar� los resultados de tu busqueda...");
-		progress.show();
-
+		
+		loading.setVisibility(View.VISIBLE);
+		btnSearch.setEnabled(false);
+		
 		if (adapter != null) {
 			adapter.clear();
 		}
@@ -127,6 +137,9 @@ public class SearchActivity extends ActionBarActivity implements
 						// Log.d("FB", hashmap.getClass().getName() + ": " +
 						// iterador.next().getClass().getName() );
 						// Log.d("FB", hashmap.toString() );
+						
+						loading.setVisibility(View.GONE);
+						btnSearch.setEnabled(true);
 
 						if (err == null) {
 
@@ -134,11 +147,14 @@ public class SearchActivity extends ActionBarActivity implements
 
 							ArrayList<?> booksObj;
 							List<ParseObject> books = new ArrayList<ParseObject>();
-							;
+							
 
+							
 							if (models instanceof ArrayList<?>) {
-								if (((ArrayList<?>) models).get(0) instanceof ParseObject) {
-									books = (List<ParseObject>) models;
+								if( ((ArrayList<?>) models).size() > 0){
+									if (((ArrayList<?>) models).get(0) instanceof ParseObject) {
+										books = (List<ParseObject>) models;
+									}
 								}
 							}
 
@@ -148,15 +164,71 @@ public class SearchActivity extends ActionBarActivity implements
 										books, searchFind);
 								// adapter.notifyDataSetChanged();
 								list.setAdapter(adapter);
+								
+								
 							}
 
 						} else {
-
+							err.printStackTrace();
 						}
-						progress.dismiss();
 
 					}
 				});
+	}
+
+	protected void addButtonNoBook() {
+
+		LayoutInflater inflater = getLayoutInflater();
+		View button = inflater.inflate(R.layout.button_feedback_nobook, list, false);
+
+		Button buttonNoBook = (Button) button.findViewById(R.id.btnNoBook);
+		
+		buttonNoBook.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				feedbackNoBook();
+				
+			}
+		});
+		
+		list.addFooterView(button);
+		
+	}
+
+	protected void feedbackNoBook() {
+
+		ParseObject feedback = new ParseObject("Feedback");
+		
+		feedback.put("feedback", searchQuery.getText().toString());
+		feedback.put("type", "NO_BOOK");
+		feedback.put("user", ParseUser.getCurrentUser());
+		feedback.saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException e) {
+				
+				if(e == null){
+					
+					AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
+					builder.setMessage("Gracias por tu feedback. en la próxima actualización agregaremos más libros. no dudes en contactarnos @findbooksme.")
+					       .setCancelable(false)
+					       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					           public void onClick(DialogInterface dialog, int id) {
+					                //do things
+					           }
+					       });
+					AlertDialog alert = builder.create();
+					alert.show();
+					
+				}else{
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
 	}
 
 	@Override
@@ -201,6 +273,8 @@ public class SearchActivity extends ActionBarActivity implements
 		intent.putExtra(BookActivity.BOOK_TITLE, title);
 		intent.putExtra(BookActivity.BOOK_SUBTITLE, subtitle);
 		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
+		
+		
 
 
 		startActivity(intent);

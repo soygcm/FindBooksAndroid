@@ -26,6 +26,8 @@
         
     </LinearLayout>
     
+     
+    
     </FrameLayout>
     
     
@@ -44,6 +46,23 @@
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
              >
         
+        <LinearLayout 
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:orientation="vertical"
+            android:layout_gravity="center_vertical|right"
+                android:gravity="center"
+    
+    >
+        
+        <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+		style="?android:attr/progressBarStyleSmall"
+        android:layout_height="wrap_content"
+         />
+        
+        </LinearLayout>
         
         <Spinner
 		            android:id="@+id/option"
@@ -71,8 +90,6 @@
 		android:dividerHeight="0dp"
 		android:overScrollMode="never"
 	    android:fadingEdge="none"
-		
-		
 	    >
 
 </ListView>

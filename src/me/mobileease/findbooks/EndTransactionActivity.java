@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 public class EndTransactionActivity extends ActionBarActivity implements
 		OnItemClickListener {
@@ -49,12 +50,15 @@ public class EndTransactionActivity extends ActionBarActivity implements
 	private String transactionId;
 	private String endOption;
 	private EndOptionAdapter adapter;
+	private ProgressBar loading;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_end_transaction);
 
+		loading = (ProgressBar) findViewById(R.id.loading);
+		
 		user = ParseUser.getCurrentUser();
 		
 		config = new FindBooksConfig();
@@ -150,10 +154,16 @@ public class EndTransactionActivity extends ActionBarActivity implements
 		transaction.put("ended"+userType, true);
 		transaction.put("detail"+userType, option.getCode());
 		
+		loading.setVisibility(View.VISIBLE);
+		list.setOnItemClickListener(null);
+		
 		transaction.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
 
+				loading.setVisibility(View.GONE);
+				list.setOnItemClickListener(EndTransactionActivity.this);
+				
 				if (e == null){
 					Log.d(FindBooks.TAG, "transaccion finalizada");
 					

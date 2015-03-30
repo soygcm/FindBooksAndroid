@@ -39,6 +39,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
@@ -65,7 +66,7 @@ public class BookActivity extends ActionBarActivity implements
 
 	private ListView list;
 	private String bookId;
-	private ProgressDialog progress;
+//	private ProgressDialog progress;
 	
 	protected BookOfferAdapter adapterOffers;
 	private TransactionAdapter adapterTransactions;
@@ -92,7 +93,7 @@ public class BookActivity extends ActionBarActivity implements
 	private String offerComment;
 	private ImageButton btnEdit;
 //	private String offerCurrency;
-	private String offerId;
+	private String myBookId;
 	private Intent intent;
 	private double offerPrice;
 	private Button noOffer;
@@ -100,6 +101,8 @@ public class BookActivity extends ActionBarActivity implements
 	private int transactionCount;
 	private Button shareIt;
 	private String bookSubtitle;
+	protected List<ParseObject> transactions;
+	private ProgressBar loading;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +113,8 @@ public class BookActivity extends ActionBarActivity implements
 		if (toolbar != null) {
 			setSupportActionBar(toolbar);
 		}
+		
+		loading = (ProgressBar) findViewById(R.id.loading);
 		
 		list = (ListView) findViewById(R.id.offerList);
 		imgBook = (ImageView) findViewById(R.id.imgBook);
@@ -141,7 +146,7 @@ public class BookActivity extends ActionBarActivity implements
 
 		intent = getIntent();
 		bookId = intent.getStringExtra(BookActivity.BOOK_ID);
-		offerId = intent.getStringExtra(BookActivity.OFFER_ID);
+		myBookId = intent.getStringExtra(BookActivity.OFFER_ID);
 		fromHome = intent.getBooleanExtra(BookActivity.FROM_HOME, false);
 		bookType = intent.getStringExtra(BookActivity.BOOK_TYPE);
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
@@ -255,31 +260,21 @@ public class BookActivity extends ActionBarActivity implements
 	 * usuario
 	 */
 	private void getTransactions() {
-
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("Transaction");
-		ParseObject book = ParseObject.createWithoutData("MyBook", offerId);
-
+		
 		boolean showOffer = false;
 		
-		if (bookType.equals("OFFER")) {
-			query.whereEqualTo("bookOffer", book);
-			query.whereNotEqualTo("endedOffer", true);
-		} else if (bookType.equals("WANT")) {
+		if (bookType.equals("WANT")) {
 			showOffer = true;
-			query.whereEqualTo("bookWant", book);
-			query.whereNotEqualTo("endedWant", true);
 		}
 		
 		final boolean finalShowOffer = showOffer;
 
-		query.include("bookOffer");
-		query.include("bookWant");
-		query.include("bookOffer.user");
-		query.include("bookWant.user");
+		ParseQuery<ParseObject> query = getTransactionQuery(bookType);
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
 			public void done(List<ParseObject> trans, ParseException e) {
+				loading.setVisibility(View.GONE);
 				if (e == null) {
 					Log.d(FindBooks.TAG, "total: " + trans.size());
 					adapterTransactions = new TransactionAdapter(
@@ -298,16 +293,37 @@ public class BookActivity extends ActionBarActivity implements
 
 	}
 
+	private ParseQuery<ParseObject> getTransactionQuery(String type) {
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Transaction");
+		ParseObject book = ParseObject.createWithoutData("MyBook", myBookId);
+
+		
+		if (type.equals("OFFER")) {
+			query.whereEqualTo("bookOffer", book);
+			query.whereNotEqualTo("endedOffer", true);
+		} else if (type.equals("WANT")) {
+			query.whereEqualTo("bookWant", book);
+			query.whereNotEqualTo("endedWant", true);
+		}
+		
+
+		query.include("bookOffer");
+		query.include("bookWant");
+		query.include("bookOffer.user");
+		query.include("bookWant.user");
+		return query;
+	}
+
 	/**
 	 * Descubrir si este libro ya lo quiero, para evitar crear otro Want
 	 * 
 	 */
 	private void knowUserWantBookAndGetOffers() {
 
-		progress = new ProgressDialog(this);
-		progress.setTitle("Obteniendo ofertas");
-		progress.setMessage("Estoy buscando si existe alguna oferta disponible para este libro...");
-		progress.show();
+//		progress = new ProgressDialog(this);
+//		progress.setTitle("Obteniendo ofertas");
+//		progress.setMessage("Estoy buscando si existe alguna oferta disponible para este libro...");
+//		progress.show();
 
 		ParseObject book = ParseObject.createWithoutData("Book", bookId);
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
@@ -321,15 +337,48 @@ public class BookActivity extends ActionBarActivity implements
 				if (e == null) {
 					if (list.size() > 0) {
 						bookWant = list.get(0);
+						myBookId = bookWant.getObjectId();
+						
+						getTransactionCurrent();
+						
+					}else{
+						
+						getOffers();
 					}
+				}else{
+					
+//					progress.dismiss();
+
+					e.printStackTrace();
 				}
 
-				getOffers();
 
 			}
 
 		});
 
+	}
+
+	/**
+	 * Obtener las transacciónes que el usuario tiene en este momento, de este 
+	 * bookWant, porque si existe un bookWant de este libro
+	 * Y luego las ofertas
+	 */
+	protected void getTransactionCurrent() {
+
+		ParseQuery<ParseObject> query = getTransactionQuery("WANT");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> trans, ParseException e) {
+				if (e == null) {
+					transactions = trans;
+					getOffers();
+				} else {
+//					progress.dismiss();
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	private void getOffers() {
@@ -344,32 +393,27 @@ public class BookActivity extends ActionBarActivity implements
 		query.include("user");
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(final List<ParseObject> offers, ParseException e) {
-				progress.dismiss();
-
+//				progress.dismiss();
+				loading.setVisibility(View.GONE);
 				if (e == null) {
-					
 					if(offers.size() == 0){
-						
 						shareItQuestion();
 						showStareItButton();
-						
 						Log.d(FindBooks.TAG, "No hay ofertas, dile a tus amigos, que estas buscando este libro.");						
+					}else{
+						adapterOffers = new BookOfferAdapter(BookActivity.this, offers,	bookWant, transactions);
+						list.setAdapter(adapterOffers);
 					}
-					
-					adapterOffers = new BookOfferAdapter(BookActivity.this, offers,
-							bookWant);
-					list.setAdapter(adapterOffers);
-
 					// adapter.addAll(offers);
-
 				} else {
-					Log.d("FB", "Error: " + e.getMessage());
+					e.printStackTrace();
 				}
 
 			}
 		});
 
 	}
+
 
 	protected void showStareItButton() {
 		shareIt.setVisibility(View.VISIBLE);
@@ -509,7 +553,7 @@ public class BookActivity extends ActionBarActivity implements
 
 	protected void deleteBook() {
 		
-		ParseObject book = ParseObject.createWithoutData("MyBook", offerId);
+		ParseObject book = ParseObject.createWithoutData("MyBook", myBookId);
 
 		book.put("deleted", true);
 		book.saveInBackground(new SaveCallback() {
@@ -542,7 +586,7 @@ public class BookActivity extends ActionBarActivity implements
 		Intent intent = new Intent(this, AddOfferActivity.class);
 		
 		intent.putExtra(BookActivity.BOOK_ID, bookId);
-		intent.putExtra(BookActivity.OFFER_ID, offerId);
+		intent.putExtra(BookActivity.OFFER_ID, myBookId);
 		intent.putExtra(BookActivity.BOOK_TITLE, bookTitle);
 		intent.putExtra(BookActivity.BOOK_AUTHORS, bookAuthors);
 		intent.putExtra(AddOfferActivity.EDIT, true);

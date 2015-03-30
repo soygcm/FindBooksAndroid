@@ -41,6 +41,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -88,6 +89,7 @@ public class AddOfferActivity extends ActionBarActivity implements
 //	private String offerCurrency;
 	private String offerId;
 	private TextView txtCurrency;
+	private ProgressBar loading;
 	
 	public static final String EDIT = "edit";
 
@@ -95,6 +97,8 @@ public class AddOfferActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_offer);
+		
+		loading = (ProgressBar) findViewById(R.id.loading);
 		
 		header = findViewById(R.id.header);
 		mImageView = (ImageView) findViewById(R.id.photo);
@@ -353,10 +357,18 @@ public class AddOfferActivity extends ActionBarActivity implements
 
 		}
 		offer.put("comment", comment.getText().toString());
+		
+		loading.setVisibility(View.VISIBLE);
+		btnSave.setEnabled(false);
+		
 		offer.saveInBackground(new SaveCallback() {
 
 			@Override
 			public void done(ParseException e) {
+				
+				loading.setVisibility(View.GONE);
+				btnSave.setEnabled(true);
+				
 				if (e == null) {
 
 					Log.d("FB", "Oferta Guardada");
@@ -365,6 +377,9 @@ public class AddOfferActivity extends ActionBarActivity implements
 
 				} else {
 
+					e.printStackTrace();
+					
+					
 				}
 			}
 		});

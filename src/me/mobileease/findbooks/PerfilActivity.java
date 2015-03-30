@@ -41,6 +41,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.AutoCompleteTextView.Validator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class PerfilActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
@@ -58,6 +59,7 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 	private ImageView searchPlace;
 	protected ArrayAdapter<PlaceResult> adapter;
 	private TextView txtCurrency;
+	private ProgressBar loading;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,6 +81,8 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 	
 	private void loadInterface() {		
 		setContentView(R.layout.activity_perfil);
+		
+		loading = (ProgressBar) findViewById(R.id.loading);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {  		
@@ -353,11 +357,14 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		currentUser.put("nickname", username);
 		currentUser.put("phone", phone);
 		
+		loading.setVisibility(View.VISIBLE);
+		save.setEnabled(false);
 		currentUser.saveInBackground(new SaveCallback() {
 			
 			@Override
 			public void done(ParseException e) {
-				
+				loading.setVisibility(View.GONE);
+				save.setEnabled(true);
 				if(e == null){
 					
 					showHome();

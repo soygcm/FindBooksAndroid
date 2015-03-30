@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:background="@color/ui_fondo_claro" 
-    xmlns:app="http://schemas.android.com/apk/res/me.mobileease.findbooks">
+    >
      
     
     <android.support.v7.widget.Toolbar
@@ -27,6 +27,25 @@
         
              
  </android.support.v7.widget.Toolbar>
+ 
+    <LinearLayout 
+                android:id="@+id/loading"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:orientation="vertical"
+            android:layout_gravity="center_vertical|center_horizontal"
+                android:gravity="center"
+                android:visibility="gone"
+    
+    >
+        
+        <ProgressBar
+        android:layout_width="wrap_content"
+		style="?android:attr/progressBarStyleSmall"
+        android:layout_height="wrap_content"
+         />
+        
+        </LinearLayout>
  
 <ListView 
     android:id="@+id/transactionsList"

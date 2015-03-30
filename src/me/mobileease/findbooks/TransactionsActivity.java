@@ -12,6 +12,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -24,11 +25,13 @@ public class TransactionsActivity extends ActionBarActivity {
 	private ParseUser user;
 	protected ListView listTransactions;
 	protected TransactionAdapter adapterTransactions;
+	private View loading;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transactions);
+		loading = (View) findViewById(R.id.loading);
 
 		user = ParseUser.getCurrentUser();
 
@@ -70,10 +73,16 @@ public class TransactionsActivity extends ActionBarActivity {
 		query.include("bookOffer.book");
 		query.include("bookOffer.user");
 		query.include("bookWant.user");
+		
+		loading.setVisibility(View.VISIBLE);
+		
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
 			public void done(List<ParseObject> list, ParseException e) {
+				loading.setVisibility(View.GONE);
+
+				
 				if (e == null) {
 					adapterTransactions = new TransactionAdapter(
 							TransactionsActivity.this, list, true, true);
@@ -105,7 +114,8 @@ public class TransactionsActivity extends ActionBarActivity {
 	        } else {
 	            // This activity is part of this app's task, so simply
 	            // navigate up to the logical parent activity.
-	            NavUtils.navigateUpTo(this, upIntent);
+	        		onBackPressed();
+//	            NavUtils.navigateUpTo(this, upIntent);
 	        }
 //	        return true;
 			

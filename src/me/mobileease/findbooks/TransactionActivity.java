@@ -78,6 +78,7 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	private Intent intent;
 	private boolean endedWant;
 	private boolean endedOffer;
+	private View loading;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -173,6 +174,7 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 
 	private void initUI() {
 		setContentView(R.layout.activity_transaction);
+		loading = (View) findViewById(R.id.loading);
 
 		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		if (toolbar != null) {
@@ -375,10 +377,17 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		ParseObject transaction = ParseObject.createWithoutData("Transaction", transactionId);
 		Log.d(FindBooks.TAG, transactionId);
 		transaction.put("accepted", true);
+		
+		btnAccept.setEnabled(false);
+		loading.setVisibility(View.VISIBLE);
+		
 		transaction.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
 
+				btnAccept.setEnabled(true);
+				loading.setVisibility(View.GONE);
+				
 				if (e == null){
 					Log.d(FindBooks.TAG, "transaccion aceptada");
 					

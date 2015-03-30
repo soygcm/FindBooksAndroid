@@ -33,6 +33,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.ConfigCallback;
@@ -49,7 +50,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	public static final String SEARCH_FIND = "search_find";
 	private User user;
 	private GridView gridview;
-	private ProgressDialog progress;
+//	private ProgressDialog progress;
 	protected List<ParseObject> userOffers;
 	private MyBookAdapter adapter;
 	private DrawerLayout drawer;
@@ -57,6 +58,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	private ListView listTransactions;
 	private ImageButton btnTransactions;
 	private TextView txtUsername;
+	private ProgressBar loading;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,6 +73,8 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 			setSupportActionBar(toolbar);
 		}
 
+		loading = (ProgressBar) findViewById(R.id.loading);
+		
 		// drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		// listTransactions =(ListView) findViewById(R.id.transactionList);
 
@@ -111,38 +115,13 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	 */
 	private void getMyBooks() {
 
-		progress = new ProgressDialog(this);
-		progress.setTitle("Cargando tus libros");
-		progress.setMessage("Dame un momento, estoy apunto de mostrarte tus libros...");
-		progress.show();
+//		progress = new ProgressDialog(this);
+//		progress.setTitle("Cargando tus libros");
+//		progress.setMessage("Dame un momento, estoy apunto de mostrarte tus libros...");
+//		progress.show();
 
 		Log.d("FB", "Obteniendo MyBooks");
 
-		// ParseQuery<ParseObject> queryLocal =
-		// ParseQuery.getQuery(MyBook.CLASS);
-		// queryLocal.whereEqualTo("user", user);
-		// queryLocal.fromLocalDatastore();
-		// queryLocal.include("book");
-		// queryLocal.findInBackground(new FindCallback<ParseObject>() {
-		// public void done(final List<ParseObject> offers, ParseException e) {
-		// if (e == null) {
-		//
-		// Log.d("FB", "Ofertas Locales obtenidas: "+offers.size());
-		//
-		// adapter = new OfferAdapter(HomeActivity.this, offers);
-		// gridview.setAdapter(adapter);
-		//
-		// if (offers.size() != 0) {
-		//
-		// progress.dismiss();
-		//
-		// }
-		//
-		// } else {
-		// Log.d("FB", "Error: " + e.getMessage());
-		// progress.dismiss();
-		// }
-		
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
 		query.whereEqualTo("user", user.getParseUser());
 		query.whereNotEqualTo("deleted", true);
@@ -152,7 +131,9 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 			@Override
 			public void done(List<ParseObject> offersOnline, ParseException err) {
 
-				progress.dismiss();
+//				progress.dismiss();
+				
+				loading.setVisibility(View.GONE);
 
 				if (err == null) {
 
@@ -162,37 +143,13 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 					// set clicklistener
 					gridview.setOnItemClickListener(adapter);
 
-					// Log.d("FB", "Ofertas Online obtenidas");
-					//
-					// ParseObject.pinAllInBackground(offersOnline);
-					//
-					// for (ParseObject parseObjectOnline : offersOnline) {
-					//
-					// boolean exist = false;
-					//
-					// for (ParseObject parseObjectLocal : offers) {
-					//
-					// if (parseObjectLocal.getObjectId().equals(
-					// parseObjectOnline.getObjectId() ) ) {
-					//
-					// exist = true;
-					//
-					// }
-					//
-					// }
-					//
-					// if(!exist){
-					// adapter.add(parseObjectOnline);
-					// }
-					// }
+					
 
 				}
 			}
 
 		});
 
-		// }
-		// });
 
 	}
 
