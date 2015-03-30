@@ -52,6 +52,8 @@
             android:textColor="@color/negro"
             android:paddingRight="6dp"
             android:paddingLeft="6dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
             android:textAppearance="?android:attr/textAppearanceButton"
             android:background="@drawable/button_cafe"
             android:text="@string/btn_yanoloquiero" />
@@ -76,6 +78,8 @@
             android:textColor="@color/negro"
             android:paddingRight="6dp"
             android:paddingLeft="6dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
             android:textAppearance="?android:attr/textAppearanceButton"
             android:background="@drawable/button_cafe"
             android:text="@string/btn_no_ofertas" />
