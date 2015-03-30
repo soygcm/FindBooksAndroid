@@ -20,13 +20,18 @@
     <!--Colores de App -->
     <color name="ui_fondo_claro">#F7F2DF</color>
     <color name="ui_fondo_medio">#E8D8AB</color>
+    <color name="ui_fondo_medio_15">#D1C197</color>
+
     <color name="ui_fondo_oscuro">#542200</color>
     <color name="ui_menta_busqueda">#00CCAA</color>
     <color name="ui_magenta_oferta">#DB67C8</color>
     <color name="ui_boton_verde">#6EDF6B</color>
+    <color name="ui_boton_verde_15">#86E27F</color>
     <color name="ui_boton_rojo">#EA5863</color>
+    <color name="ui_boton_rojo_15">#EF6C82</color>
     <color name="ui_boton_naranja">#F3AA44</color>
-    
+    <color name="ui_boton_naranja_15">#FCB663</color>    
+
     
     <color name="text_cafe_oscuro">#542200</color>
     <color name="text_cafe_claro">#A17035</color>
@@ -37,7 +42,11 @@
     <!--Colores generales -->
     <color name="blanco">#FFFFFF</color>
     <color name="blanco_80">#99FFFFFF</color> <!--realmente esta a 60% -->
+    <color name="blanco_20">#26FFFFFF</color> 
+    <color name="gris_15">#26686868</color> 
+    
     <color name="negro">#000000</color>
     <color name="ui_fondo_libro">#99532100</color>
+
 
 </resources>

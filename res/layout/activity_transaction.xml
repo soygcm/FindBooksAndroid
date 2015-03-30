@@ -191,7 +191,7 @@
                 android:text="@string/btn_aceptar" 
 	            android:layout_gravity="left"
 	            android:padding="5dp"
-	            android:background="@color/ui_boton_verde"
+	            android:background="@drawable/button_verde"
 	            android:textColor="@color/blanco"	            
 	            android:textAppearance="?android:attr/textAppearanceMedium" />
             
@@ -203,7 +203,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/btn_cancelar" 
 	            android:layout_gravity="right"
-	            android:background="@color/ui_boton_rojo"
+	            android:background="@drawable/button_rojo"
 	            android:textColor="@color/blanco"	
 	            android:padding="5dp"            
 	            android:textAppearance="?android:attr/textAppearanceMedium"
@@ -222,7 +222,7 @@
                 android:text="@string/btn_concluir" 
 	            android:layout_gravity="right"
 	            android:padding="5dp"
-	            android:background="@color/ui_boton_naranja"
+	            android:background="@drawable/button_naranja"
 	            android:textColor="@color/blanco"	            
 	            android:textAppearance="?android:attr/textAppearanceMedium"
 	         />

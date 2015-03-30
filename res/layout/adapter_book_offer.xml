@@ -94,18 +94,22 @@
                 <TextView
                     android:id="@+id/txtPrice"
                     android:layout_gravity="center_vertical"
-                    android:textColor="#00cc33"
+                    android:textColor="@color/ui_boton_verde"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
                     android:text="$ ---"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <Button
-                    android:id="@+id/btnWant"
-                    style="@style/Botonbasic"
-                    android:layout_gravity="right"
-                    android:text="@string/btn_lo_quiero"
+                   android:id="@+id/btnWant"
+                   android:layout_gravity="center_vertical|right"
+                   style="@style/Botonbasic"
+                   android:text="@string/btn_lo_quiero"
+                   android:textAppearance="?android:attr/textAppearanceButton"
+                   android:background="@drawable/button_cafe"
                      />
                 
             </LinearLayout>
