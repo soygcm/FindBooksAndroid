@@ -9,7 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="NO ENCONTRE EL LIBRO"
+        android:text="@string/btn_no_encontre"
+        style="@style/Botonbasic"
+        android:background="@drawable/button_cafe"
+        
          />
     
 </LinearLayout>
