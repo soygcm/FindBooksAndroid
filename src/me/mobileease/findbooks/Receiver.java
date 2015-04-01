@@ -39,7 +39,7 @@ public class Receiver extends ParsePushBroadcastReceiver {
         if (uriString != null && !uriString.isEmpty()) {
             activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uriString));
         } else {
-            activityIntent = new Intent(context, LoginActivity.class);
+            activityIntent = new Intent(context, HomeActivity.class);
         }
         activityIntent.putExtras(intent.getExtras());
         if (Build.VERSION.SDK_INT >= 16) {

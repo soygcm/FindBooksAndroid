@@ -6,7 +6,7 @@
     android:gravity="center"
     android:id="@+id/parse_login"
     android:visibility="visible"
-    android:background="@color/ui_fondo_claro"
+    android:background="@color/ui_menta_busqueda"
     >
 
     
@@ -30,25 +30,26 @@
 		    <LinearLayout
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:orientation="horizontal"
+		        android:orientation="vertical"
 		        android:layout_marginBottom="20dp" >
 		        
 			    <ImageView
 			        android:layout_width="80dp"
 			        android:layout_height="80dp"
-			        android:layout_gravity="center_vertical"
-			        
-			        android:src="@drawable/finbooks" />
+			        android:layout_gravity="center_horizontal"
+			        android:src="@drawable/icon_app" />
 			    
 			    
 			    <TextView
 			    android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:lines="2"
+		        android:layout_marginTop="10dp"
 		        android:text="@string/Find_Books" 
-		        android:layout_gravity="center_vertical"
+		        android:layout_gravity="center_horizontal"
+		        android:textAlignment="center"
+		        android:gravity="center_horizontal"
+		        android:textColor="@color/blanco"
 		       android:textSize="30dp"
-		       android:layout_marginLeft="12dp"
 		        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"  />
 		    
 		    </LinearLayout>
@@ -58,14 +59,14 @@
         android:id="@+id/login_username_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
+        android:visibility="gone"
         android:hint="Usuario" />
 
     <EditText
         android:id="@+id/login_password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
+		android:visibility="gone"
         android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
         android:fontFamily="sans-serif"
         android:hint="Contraseña"
@@ -76,6 +77,7 @@
         android:id="@+id/parse_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+		android:visibility="gone"     
         android:layout_marginTop="@dimen/com_parse_ui_large_vertical_spacing">
 
         <Button
@@ -110,7 +112,7 @@
         android:id="@+id/facebook_login"
         android:layout_width="fill_parent"
 	
-        android:text="FACEBOOK"
+        android:text="INICIA CON FACEBOOK"
         style="@style/Botonbasic"
         android:background="#3b5998" 
         android:textColor="@color/blanco"

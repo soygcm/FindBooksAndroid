@@ -384,8 +384,12 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 	}
 
 	protected void showHome() {
-		Intent intent = new Intent(this, HomeActivity.class);
-		startActivity(intent);
+		
+		setResult(HomeActivity.UPDATED);
+        finish();
+        
+//		Intent intent = new Intent(this, HomeActivity.class);
+//		startActivity(intent);
 	}
 
 

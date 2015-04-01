@@ -1,19 +1,19 @@
 package me.mobileease.findbooks.adapter;
 
-import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.List;
+
+import me.mobileease.findbooks.BookActivity;
+import me.mobileease.findbooks.FindBooks;
+import me.mobileease.findbooks.HomeActivity;
+import me.mobileease.findbooks.R;
+import me.mobileease.findbooks.TransactionActivity;
+import me.mobileease.findbooks.model.MyBook;
+import me.mobileease.findbooks.model.Transaction;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import me.mobileease.findbooks.BookActivity;
-import me.mobileease.findbooks.FindBooks;
-import me.mobileease.findbooks.R;
-import me.mobileease.findbooks.TransactionActivity;
-import me.mobileease.findbooks.TransactionsActivity;
-import me.mobileease.findbooks.model.MyBook;
-import me.mobileease.findbooks.model.Transaction;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
@@ -37,11 +37,12 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 	private LayoutInflater inflater;
 	private List<ParseObject> transactions;
 	private ParseUser user;
-	private Context c;
+	private Activity c;
 	private boolean showBook;
 	private boolean showOffer;
+	private boolean offering;
 
-	public TransactionAdapter(Context context, List<ParseObject> objects, boolean showBook, boolean showOffer) {
+	public TransactionAdapter(Activity context, List<ParseObject> objects, boolean showBook, boolean showOffer) {
 		super(context, -1, objects);
 		inflater = LayoutInflater.from(context);
 		c = context;
@@ -67,7 +68,7 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 			viewHolder.imgBook = (ImageView) view.findViewById(R.id.imgBook);
 			viewHolder.imgArrow = (ImageView) view.findViewById(R.id.imgArrow);
 			viewHolder.statusView = (View) view.findViewById(R.id.marcaTrans);
-			
+			viewHolder.imgUser = (ImageView) view.findViewById(R.id.imgUser);
 			view.setTag(viewHolder);
 		}
 
@@ -84,6 +85,19 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		ParseObject book = bookOffer.getParseObject("book");
 		ParseObject bookWant = transaction.getParseObject("bookWant");
 		ParseUser userWant = bookWant.getParseUser("user");
+		
+		offering = user.getObjectId().equals(userOffer.getObjectId());
+		String facebookId;
+		if(offering){
+			facebookId = userWant.getString("facebookId");
+		}else{
+			facebookId = userOffer.getString("facebookId");
+		}
+
+		if(facebookId != null){
+			String imageURL = "https://graph.facebook.com/"+facebookId+"/picture?type=square&width=50&height=50";
+			Ion.with(holder.imgUser).load(imageURL);			
+		}
 		
 		if(endedOffer || endedWant){
 			holder.statusView.setVisibility(View.VISIBLE);
@@ -131,6 +145,7 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		public TextView price;
 		public ImageView imgBook;
 		public ImageView imgArrow;
+		public ImageView imgUser;
 		public View statusView;
 
 	}
@@ -229,9 +244,7 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		intent.putExtra(TransactionActivity.TRANSACTION_END_WANT, endedWant);
 		intent.putExtra(TransactionActivity.TRANSACTION_END_OFFER, endedOffer);
 
-		
-		
 		//
-		c.startActivity(intent);
+		c.startActivityForResult(intent, HomeActivity.TRANSACTION);
 	}
 }

@@ -11,6 +11,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -22,6 +23,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class TransactionsActivity extends ActionBarActivity {
+	public static final int ACCEPTED = 10;
 	private ParseUser user;
 	protected ListView listTransactions;
 	protected TransactionAdapter adapterTransactions;
@@ -48,6 +50,19 @@ public class TransactionsActivity extends ActionBarActivity {
 			getTransactions();
 		}
 
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == HomeActivity.TRANSACTION){			
+			if(resultCode == HomeActivity.UPDATED) {
+				setResult(HomeActivity.UPDATED);
+    				finish();
+			}
+			if(resultCode == ACCEPTED) {
+				getTransactions();
+			}
+		} 
+		
 	}
 	
 	@Override
@@ -84,7 +99,8 @@ public class TransactionsActivity extends ActionBarActivity {
 		query.include("bookOffer.book");
 		query.include("bookOffer.user");
 		query.include("bookWant.user");
-		
+		query.orderByDescending("updatedAt");
+
 		loading.setVisibility(View.VISIBLE);
 		
 		query.findInBackground(new FindCallback<ParseObject>() {

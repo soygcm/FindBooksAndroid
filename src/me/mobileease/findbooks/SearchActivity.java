@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewDebug.FlagToString;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -48,6 +49,7 @@ public class SearchActivity extends ActionBarActivity implements
 	private boolean searchAdd;
 	private View loading;
 	private ImageButton btnSearch;
+	private boolean updated;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +109,14 @@ public class SearchActivity extends ActionBarActivity implements
 		switch (item.getItemId()) {
 
 		case android.R.id.home:
-			onBackPressed();
+			
+			if(updated){
+				setResult(HomeActivity.UPDATED);
+			    finish();
+			}else{
+				onBackPressed();				
+			}
+			
 			return true;
 		}
 
@@ -273,11 +282,11 @@ public class SearchActivity extends ActionBarActivity implements
 		intent.putExtra(BookActivity.BOOK_TITLE, title);
 		intent.putExtra(BookActivity.BOOK_SUBTITLE, subtitle);
 		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
-		
-		
+		intent.putExtra(BookActivity.BOOK_TYPE, "WANT");
 
+		startActivityForResult(intent, HomeActivity.ADD_BOOK_WANT);
 
-		startActivity(intent);
+//		startActivity(intent);
 
 	}
 
@@ -306,9 +315,24 @@ public class SearchActivity extends ActionBarActivity implements
 		intent.putExtra(BookActivity.BOOK_TITLE, title);
 		intent.putExtra(BookActivity.BOOK_AUTHORS, authors);
 		intent.putExtra(BookActivity.BOOK_IMAGE, imageLink);
+		
+		startActivityForResult(intent, HomeActivity.ADD_BOOK_OFFER);
+//		startActivity(intent);
 
-		startActivity(intent);
-
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if( resultCode == HomeActivity.UPDATED) {
+	    		if (requestCode == HomeActivity.ADD_BOOK_OFFER ) {
+	    			setResult(HomeActivity.UPDATED, data);
+	    			finish();
+	        }
+	    		if(requestCode == HomeActivity.ADD_BOOK_WANT){
+	    			updated = true;
+	    		}
+	    }
+	    
 	}
 
 }

@@ -65,7 +65,7 @@
     
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="Find_Books">Find\nBooks</string>
+    <string name="Find_Books">Find Books</string>
     
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_transactions">Transacciones</string> 

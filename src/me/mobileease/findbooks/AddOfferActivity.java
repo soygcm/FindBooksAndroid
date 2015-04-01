@@ -362,24 +362,16 @@ public class AddOfferActivity extends ActionBarActivity implements
 		btnSave.setEnabled(false);
 		
 		offer.saveInBackground(new SaveCallback() {
-
 			@Override
 			public void done(ParseException e) {
-				
 				loading.setVisibility(View.GONE);
 				btnSave.setEnabled(true);
 				
 				if (e == null) {
-
 					Log.d("FB", "Oferta Guardada");
-
 					showHome();
-
 				} else {
-
 					e.printStackTrace();
-					
-					
 				}
 			}
 		});
@@ -387,8 +379,14 @@ public class AddOfferActivity extends ActionBarActivity implements
 	}
 
 	protected void showHome() {
-		Intent intent = new Intent(this, HomeActivity.class);
-		startActivity(intent);
+		
+		
+		setResult(HomeActivity.UPDATED);
+		finish();
+		
+		
+//		Intent intent = new Intent(this, HomeActivity.class);
+//		startActivity(intent);
 	}
 
 	static final int REQUEST_IMAGE_CAPTURE = 1;

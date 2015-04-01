@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import com.parse.ConfigCallback;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -48,6 +49,14 @@ import com.parse.ParseUser;
 public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	public static final String SEARCH_ADD = "search_add";
 	public static final String SEARCH_FIND = "search_find";
+	public static final int ADD_BOOK_OFFER = 0;
+	public static final int EDIT_PROFILE = 1;
+	public static final int TRANSACTION = 2;
+	public static final int MY_BOOK = 4;
+	public static final int ADD_BOOK_WANT = 5;
+	
+	public static final int UPDATED = 6;
+
 	private User user;
 	private GridView gridview;
 //	private ProgressDialog progress;
@@ -59,6 +68,38 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	private ImageButton btnTransactions;
 	private TextView txtUsername;
 	private ProgressBar loading;
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if(resultCode == UPDATED){
+			if (requestCode == ADD_BOOK_OFFER 
+					|| requestCode == ADD_BOOK_WANT
+					|| requestCode == MY_BOOK
+					|| requestCode == TRANSACTION
+					) {
+	        		Log.d(FindBooks.TAG, "result ok");
+	        		refreshMyBooks();
+	        }
+			if (requestCode == EDIT_PROFILE ){
+				refreshProfileName();
+			}
+	    }
+		
+	}
+
+	private void refreshProfileName() {
+
+		user = User.getCurrentUser();
+
+		txtUsername.setText(user.getNickname());
+		
+	}
+
+	private void refreshMyBooks() {
+
+		getMyBooks();
+		
+	}
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,6 +145,9 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 				}
 			});
 		}else{
+			
+			startLoginActivity();
+			
 			Log.d("FB", "No hay usuario?");			
 		}
 
@@ -137,7 +181,9 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
 		query.whereEqualTo("user", user.getParseUser());
 		query.whereNotEqualTo("deleted", true);
+		query.orderByDescending("updatedAt");
 		query.include("book");
+		loading.setVisibility(View.VISIBLE);
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
@@ -180,7 +226,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	private void showTransactions() {
 		Intent intent = new Intent(HomeActivity.this,
 				TransactionsActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent, TRANSACTION);
 	}
 
 	@Override
@@ -212,13 +258,14 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 				case DialogInterface.BUTTON_POSITIVE:
 
 					// Log the user out
-					// ParseFacebookUtils.getSession().closeAndClearTokenInformation();
+					 ParseFacebookUtils.getSession().closeAndClearTokenInformation();
 					ParseUser.logOut();
+					((FindBooks) getApplication()).clearApplicationData();
+
 
 					// ((RespiremosSalud)
 					// getApplication()).clearApplicationData();
 					// Go to the login view
-					finish();
 					startLoginActivity();
 
 					break;
@@ -242,13 +289,18 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
 		startActivity(intent);
+		finish();
+
 		
 	}
 
 	private void editProfile() {
 
 		Intent intent = new Intent(HomeActivity.this, PerfilActivity.class);
-		startActivity(intent);
+		
+		startActivityForResult(intent, EDIT_PROFILE);
+		
+//		startActivity(intent);
 
 	}
 

@@ -35,13 +35,14 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		ParseAnalytics.trackAppOpened(getIntent());
+		
 		if (ParseUser.getCurrentUser().getObjectId() != null) {
 			showHome();
 		}
 
 		loadInterface();
 
-		ParseAnalytics.trackAppOpened(getIntent());
 	}
 
 	// / Obtener las vistas desde el layout y guardarlas en campos de la clase
@@ -62,12 +63,15 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 		int id = v.getId();
 		if (id == R.id.parse_login_button) {
 			login();
+			
+			
 		}
 		if (id == R.id.parse_signup_button) {
 			signup();
 		}
 		if(id == R.id.facebook_login){
 			facebookLogin();
+
 		}
 
 	}
@@ -87,8 +91,9 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 			  @Override
 			  public void done(ParseUser user, ParseException err) {
 			    if (user == null) {
-			    	Log.d(FindBooks.TAG,
-							"Uh oh. The user cancelled the Facebook login. "+err.getMessage());
+			    		Log.d(FindBooks.TAG,
+							"Uh oh. The user cancelled the Facebook login. ");
+			    		err.printStackTrace();
 			    } else if (user.isNew()) {
 			      Log.d("MyApp", "User signed up and logged in through Facebook!");
 			      //Ver Perfil
@@ -101,9 +106,14 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 					}
 				});
 			    } else {
-			      Log.d("MyApp", "User logged in through Facebook!");
+			      Log.d("MyApp", "User logged in through Facebook! id:" + user.getObjectId() );
+			      
 			      //Ver Home
-			      showHome();
+			      
+			      	if (ParseUser.getCurrentUser().getObjectId() != null) {
+			      		showHome();
+			      	}
+//			      showHome();
 			    }
 			  }
 			});
@@ -161,11 +171,15 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 						if (user != null) {
 
 							Log.d("FB", "Login con exito..");
+							
+							if (ParseUser.getCurrentUser().getObjectId() != null) {
+								showHome();
+							}
 
-							showHome();
+//							showHome();
 
 						} else {
-							Log.d("FB", "Error: " + e.getMessage());
+							e.printStackTrace();
 						}
 					}
 
@@ -175,7 +189,13 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 
 	// / Mostrar el Home
 	protected void showHome() {
+		
 		Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
 		startActivity(intent);
+		finish();
 	}
 }

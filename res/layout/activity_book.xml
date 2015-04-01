@@ -19,9 +19,11 @@
     android:src="@drawable/romeo_y_julieta" />
     
     <LinearLayout 
+        android:id="@+id/fondo"
         android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
 		android:background="@color/ui_fondo_libro"
+		android:orientation="horizontal"
         >
         
     </LinearLayout>

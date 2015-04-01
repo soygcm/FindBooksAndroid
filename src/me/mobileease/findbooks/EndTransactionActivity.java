@@ -184,10 +184,13 @@ public class EndTransactionActivity extends ActionBarActivity implements
 
 	protected void backHome() {
 
-		Intent intent = new Intent(this, HomeActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-		startActivity(intent);
+//		Intent intent = new Intent(this, HomeActivity.class);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+//		startActivity(intent);
+		
+		setResult(HomeActivity.UPDATED);
+		finish();
 		
 	}
 

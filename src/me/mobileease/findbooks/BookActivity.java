@@ -103,6 +103,7 @@ public class BookActivity extends ActionBarActivity implements
 	private String bookSubtitle;
 	protected List<ParseObject> transactions;
 	private ProgressBar loading;
+	private View fondo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class BookActivity extends ActionBarActivity implements
 		}
 		
 		loading = (ProgressBar) findViewById(R.id.loading);
+		fondo = findViewById(R.id.fondo);
 		
 		list = (ListView) findViewById(R.id.offerList);
 		imgBook = (ImageView) findViewById(R.id.imgBook);
@@ -149,6 +151,7 @@ public class BookActivity extends ActionBarActivity implements
 		myBookId = intent.getStringExtra(BookActivity.OFFER_ID);
 		fromHome = intent.getBooleanExtra(BookActivity.FROM_HOME, false);
 		bookType = intent.getStringExtra(BookActivity.BOOK_TYPE);
+		
 		bookTitle = intent.getStringExtra(BookActivity.BOOK_TITLE);
 		bookSubtitle = intent.getStringExtra(BookActivity.BOOK_SUBTITLE);
 		
@@ -188,6 +191,13 @@ public class BookActivity extends ActionBarActivity implements
 		setTitle("");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		if(bookType != null){			
+			if (bookType.equals("OFFER")) {
+				fondo.setBackgroundColor(getResources().getColor(R.color.ui_fondo_magenta_40));
+			}else if (bookType.equals("WANT")) {
+				fondo.setBackgroundColor(getResources().getColor(R.color.ui_fondo_menta_40));
+			}
+		}
 		
 		//Ofer info
 		offerInfo();
@@ -249,7 +259,16 @@ public class BookActivity extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			onBackPressed();
+			
+			if(adapterOffers != null 
+				&& adapterOffers.transactions != null
+				&& adapterOffers.transactions.size()>0){
+				 setResult(HomeActivity.UPDATED);
+			        finish();
+			}else{
+				onBackPressed();				
+			}
+			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -328,6 +347,7 @@ public class BookActivity extends ActionBarActivity implements
 		ParseObject book = ParseObject.createWithoutData("Book", bookId);
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
 		query.whereEqualTo("book", book);
+		query.whereNotEqualTo("deleted", true);
 		query.whereEqualTo("type", "WANT");
 		query.whereEqualTo("user", ParseUser.getCurrentUser());
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -389,6 +409,7 @@ public class BookActivity extends ActionBarActivity implements
 		ParseObject book = ParseObject.createWithoutData("Book", bookId);
 		query.whereEqualTo("book", book);
 		query.whereEqualTo("type", "OFFER");
+		query.whereNotEqualTo("deleted", true);
 		query.include("book");
 		query.include("user");
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -556,6 +577,12 @@ public class BookActivity extends ActionBarActivity implements
 		ParseObject book = ParseObject.createWithoutData("MyBook", myBookId);
 
 		book.put("deleted", true);
+		
+		if(bookType != null 
+			&& bookType.equals("OFFER") ) {
+			book.put("delete", true);
+		}
+		
 		loading.setVisibility(View.VISIBLE);
 		noWant.setEnabled(false);
 		noOffer.setEnabled(false);
@@ -579,10 +606,13 @@ public class BookActivity extends ActionBarActivity implements
 	
 	protected void backHome() {
 
-		Intent intent = new Intent(this, HomeActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-		startActivity(intent);
+//		Intent intent = new Intent(this, HomeActivity.class);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+//		startActivity(intent);
+		
+		setResult(HomeActivity.UPDATED);
+        finish();
 		
 	}
 
@@ -610,8 +640,26 @@ public class BookActivity extends ActionBarActivity implements
 		 * condition
 		 * 			
 		 */
-		startActivity(intent);
+		
+		startActivityForResult(intent, HomeActivity.MY_BOOK);
+		
+//		startActivity(intent);
 
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if(resultCode == HomeActivity.UPDATED) {
+	    		if (requestCode == HomeActivity.MY_BOOK
+	    				|| requestCode == HomeActivity.TRANSACTION) {
+	    			setResult(HomeActivity.UPDATED, data);
+	    			finish();
+	    		}
+	    }
+	    if(resultCode == TransactionsActivity.ACCEPTED && requestCode == HomeActivity.TRANSACTION) {
+			getTransactions();
+		}
+	    
 	}
 
 }

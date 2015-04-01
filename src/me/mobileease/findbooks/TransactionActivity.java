@@ -79,6 +79,16 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	private boolean endedWant;
 	private boolean endedOffer;
 	private View loading;
+	
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == HomeActivity.TRANSACTION){			
+			if(resultCode == HomeActivity.UPDATED) {
+				setResult(HomeActivity.UPDATED);
+    				finish();
+			}
+		} 	
+	}
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -347,7 +357,15 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			onBackPressed();
+			
+			
+			if(accepted){
+				 setResult(TransactionsActivity.ACCEPTED);
+			     finish();
+			}else{
+				onBackPressed();				
+			}
+			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -378,7 +396,7 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		intent.putExtra(TransactionActivity.ACCEPTED, accepted);
 		
 		
-		startActivity(intent);
+		startActivityForResult(intent, HomeActivity.TRANSACTION);
 		
 	}
 

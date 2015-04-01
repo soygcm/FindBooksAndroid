@@ -13,6 +13,7 @@ import me.mobileease.findbooks.model.MyBook;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -33,7 +34,7 @@ import com.parse.ParseUser;
 /// Es posible que la mejor opción sea ArrayAdapter
 public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 		OnClickListener, OnItemClickListener {
-	private Context mContext;
+	private Activity mContext;
 	private List<ParseObject> offerList;
 	private LayoutInflater inflater;
 
@@ -98,12 +99,13 @@ public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 		
 		intent.putExtra(TransactionActivity.OFFER_TRANSACTION_COUNT, count);
 		
-		mContext.startActivity(intent);
+		mContext.startActivityForResult(intent, HomeActivity.MY_BOOK);
+//		mContext.startActivity(intent);
 
 	}
 	
 	
-	public MyBookAdapter(Context c, List<ParseObject> list) {
+	public MyBookAdapter(Activity c, List<ParseObject> list) {
 		super(c, -1, list);
 		mContext = c;
 		offerList = list;
@@ -225,7 +227,14 @@ public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 		Intent intent = new Intent(mContext, SearchActivity.class);
 		intent.putExtra(HomeActivity.SEARCH_FIND, buscar);
 		intent.putExtra(HomeActivity.SEARCH_ADD, !buscar);
-		mContext.startActivity(intent);
+		
+		if(buscar){
+			mContext.startActivityForResult(intent, HomeActivity.ADD_BOOK_WANT);
+		}else{
+			mContext.startActivityForResult(intent, HomeActivity.ADD_BOOK_OFFER);
+		}
+		
+//		mContext.startActivity(intent);
 
 	}
 

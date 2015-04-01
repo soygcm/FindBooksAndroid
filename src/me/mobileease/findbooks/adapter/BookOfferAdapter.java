@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
 import com.parse.ParseACL;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
@@ -41,7 +42,7 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 	private List<ParseObject> offers;
 	private ParseObject bookWant;
 	private ParseConfig config;
-	private List<ParseObject> transactions;
+	public List<ParseObject> transactions;
 	private Context c;
 
 	public BookOfferAdapter(Context context, List<ParseObject> objects,
@@ -72,6 +73,7 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 			ViewHolder viewHolder = new ViewHolder(offer, bookWant, this);
 			viewHolder.username = (TextView) view
 					.findViewById(R.id.txtUsername);
+			viewHolder.imgUser = (ImageView) view.findViewById(R.id.imgPerfil);
 			viewHolder.loading = (ProgressBar) view.findViewById(R.id.loading);
 
 			viewHolder.price = (TextView) view.findViewById(R.id.txtPrice);
@@ -90,6 +92,13 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
 		String title = user.getString("nickname");
+		
+		String facebookId = user.getString("facebookId");
+		if(facebookId != null){
+			String imageURL = "https://graph.facebook.com/"+facebookId+"/picture?type=square&width=50&height=50";
+			Ion.with(holder.imgUser).load(imageURL);			
+		}
+		
 		String offerCondition = offer.getString("condition");
 		String offerBinding = offer.getString("bookbinding");
 		String offerComment = offer.getString("comment");
