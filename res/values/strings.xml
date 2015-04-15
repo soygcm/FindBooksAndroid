@@ -71,7 +71,7 @@
     <string name="title_activity_transactions">Transacciones</string> 
     <string name="title_activity_add_offer">AddOfferActivity</string>
     <string name="title_activity_book">BookActivity</string>
-    <string name="title_end_transaction">Cuentame, ¿Como fue la transacción?</string>
+    <string name="title_end_transaction">¿Como fue la transacción?</string>
     <string name="title_perfil">PERFIL</string>
     <string name="title_transacciones">TRANSACCIONES</string>
     
@@ -98,7 +98,7 @@
     
     
     <string name="hint_precio">Precio</string>
-    <string name="hint_comentario_libro">Comenta sobre el libro</string>
+    <string name="hint_comentario_libro">Comenta sobre el estado del libro.</string>
     <string name="hint_buscador">Title/Author/ISBN</string>    
     
      			

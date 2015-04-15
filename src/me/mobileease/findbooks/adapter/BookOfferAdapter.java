@@ -132,8 +132,10 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		offerCondition = TransactionActivity.codeToName(mBookCondition,
 				offerCondition);
 
-		holder.condition.setText(Html.fromHtml(offerBinding + ", "
-				+ offerCondition + ", " + offerComment));
+		holder.condition.setText(Html.fromHtml(offerBinding + 
+				", "+ offerCondition + 
+				", " + offerComment + 
+				" ("+ myBook.getCityAddress()+")"));
 
 		return view;
 	}

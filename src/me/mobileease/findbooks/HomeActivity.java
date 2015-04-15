@@ -260,8 +260,8 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 					// Log the user out
 					 ParseFacebookUtils.getSession().closeAndClearTokenInformation();
 					ParseUser.logOut();
-					((FindBooks) getApplication()).clearApplicationData();
 
+					((FindBooks) getApplication()).clearApplicationData();
 
 					// ((RespiremosSalud)
 					// getApplication()).clearApplicationData();
@@ -285,10 +285,10 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 
 	protected void startLoginActivity() {
 
-		Intent intent = new Intent(this, LoginActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-		startActivity(intent);
+//		Intent intent = new Intent(this, LoginActivity.class);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+//		startActivity(intent);
 		finish();
 
 		

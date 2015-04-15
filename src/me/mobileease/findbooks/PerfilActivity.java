@@ -2,11 +2,32 @@ package me.mobileease.findbooks;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.facebook.Request;
 import com.facebook.Request.GraphUserCallback;
@@ -25,41 +46,24 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.AutoCompleteTextView.Validator;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 public class PerfilActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
 
 	public static final String USER_NEW = "userNew";
 	private ParseUser currentUser;
-	private TextView txtUsername;
-	private TextView txtPhone;
-	private TextView txtMail;
+	private EditText txtUsername;
+	private EditText txtPhone;
+	private EditText txtMail;
 	private Button save;
-	private TextView txtName;
+	private EditText txtName;
 	private boolean userNew;
 	private ImageView imgPerfil;
 	private AutoCompleteTextView place;
-	private ImageView searchPlace;
+	private ImageButton searchPlace;
 	protected ArrayAdapter<PlaceResult> adapter;
 	private TextView txtCurrency;
 	private ProgressBar loading;
+	private boolean placeSetted = false;
+	private ProgressBar loadingPlace;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,6 +87,7 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		setContentView(R.layout.activity_perfil);
 		
 		loading = (ProgressBar) findViewById(R.id.loading);
+		loadingPlace = (ProgressBar) findViewById(R.id.loadingPlace);
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {  		
@@ -91,19 +96,29 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         
-        txtUsername = (TextView) findViewById(R.id.perfilUsuario);
-        txtName = (TextView) findViewById(R.id.perfilNombre);
-        txtPhone = (TextView) findViewById(R.id.perfilTelefono);
-        txtMail = (TextView) findViewById(R.id.perfilCorreo);
+        txtUsername = (EditText) findViewById(R.id.perfilUsuario);
+        txtName = (EditText) findViewById(R.id.perfilNombre);
+        txtPhone = (EditText) findViewById(R.id.perfilTelefono);
+        txtMail = (EditText) findViewById(R.id.perfilCorreo);
         txtCurrency = (TextView) findViewById(R.id.txtCurrency);
         imgPerfil = (ImageView) findViewById(R.id.PerfilImagen);
         place = (AutoCompleteTextView) findViewById(R.id.place); 
         save = (Button) findViewById(R.id.save);
-        searchPlace = (ImageView) findViewById(R.id.searchPlace);
+        searchPlace = (ImageButton) findViewById(R.id.searchPlace);
         save.setOnClickListener(this);
         searchPlace.setOnClickListener(this);
         
         place.setOnItemClickListener(this);
+        place.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+
+				if(!hasFocus){
+					setPlace();		
+				}
+			}
+		});
         
 	}
 
@@ -179,18 +194,28 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		String email = currentUser.getString("email");
 		String username = currentUser.getString("nickname");
 		String phone = currentUser.getString("phone");
-		String address = currentUser.getString("address");
 		String currencyCode = currentUser.getString("currency");
 
 		txtName.setText(name);
 		txtMail.setText(email);
 		txtUsername.setText(username);
 		txtPhone.setText(phone);
-		place.setText(address);
+		
+		setCurrency(currencyCode);		
 
-		setCurrency(currencyCode);
+		setPlace();
 		
 		setProfileImage(currentUser.getString("facebookId"));
+	}
+
+	private void setPlace() {
+		String address = currentUser.getString("address");
+		place.setText(address);
+
+		if(address != null){
+			placeSetted = true;
+		}
+
 	}
 
 	private void setProfileImage(String facebookId) {
@@ -201,10 +226,28 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			onBackPressed();
+			
+			if(userNew && !validateForm()){
+				
+			}else{				
+				onBackPressed();
+			}
+			
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	@Override
+	public void onBackPressed() {
+
+		if(userNew && !validateForm()){
+			
+		}else{				
+			super.onBackPressed();
+		}
+		
 	}
 
 	@Override
@@ -214,7 +257,7 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		
 		if(id == R.id.save){
 			
-			guardarPerfil();
+			validateForm();
 			
 		}
 		
@@ -225,7 +268,65 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		}
 	}
 
+	private boolean validateForm() {
+		
+		boolean valid = true;
+
+		String name = txtName.getText().toString();
+		String email = txtMail.getText().toString();
+		String username = txtUsername.getText().toString();
+		String phone = txtPhone.getText().toString();
+		
+		Spanned messageError = Html.fromHtml("<font color='red'>!No puedes dejar vacio este campo!</font>");
+		
+		if(name.isEmpty()){
+			valid = false;
+			txtName.setError(messageError);
+		}else{
+			txtName.setError(null);
+		}
+		
+		if(email.isEmpty()){
+			valid = false;
+			txtMail.setError(messageError);
+		}else{
+			txtMail.setError(null);
+		}
+		
+		if(username.isEmpty()){
+			valid = false;
+			txtUsername.setError(messageError);
+		}else{
+			txtUsername.setError(null);
+		}
+		
+		if(phone.isEmpty()){
+			valid = false;
+			txtPhone.setError(messageError);
+		}else{
+			txtPhone.setError(null);
+		}
+		
+		//Moneda
+		if(!placeSetted){
+			valid = false;
+			place.setError(Html.fromHtml("<font color='red'>Necesitas definir tu ciudad.</font>"));
+			txtCurrency.setError(Html.fromHtml("<font color='red'>Define el tu ciudad, para que sepamos tu moneda.</font>"));
+		}else{
+			place.setError(null);
+			txtCurrency.setError(null);
+		}
+		
+		if(valid){
+			guardarPerfil();			
+		}
+		
+		return valid;
+	}
+
 	private void searchPlace() {
+		
+		
 		
 		String address = place.getText().toString();
 		String url = null;
@@ -237,45 +338,53 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		
 		if(url != null){
 		
-		Log.d(FindBooks.TAG, "searching Place: "+ url);
+			Log.d(FindBooks.TAG, "searching Place: "+ url);
+	
+			loadingPlace.setVisibility(View.VISIBLE);
+			searchPlace.setEnabled(false);
+			
+			Ion.with(this)
+			.load(url)
+			.asJsonObject()
+			.setCallback(new FutureCallback<JsonObject>() {
+			   @Override
+			    public void onCompleted(Exception e, JsonObject result) {
+				   
+					searchPlace.setEnabled(true);
+					loadingPlace.setVisibility(View.GONE);
 
-		
-		Ion.with(this)
-		.load(url)
-		.asJsonObject()
-		.setCallback(new FutureCallback<JsonObject>() {
-		   @Override
-		    public void onCompleted(Exception e, JsonObject result) {
-			   
-			   if(e == null){
 				   
-				   JsonArray results = result.getAsJsonArray("results");
-				   
-				   List<PlaceResult> places = new ArrayList<PlaceResult>();
-				   
-				   for (JsonElement jsonElement : results) {
+				   if(e == null){
 					   
-					   PlaceResult placeResult = new PlaceResult(jsonElement.getAsJsonObject());
+					   JsonArray results = result.getAsJsonArray("results");
 					   
-					   places.add(placeResult);
+					   List<PlaceResult> places = new ArrayList<PlaceResult>();
 					   
+					   for (JsonElement jsonElement : results) {
+						   
+						   PlaceResult placeResult = new PlaceResult(jsonElement.getAsJsonObject());
+						   
+						   places.add(placeResult);
+						   
+					   }
+					   
+					   Log.d(FindBooks.TAG, "searchPlace: "+ results.size());
+					   
+					   adapter = new ArrayAdapter<PlaceResult>(PerfilActivity.this, android.R.layout.simple_list_item_1, places);
+					   place.setAdapter(adapter);
+					   
+	//				   place.setText("");
+					   
+					   place.showDropDown();
+	
+					   
+				   }else{
+					   Log.d(FindBooks.TAG, "error Searching: "+ e.getLocalizedMessage());
 				   }
-				   
-				   Log.d(FindBooks.TAG, "searchPlace: "+ results.size());
-				   
-				   adapter = new ArrayAdapter<PlaceResult>(PerfilActivity.this, android.R.layout.simple_list_item_1, places);
-				   place.setAdapter(adapter);
-				   place.setText("");
-				   place.showDropDown();
-
-				   
-			   }else{
-				   Log.d(FindBooks.TAG, "error Searching: "+ e.getLocalizedMessage());
-			   }
-
-		   
-		   	}
-		});
+	
+			   
+			   	}
+			});
 		
 		}
 
@@ -351,7 +460,7 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		String email = txtMail.getText().toString();
 		String username = txtUsername.getText().toString();
 		String phone = txtPhone.getText().toString();
-
+		
 		currentUser.put("name", name);
 		currentUser.put("email", email);
 		currentUser.put("nickname", username);
@@ -385,12 +494,19 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 
 	protected void showHome() {
 		
-		setResult(HomeActivity.UPDATED);
-        finish();
+		if(userNew){			
+			Intent intent = new Intent(this, HomeActivity.class);
+			startActivity(intent);		
+			finish();
+		}else{
+			setResult(HomeActivity.UPDATED);
+			finish();
+		}
+		
         
-//		Intent intent = new Intent(this, HomeActivity.class);
-//		startActivity(intent);
 	}
+	
+	
 
 
 	@Override
@@ -412,6 +528,8 @@ public class PerfilActivity extends ActionBarActivity implements OnClickListener
 		currentUser.put("location", new ParseGeoPoint(latitude, longitude)  );
 	
 		setCurrency(placeResult.getCurrency());
+		
+		placeSetted = true;
 		
 	}
 

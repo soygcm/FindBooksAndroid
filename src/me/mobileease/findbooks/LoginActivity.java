@@ -1,12 +1,19 @@
 package me.mobileease.findbooks;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,10 +24,10 @@ import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseFacebookUtils.Permissions;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
-import com.parse.ParseFacebookUtils.Permissions;
 
 public class LoginActivity extends ActionBarActivity implements OnClickListener {
 	private EditText passwordInput;
@@ -39,9 +46,35 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 		
 		if (ParseUser.getCurrentUser().getObjectId() != null) {
 			showHome();
+		}else{
+			
+			
+			
+			
+			
 		}
 
 		loadInterface();
+		
+//		try {
+//		    PackageInfo info = getPackageManager().getPackageInfo(
+//		            "com.yours.package", 
+//		            PackageManager.GET_SIGNATURES);
+//		    for (Signature signature : info.signatures) {
+//		        MessageDigest md = MessageDigest.getInstance("SHA");
+//		        md.update(signature.toByteArray());
+//		        Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//		        }
+//		} catch (NameNotFoundException e) {
+//	        Log.d("KeyHash:", "NameNotFoundException");
+//			e.printStackTrace();
+//		} catch (NoSuchAlgorithmException e) {
+//	        Log.d("KeyHash:", "NoSuchAlgorithmException");
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//	        Log.d("KeyHash:", "Exception");
+//			e.printStackTrace();
+//		}
 
 	}
 
@@ -79,7 +112,13 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	  super.onActivityResult(requestCode, resultCode, data);
+	  
 	  ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+	    
+	    progress = new ProgressDialog(this);
+		progress.setTitle("Iniciando con Facebook");
+		progress.setMessage("En unos segundos estaras dentro de FindBooks...");
+		progress.show();
 	}
 
 	private void facebookLogin() {
@@ -87,13 +126,24 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 		List<String> permissions = Arrays.asList("public_profile", "user_location",
 				Permissions.Friends.ABOUT_ME);
 
+		progress = new ProgressDialog(this);
+		progress.setTitle("Iniciando con Facebook");
+		progress.setMessage("En unos segundos estaras dentro de FindBooks...");
+		progress.show();
+		
 		ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
 			  @Override
 			  public void done(ParseUser user, ParseException err) {
+				  
+				  
+				  
 			    if (user == null) {
 			    		Log.d(FindBooks.TAG,
 							"Uh oh. The user cancelled the Facebook login. ");
 			    		err.printStackTrace();
+			    		if(progress != null && progress.isShowing()){			  
+			    			progress.dismiss();
+			    		}
 			    } else if (user.isNew()) {
 			      Log.d("MyApp", "User signed up and logged in through Facebook!");
 			      //Ver Perfil
@@ -125,6 +175,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 		Intent intent = new Intent(LoginActivity.this, PerfilActivity.class);
 		intent.putExtra(PerfilActivity.USER_NEW, true);
 		startActivity(intent);
+		finish();
 	}
 
 	private void signup() {

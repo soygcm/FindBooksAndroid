@@ -5,12 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import me.mobileease.findbooks.adapter.BookAdapter;
+import me.mobileease.findbooks.model.MyBook;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,19 +24,21 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewDebug.FlagToString;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -50,6 +53,9 @@ public class SearchActivity extends ActionBarActivity implements
 	private View loading;
 	private ImageButton btnSearch;
 	private boolean updated;
+	private TextView txtLastOffers;
+	private String typeSearch;
+	private ParseQuery<ParseObject> queryLastOffers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,22 +80,24 @@ public class SearchActivity extends ActionBarActivity implements
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 
 		btnSearch = (ImageButton) findViewById(R.id.btnSearch);
+		txtLastOffers = (TextView) findViewById(R.id.txtLastOffers);
 
 		if (searchFind) {
 			toolbar.setBackgroundColor(getResources().getColor(
 					R.color.ui_menta_busqueda));
 			btnSearch.setImageResource(R.drawable.ic_buscar_blanco);
+			typeSearch = MyBook.WANT;
+			getBooksOffered();
+			
 		} else if (searchAdd) {
 			toolbar.setBackgroundColor(getResources().getColor(
 					R.color.ui_magenta_oferta));
 			btnSearch.setImageResource(R.drawable.ic_agregar_blanco);
+			typeSearch = MyBook.OFFER;
 		}
 
 		searchQuery = (EditText) findViewById(R.id.searchQuery);
 		// mTitleTextView.setText("My Own Title");
-		
-		addButtonNoBook();
-
 
 		btnSearch.setOnClickListener(new OnClickListener() {
 
@@ -122,11 +130,49 @@ public class SearchActivity extends ActionBarActivity implements
 
 		return super.onOptionsItemSelected(item);
 	}
+	
+	protected void getBooksOffered(){
+		
+		loading.setVisibility(View.VISIBLE);
+		
+
+		queryLastOffers = ParseQuery.getQuery("Book");
+		queryLastOffers.orderByDescending("updatedAt");
+		queryLastOffers.setLimit(50);
+		queryLastOffers.whereGreaterThan("offersCount", 0);
+		queryLastOffers.findInBackground(new FindCallback<ParseObject>() {
+			
+			@Override
+			public void done(List<ParseObject> l, ParseException e) {
+				
+				loading.setVisibility(View.GONE);
+				
+				if(e==null){
+					
+					if(adapter == null){
+						adapter = new BookAdapter(SearchActivity.this, l, searchFind);
+						list.setAdapter(adapter);
+						txtLastOffers.setVisibility(View.VISIBLE);
+						// adapter.notifyDataSetChanged();
+					}
+					
+				}else{
+					e.printStackTrace();
+				}
+				
+			}
+		});
+
+		
+	}
 
 	protected void getBooks() {
 		
 		loading.setVisibility(View.VISIBLE);
 		btnSearch.setEnabled(false);
+		
+		txtLastOffers.setVisibility(View.GONE);
+		queryLastOffers.cancel();
 		
 		if (adapter != null) {
 			adapter.clear();
@@ -169,6 +215,9 @@ public class SearchActivity extends ActionBarActivity implements
 
 							if (books.size() > 0) {
 								Log.d("FB", "setear Adaptador");
+								
+								addButtonNoBook();
+								
 								adapter = new BookAdapter(SearchActivity.this,
 										books, searchFind);
 								// adapter.notifyDataSetChanged();
@@ -178,6 +227,15 @@ public class SearchActivity extends ActionBarActivity implements
 							}
 
 						} else {
+							
+							
+							Context context = getApplicationContext();
+							CharSequence text = "Losiento, algo salio mal.";
+							int duration = Toast.LENGTH_SHORT;
+
+							Toast toast = Toast.makeText(context, text, duration);
+							toast.show();
+							
 							err.printStackTrace();
 						}
 
@@ -212,6 +270,7 @@ public class SearchActivity extends ActionBarActivity implements
 		
 		feedback.put("feedback", searchQuery.getText().toString());
 		feedback.put("type", "NO_BOOK");
+		feedback.put("context", typeSearch);
 		feedback.put("user", ParseUser.getCurrentUser());
 		feedback.saveInBackground(new SaveCallback() {
 			
@@ -221,7 +280,7 @@ public class SearchActivity extends ActionBarActivity implements
 				if(e == null){
 					
 					AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
-					builder.setMessage("Gracias por tu feedback. en la próxima actualización agregaremos más libros. no dudes en contactarnos @findbooksme.")
+					builder.setMessage("Gracias por tu feedback. en la próxima actualización agregaremos más libros. no dudes en contactarnos info@mobileease.me")
 					       .setCancelable(false)
 					       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					           public void onClick(DialogInterface dialog, int id) {

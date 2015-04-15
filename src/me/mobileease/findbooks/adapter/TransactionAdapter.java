@@ -198,16 +198,20 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		String userPhone;
 		String userName;
 		String userMail;
+		String facebookId;
 
 		boolean offering = user.getObjectId().equals(userOffer.getObjectId());
+		
 		if (offering) {
 			userName = userWant.getString("nickname");
 			userPhone = userWant.getString("phone");
 			userMail = userWant.getString("email");
+			facebookId = userWant.getString("facebookId");
 		} else {
 			userName = userOffer.getString("nickname");
 			userPhone = userOffer.getString("phone");
 			userMail = userOffer.getString("email");
+			facebookId = userOffer.getString("facebookId");
 		}
 
 		List<String> authorsList = book.getList("authors");
@@ -236,6 +240,7 @@ public class TransactionAdapter extends ArrayAdapter<ParseObject> implements OnI
 		intent.putExtra(TransactionActivity.OFFER_BINDING, offerBinding);
 		
 		intent.putExtra(TransactionActivity.USER_NAME, userName);
+		intent.putExtra(TransactionActivity.USER_FACEBOOKID, facebookId);
 		intent.putExtra(TransactionActivity.USER_PHONE, userPhone);
 		intent.putExtra(TransactionActivity.USER_MAIL, userMail);
 		intent.putExtra(TransactionActivity.OFFERING, offering);

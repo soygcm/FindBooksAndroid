@@ -18,21 +18,23 @@ public class MyBook extends MyParseObject {
 	public static final String TYPE = "type";
 	private String offerCurrency;
 	private double price;
+	private String offerCity;
 	
 	
-
+	/* para los resultados, home, transacciones */
 	public MyBook(ParseObject myBook) {
 //		ParseUser user = ParseUser.getCurrentUser();
 		ParseUser user = myBook.getParseUser("user");
 		offerCurrency = user.getString("currency");
 		price = myBook.getDouble("price");
+		offerCity = user.getString("address");
 	}
 
+	/*En teoria esta opción de crear un MyBook, es cuando es un OFFER desde el home*/
 	public MyBook(Intent intent) {
 		ParseUser user = ParseUser.getCurrentUser();
 		offerCurrency = user.getString("currency");
 		price = intent.getDoubleExtra(TransactionActivity.OFFER_PRICE, -1);
-		
 	}
 
 	public String getPriceFormated() {
@@ -47,6 +49,10 @@ public class MyBook extends MyParseObject {
 			return "gratis";
 		}
 		
+	}
+	
+	public String getCityAddress(){
+		return offerCity;
 	}
 	
 	public double getPrice() {

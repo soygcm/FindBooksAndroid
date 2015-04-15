@@ -92,9 +92,12 @@
 			        android:orientation="horizontal"
 			        android:layout_gravity="right|center_vertical"
 			        android:layout_marginLeft="3dp"
-			        android:layout_marginBottom="10dp"
-			       >		        
+			        android:layout_marginBottom="5dp"
+			        
+			       >		
+			               
 					<ImageView 
+					    android:id="@+id/imgUser"
 				    android:layout_width="48dp"
 					android:layout_height="48dp"
 				    android:layout_gravity="left|center_vertical"
@@ -116,12 +119,15 @@
 			</LinearLayout>
             
             <LinearLayout
+                android:id="@+id/btnPhone"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:orientation="horizontal"
 			        android:layout_gravity="right|center_vertical"
 			        android:layout_marginLeft="3dp"
-			        android:layout_marginBottom="10dp"
+			        android:paddingBottom="5dp"
+			        android:paddingTop="5dp"
+			        android:background="@drawable/button_blanco"
 			        android:paddingLeft="11dp"
 			       >		        
 					<ImageView 
@@ -146,13 +152,16 @@
 			</LinearLayout>
 			
             <LinearLayout
+                android:id="@+id/btnMail"
 			        android:layout_width="match_parent"
 			        android:layout_height="wrap_content"
 			        android:orientation="horizontal"
 			        android:layout_gravity="right|center_vertical"
 			        android:layout_marginLeft="3dp"
-			        android:layout_marginBottom="10dp"
+			        android:paddingTop="5dp"
+			        android:paddingBottom="5dp"
 			        android:paddingLeft="11dp"
+			        android:background="@drawable/button_blanco"
 			       >		        
 					<ImageView 
 				    android:layout_width="wrap_content"

@@ -67,25 +67,36 @@
         
     </android.support.v7.widget.Toolbar>
 
+    <TextView
+	      android:id="@+id/txtLastOffers"
+	      android:layout_width="fill_parent"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:textColor="@color/text_gris"
+			android:textAlignment="gravity"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+	      android:text="Ofertas recientes:" />
     
-    <LinearLayout 
-                android:id="@+id/loading"
-    android:layout_width="48dp"
-    android:layout_height="48dp"
-    android:orientation="vertical"
-            android:layout_gravity="center_vertical|center_horizontal"
-                android:gravity="center"
-                android:visibility="gone"
-    
-    >
-        
-        <ProgressBar
-        android:layout_width="wrap_content"
-		style="?android:attr/progressBarStyleSmall"
-        android:layout_height="wrap_content"
-         />
-        
-        </LinearLayout>
+	  <LinearLayout 
+	    android:id="@+id/loading"
+	  	android:layout_width="48dp"
+	  	android:layout_height="48dp"
+	  	android:orientation="vertical"
+	   	android:layout_gravity="center_vertical|center_horizontal"
+	   	android:gravity="center"
+	   	android:visibility="gone"
+	  >
+	      
+	      <ProgressBar
+	      android:layout_width="wrap_content"
+	style="?android:attr/progressBarStyleSmall"
+	      android:layout_height="wrap_content"
+	       />
+	      
+	</LinearLayout>
     
     <ListView
         android:id="@+id/resultList"

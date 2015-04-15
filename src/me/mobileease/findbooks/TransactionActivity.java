@@ -43,12 +43,15 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	public static final String TRANSACTION_END_WANT = "endedWant";
 	public static final String TRANSACTION_END_OFFER = "endedOffer";
 	public static final String OFFER_TRANSACTION_COUNT = "transactionCount";
+	public static final String USER_FACEBOOKID = "facebookId";
 	private TextView txtTitle;
 	private TextView txtAuthors;
 	private TextView txtUsername;
 	private TextView txtCondition;
 	private TextView txtPrice;
 	private ImageView imgBook;
+	private ImageView imgPerfil;
+	private ImageView imgUser;
 	private String bookTitle;
 	private String bookSubtitle;
 	private String bookAuthors;
@@ -79,6 +82,9 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 	private boolean endedWant;
 	private boolean endedOffer;
 	private View loading;
+	private String facebookId;
+	private View btnPhone;
+	private View btnMail;
 	
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -137,6 +143,7 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		offerComment = intent.getStringExtra(TransactionActivity.OFFER_COMMENT);
 		
 		userName = intent.getStringExtra(TransactionActivity.USER_NAME);
+		facebookId = intent.getStringExtra(TransactionActivity.USER_FACEBOOKID);
 		userPhone = intent.getStringExtra(TransactionActivity.USER_PHONE);
 		userMail = intent.getStringExtra(TransactionActivity.USER_MAIL);
 		offering = intent.getBooleanExtra(TransactionActivity.OFFERING, false);
@@ -182,13 +189,18 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		
 		getConfigConditionBindingComment();
 
-		
 		/**
 		 * Contact info
 		 */
 		txtName.setText(userName);
 		txtPhone.setText(userPhone);
 		txtMail.setText(userMail);
+		
+		if(facebookId != null){
+			String imageURL = "https://graph.facebook.com/"+facebookId+"/picture?type=square&width=50&height=50";
+			Ion.with(imgUser).load(imageURL);
+			Ion.with(imgPerfil).load(imageURL);
+		}
 
 	}
 
@@ -219,10 +231,18 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		btnAccept = (Button) findViewById(R.id.btnAccept);
 		btnCancel = (Button) findViewById(R.id.btnCancel);
 		btnConclude = (Button) findViewById(R.id.btnConclude);
+		btnPhone = (View) findViewById(R.id.btnPhone);
+		btnMail = (View) findViewById(R.id.btnMail);
+		
+		imgPerfil = (ImageView) findViewById(R.id.imgPerfil);
+		imgUser = (ImageView) findViewById(R.id.imgUser);
+		
 		txtMessageTransaction = (TextView) findViewById(R.id.txtMessageTransaction);
 		btnAccept.setOnClickListener(this);
 		btnCancel.setOnClickListener(this);
 		btnConclude.setOnClickListener(this);
+		btnPhone.setOnClickListener(this);
+		btnMail.setOnClickListener(this);
 	}
 
 	private void transactionInfo() {
@@ -383,7 +403,28 @@ public class TransactionActivity extends ActionBarActivity implements OnClickLis
 		}else if (id == R.id.btnConclude){
 			endTransaction();
 		}
+		else if (id == R.id.btnPhone){
+			phoneIntent();
+		}
+		else if (id == R.id.btnMail){
+			mailIntent();
+		}
 		
+	}
+
+	private void mailIntent() {
+
+		Intent send = new Intent(Intent.ACTION_SENDTO);
+		String uriText = "mailto:" + Uri.encode(userMail);
+		Uri uri = Uri.parse(uriText);
+		send.setData(uri);
+		startActivity(Intent.createChooser(send, "Send mail..."));
+	}
+
+	private void phoneIntent() {
+		Intent intent = new Intent(Intent.ACTION_DIAL);
+		intent.setData(Uri.parse("tel:"+userPhone));
+		startActivity(intent);
 	}
 
 	private void endTransaction() {
