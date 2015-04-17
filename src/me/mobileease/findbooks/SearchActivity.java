@@ -172,7 +172,10 @@ public class SearchActivity extends ActionBarActivity implements
 		btnSearch.setEnabled(false);
 		
 		txtLastOffers.setVisibility(View.GONE);
-		queryLastOffers.cancel();
+		
+		if(queryLastOffers != null){
+			queryLastOffers.cancel();
+		}
 		
 		if (adapter != null) {
 			adapter.clear();

@@ -1,6 +1,7 @@
 package me.mobileease.findbooks;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -132,8 +133,12 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 		btnTransactions = (ImageButton) findViewById(R.id.btnTransactions);
 		btnTransactions.setOnClickListener(this);
 		
-		
 		if (user.isValidLogin()){
+			
+			adapter = new MyBookAdapter(HomeActivity.this, null);
+			gridview.setAdapter(adapter);
+			adapter.notifyDataSetChanged();
+			
 			FindBooks.firstConfig(new FirstConfigCallback() {
 				@Override
 				public void done(Exception e) {		
@@ -145,9 +150,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 				}
 			});
 		}else{
-			
 			startLoginActivity();
-			
 			Log.d("FB", "No hay usuario?");			
 		}
 
@@ -177,6 +180,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 //		progress.show();
 
 		Log.d("FB", "Obteniendo MyBooks");
+		
 
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(MyBook.CLASS);
 		query.whereEqualTo("user", user.getParseUser());

@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -115,10 +116,14 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 	  
 	  ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
 	    
-	    progress = new ProgressDialog(this);
+	  
+	  if(progress == null && !progress.isShowing()){			  
+		progress = new ProgressDialog(this);
 		progress.setTitle("Iniciando con Facebook");
 		progress.setMessage("En unos segundos estaras dentro de FindBooks...");
 		progress.show();
+	  }
+	  
 	}
 
 	private void facebookLogin() {
@@ -135,15 +140,22 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 			  @Override
 			  public void done(ParseUser user, ParseException err) {
 				  
-				  
+				if(progress != null && progress.isShowing()){			  
+		    			progress.dismiss();
+		    			
+		    		}
 				  
 			    if (user == null) {
 			    		Log.d(FindBooks.TAG,
 							"Uh oh. The user cancelled the Facebook login. ");
+			    		
+			    		AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+						builder.setMessage("Lo siento, Algo salió mal al iniciar sesión con Facebook.")
+								.setPositiveButton("Ok", null).show();
+
+			    		
 			    		err.printStackTrace();
-			    		if(progress != null && progress.isShowing()){			  
-			    			progress.dismiss();
-			    		}
+			    		
 			    } else if (user.isNew()) {
 			      Log.d("MyApp", "User signed up and logged in through Facebook!");
 			      //Ver Perfil
@@ -162,6 +174,8 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener 
 			      
 			      	if (ParseUser.getCurrentUser().getObjectId() != null) {
 			      		showHome();
+			      	}else{
+			      		
 			      	}
 //			      showHome();
 			    }

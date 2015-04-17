@@ -119,7 +119,11 @@ public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 	}
 
 	public int getCount() {
-		return offerList.size() + 1;
+		if(offerList == null){
+			return 1;
+		}else{
+			return offerList.size() + 1;			
+		}
 	}
 
 	// / Crear una nueva vista con imagen y titulo
