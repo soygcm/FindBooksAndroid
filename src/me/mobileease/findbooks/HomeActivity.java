@@ -57,6 +57,7 @@ public class HomeActivity extends ActionBarActivity implements OnClickListener {
 	public static final int ADD_BOOK_WANT = 5;
 	
 	public static final int UPDATED = 6;
+	public static final int NEW = 7;
 
 	private User user;
 	private GridView gridview;

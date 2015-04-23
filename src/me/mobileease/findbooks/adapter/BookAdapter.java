@@ -37,12 +37,14 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 	private LayoutInflater inflater;
 	private List<ParseObject> books;
 	private boolean searchFind;
+	private Context c;
 
 	public BookAdapter(Context context, List<ParseObject> objects,
 			boolean searchFind) {
 		super(context, -1, objects);
 		inflater = LayoutInflater.from(context);
 		books = objects;
+		this.c = context;
 		this.searchFind = searchFind;
 	}
 
@@ -75,15 +77,6 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 
 		JSONObject imageLinks = book.getJSONObject("imageLinks");
 		List<String> authorsList = book.getList("authors");
-		
-		int count = book.getInt("offersCount");
-		
-		if (count == 0){
-			holder.offerCount.setVisibility(View.GONE);
-		}else{	
-			holder.offerCount.setVisibility(View.VISIBLE);
-			holder.offerCount.setText(count+" ofertas");
-		}
 
 		if (subtitle == null) {
 			holder.title.setText(title);
@@ -99,9 +92,28 @@ public class BookAdapter extends ArrayAdapter<ParseObject> {
 			holder.authors.setVisibility(View.GONE);
 		}
 
+		int count = book.getInt("offersCount");
+		int countWants = book.getInt("wantsCount");
+		
 		if (searchFind) {
+			if (count == 0){
+				holder.offerCount.setVisibility(View.GONE);
+			}else{
+				holder.offerCount.setVisibility(View.VISIBLE);
+				holder.offerCount.setText(count+" ofertas");
+			}
+			holder.offerCount.setTextColor(c.getResources().getColor(
+					R.color.ui_menta_busqueda));
 			holder.imgArrow.setImageResource(R.drawable.ic_detalles_buscar);
 		} else {
+			if (countWants == 0){
+				holder.offerCount.setVisibility(View.GONE);
+			}else{
+				holder.offerCount.setVisibility(View.VISIBLE);
+				holder.offerCount.setText(countWants+" lo quieren");
+			}
+			holder.offerCount.setTextColor(c.getResources().getColor(
+					R.color.ui_magenta_oferta));
 			holder.imgArrow.setImageResource(R.drawable.ic_detalles_agregar);
 		}
 

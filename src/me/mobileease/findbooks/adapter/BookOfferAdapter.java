@@ -1,23 +1,19 @@
 package me.mobileease.findbooks.adapter;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
-import org.json.JSONArray;
-
-import me.mobileease.findbooks.FindBooks;
+import me.mobileease.findbooks.BookActivity;
 import me.mobileease.findbooks.R;
 import me.mobileease.findbooks.TransactionActivity;
 import me.mobileease.findbooks.model.MyBook;
 
+import org.json.JSONArray;
+
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,9 +39,9 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 	private ParseObject bookWant;
 	private ParseConfig config;
 	public List<ParseObject> transactions;
-	private Context c;
+	private Activity c;
 
-	public BookOfferAdapter(Context context, List<ParseObject> objects,
+	public BookOfferAdapter(Activity context, List<ParseObject> objects,
 			ParseObject bookWant, List<ParseObject> transactions) {
 		super(context, -1, objects);
 		inflater = LayoutInflater.from(context);
@@ -272,6 +268,8 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 						adapter.offersOnTransaction();
 						adapter.notifyDataSetChanged();
 						
+						
+						
 					} else {
 						e.printStackTrace();
 					}
@@ -287,6 +285,9 @@ public class BookOfferAdapter extends ArrayAdapter<ParseObject> {
 		}
 		
 		transactions.add(transaction);
+		
+//		((BookActivity) c).addTransactions(transaction);
+		
 	}
 
 }

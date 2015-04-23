@@ -87,13 +87,19 @@ public class SearchActivity extends ActionBarActivity implements
 					R.color.ui_menta_busqueda));
 			btnSearch.setImageResource(R.drawable.ic_buscar_blanco);
 			typeSearch = MyBook.WANT;
-			getBooksOffered();
+			txtLastOffers.setText("Ofertas recientes");
+			
+			getLastBooks("offersCount");
 			
 		} else if (searchAdd) {
 			toolbar.setBackgroundColor(getResources().getColor(
 					R.color.ui_magenta_oferta));
 			btnSearch.setImageResource(R.drawable.ic_agregar_blanco);
 			typeSearch = MyBook.OFFER;
+			txtLastOffers.setText("\"Lo quiero\" recientes");
+			
+			getLastBooks("wantsCount");
+
 		}
 
 		searchQuery = (EditText) findViewById(R.id.searchQuery);
@@ -113,33 +119,15 @@ public class SearchActivity extends ActionBarActivity implements
 
 	}
 
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
 
-		case android.R.id.home:
-			
-			if(updated){
-				setResult(HomeActivity.UPDATED);
-			    finish();
-			}else{
-				onBackPressed();				
-			}
-			
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-	
-	protected void getBooksOffered(){
-		
+	private void getLastBooks(String counter) {
 		loading.setVisibility(View.VISIBLE);
 		
 
 		queryLastOffers = ParseQuery.getQuery("Book");
 		queryLastOffers.orderByDescending("updatedAt");
 		queryLastOffers.setLimit(50);
-		queryLastOffers.whereGreaterThan("offersCount", 0);
+		queryLastOffers.whereGreaterThan(counter, 0);
 		queryLastOffers.findInBackground(new FindCallback<ParseObject>() {
 			
 			@Override
@@ -162,8 +150,25 @@ public class SearchActivity extends ActionBarActivity implements
 				
 			}
 		});
-
 		
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		case android.R.id.home:
+			
+			if(updated){
+				setResult(HomeActivity.UPDATED);
+			    finish();
+			}else{
+				onBackPressed();				
+			}
+			
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
 	}
 
 	protected void getBooks() {
@@ -393,6 +398,11 @@ public class SearchActivity extends ActionBarActivity implements
 	    		if(requestCode == HomeActivity.ADD_BOOK_WANT){
 	    			updated = true;
 	    		}
+	    }
+	    if(resultCode == HomeActivity.NEW && 
+	    		requestCode == HomeActivity.ADD_BOOK_WANT){
+	    		setResult(HomeActivity.UPDATED, data);
+			finish();
 	    }
 	    
 	}

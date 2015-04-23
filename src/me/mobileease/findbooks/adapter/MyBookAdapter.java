@@ -49,10 +49,16 @@ public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 
 	}
 	
+//	public void showMyBook(ParseObject myBook, Context c){
+//		
+//		
+//		
+//	}
+	
 	protected void showBook(int position) {
 
 		ParseObject mBook = getItem(position - 1);
-
+		
 		Intent intent = new Intent( mContext, BookActivity.class);
 		String offerId = mBook.getObjectId();
 		String type = mBook.getString("type");
@@ -116,6 +122,7 @@ public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 		public TextView number;
 		public TextView title;
 		public ImageView image;
+		public View colorBar;
 	}
 
 	public int getCount() {
@@ -165,6 +172,7 @@ public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 				viewHolder.title = (TextView) view.findViewById(R.id.title);
 				viewHolder.number = (TextView) view
 						.findViewById(R.id.txtNumber);
+				viewHolder.colorBar = (View) view.findViewById(R.id.colorMyBook);
 				viewHolder.image = (ImageView) view
 						.findViewById(R.id.imageBook);
 				view.setTag(viewHolder);
@@ -193,8 +201,12 @@ public class MyBookAdapter extends ArrayAdapter<ParseObject> implements
 			if (type.equals(MyBook.OFFER)) {
 				holder.number.setBackgroundColor(mContext.getResources()
 						.getColor(R.color.ui_magenta_oferta));
+				holder.colorBar.setBackgroundColor(mContext.getResources()
+						.getColor(R.color.ui_magenta_oferta));
 			} else if (type.equals(MyBook.WANT)) {
 				holder.number.setBackgroundColor(mContext.getResources()
+						.getColor(R.color.ui_menta_busqueda));
+				holder.colorBar.setBackgroundColor(mContext.getResources()
 						.getColor(R.color.ui_menta_busqueda));
 			}
 

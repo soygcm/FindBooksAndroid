@@ -47,6 +47,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
         
         <LinearLayout 
+            android:id="@+id/colorMyBook"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+                        android:layout_gravity="bottom|right"
+            android:orientation="horizontal"
+            android:background="@color/ui_magenta_oferta"
+            
+            />
+        
+        <LinearLayout 
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="horizontal"

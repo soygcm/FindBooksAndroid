@@ -46,6 +46,21 @@
             android:visibility="gone"
             />
           
+          <LinearLayout 
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+                android:gravity="center">
+        
+        <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+		style="?android:attr/progressBarStyleSmall"
+        android:layout_height="wrap_content"
+         />
+        
+        </LinearLayout>
           
           <TextView 
             android:id="@+id/perfil"
@@ -57,16 +72,11 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"  
             />
           
+          
         
     </android.support.v7.widget.Toolbar>
 
-    <ProgressBar
-        android:id="@+id/loading"
-        android:layout_width="wrap_content"
-		style="?android:attr/progressBarStyleSmall"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-         />
+    
 
     <GridView 
 	    android:id="@+id/gridview"
